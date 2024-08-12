@@ -171,56 +171,69 @@ if (roomName) {
 // LANDING | NEW CALL
 // ####################################################################
 
+// Get elements from both sections
+const roomNameInputs = document.querySelectorAll('#roomName');
+const genRoomButtons = document.querySelectorAll('[id^="genRoomButton"]');
+const joinRoomButtons = document.querySelectorAll('[id^="joinRoomButton"]');
 const lastRoomContainer = document.getElementById('lastRoomContainer');
 const lastRoom = document.getElementById('lastRoom');
 const lastRoomName = window.localStorage.lastRoom ? window.localStorage.lastRoom : '';
+
+// Display last room name if it exists
 if (lastRoomContainer && lastRoom && lastRoomName) {
     lastRoomContainer.style.display = 'inline-flex';
     lastRoom.setAttribute('href', '/join/' + lastRoomName);
     lastRoom.innerText = lastRoomName;
 }
 
-const genRoomButton = document.getElementById('genRoomButton');
-const joinRoomButton = document.getElementById('joinRoomButton');
-const adultCnt = document.getElementById('adultCnt');
-
-if (genRoomButton) {
+// Add event listeners to all generate room buttons
+genRoomButtons.forEach((genRoomButton, index) => {
     genRoomButton.onclick = (e) => {
-        genRoom();
+        const newRoomName = getUUID4();
+        roomNameInputs.forEach(input => input.value = newRoomName);
     };
-}
+});
 
-if (joinRoomButton) {
+// Add event listeners to all join room buttons
+joinRoomButtons.forEach((joinRoomButton, index) => {
     joinRoomButton.onclick = (e) => {
         joinRoom();
     };
-}
+});
 
-if (adultCnt) {
-    adultCnt.onclick = (e) => {
-        adultContent();
+// Synchronize room name inputs on typing
+roomNameInputs.forEach((input) => {
+    input.oninput = (e) => {
+        roomNameInputs.forEach(otherInput => {
+            if (otherInput !== e.target) {
+                otherInput.value = e.target.value;
+            }
+        });
     };
-}
+    input.onkeyup = (e) => {
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            joinRoom();
+        }
+    };
+});
 
-document.getElementById('roomName').onkeyup = (e) => {
-    if (e.keyCode === 13) {
-        e.preventDefault();
-        joinRoom();
-    }
-};
-
+// Generate a unique room ID
 function genRoom() {
-    document.getElementById('roomName').value = getUUID4();
+    const newRoomName = getUUID4();
+    roomNameInputs.forEach(input => input.value = newRoomName);
 }
 
+// Generate a UUID4
 function getUUID4() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
         (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16),
     );
 }
 
+// Join the room with the given name
 function joinRoom() {
-    const roomName = filterXSS(document.getElementById('roomName').value);
+    const roomName = filterXSS(roomNameInputs[0].value); // Use the first input as reference
     if (roomName) {
         window.location.href = '/join/' + roomName;
         window.localStorage.lastRoom = roomName;
@@ -229,6 +242,7 @@ function joinRoom() {
     }
 }
 
+// Handle adult content warning
 function adultContent() {
     if (
         confirm(
@@ -238,6 +252,7 @@ function adultContent() {
         window.open('https://luvlounge.ca', '_blank');
     }
 }
+
 
 // #########################################################
 // PERMISSIONS

@@ -30,19 +30,19 @@ const footer = document.getElementById('footer');
 
 const brand = {
     app: {
-        name: 'MiroTalk',
-        title: 'MiroTalk<br />Free browser based Real-time video calls.<br />Simple, Secure, Fast.',
+        name: 'FlashBro',
+        title: 'Revolutionize Your Learning<br />Experience with Seamless Video<br />Conferencing',
         description:
-            'Start your next video call with a single click. No download, plug-in, or login is required. Just get straight to talking, messaging, and sharing your screen.',
+            'Empowering educators and students to connect, collaborate, and excel from anywhere with high-quality video, interactive tools, and secure, user-friendly platforms designed for modern education.',
     },
     site: {
-        landingTitle: 'MiroTalk a Free Secure Video Calls, Chat & Screen Sharing.',
-        newCallTitle: 'MiroTalk a Free Secure Video Calls, Chat & Screen Sharing.',
-        loginTitle: 'MiroTalk - Host Protected login required.',
-        clientTitle: 'MiroTalk WebRTC Video call, Chat Room & Screen Sharing.',
-        privacyPolicyTitle: 'MiroTalk - privacy and policy.',
+        landingTitle: 'FlashBro',
+        newCallTitle: 'FlashBro',
+        loginTitle: 'FlashBro',
+        clientTitle: 'FlashBro',
+        privacyPolicyTitle: 'FlashBro',
         stunTurnTitle: 'Test Stun/Turn Servers.',
-        notFoundTitle: 'MiroTalk - 404 Page not found.',
+        notFoundTitle: 'FlashBro - 404 Page not found.',
         shortcutIcon: '../images/logo.svg',
         appleTouchIcon: '../images/logo.svg',
     },
