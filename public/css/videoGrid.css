@@ -3,7 +3,6 @@
 --------------------------------------------------------------*/
 
 #videoMediaContainer {
-    z-index: 2;
     position: absolute;
     display: flex;
     top: 0;

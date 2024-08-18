@@ -7,8 +7,7 @@
 :root {
     /* common */
     --navbar-bg: rgba(0, 0, 0, 0.2);
-    --body-bg: radial-gradient(#393939, #000000);
-    --border: 0.5px solid rgb(255 255 255 / 32%);
+    --body-bg: #181719;
 
     --msger-top: 50%;
     --msger-left: 50%;
@@ -60,12 +59,10 @@
     */
 
     /* dark theme */
-    --body-bg: radial-gradient(#393939, #000000);
-    --msger-bg: radial-gradient(#393939, #000000);
-    --msger-private-bg: radial-gradient(#393939, #000000);
-    --wb-bg: radial-gradient(#393939, #000000);
-    --select-bg: #2c2c2c;
-    --box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    --body-bg: #181719;
+    --msger-bg: #181719;
+    --msger-private-bg: #181719;
+    --wb-bg: #181719;
 
     /* chat msg boble */
     --left-msg-bg: #252d31;
@@ -85,7 +82,94 @@
 
 * {
     outline: none;
-    font-family: 'Comfortaa';
+    font-family: 'Roboto';
+}
+
+.site-header {
+    position: absolute !important;
+    top: 0;
+    width: 100%;
+    z-index: 10 !important;
+}
+
+.site-header + .site-content .section:first-of-type {
+    padding-top: 80px;
+}
+
+.site-header .brand {
+    margin-right: 32px;
+}
+
+.site-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+@media (max-width: 768px) {
+    .site-header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    img {
+        width: 35%;
+        height: auto;
+    }
+}
+
+.container,
+.container-sm,
+.container-xs {
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+    
+}
+
+@media (min-width: 481px) {
+    .container,
+    .container-sm,
+    .container-xs {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+}
+
+.container {
+    max-width: 1128px;
+}
+
+.container-sm {
+    max-width: 944px;
+}
+
+.container-xs {
+    max-width: 668px;
+}
+
+[class*='container'] [class*='container'] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+[class*='container'] .container-sm {
+    max-width: 896px;
+}
+
+[class*='container'] .container-xs {
+    max-width: 620px;
+}
+@media (min-width: 821px) {
+    .container .split-wrap .split-item .split-item-content {
+        width: 488px;
+    }
+
+    .container .split-wrap .split-item .split-item-image {
+        min-width: 528px;
+    }
 }
 
 /*--------------------------------------------------------------
@@ -94,13 +178,15 @@
 
 html,
 body {
-    top: 0 !important;
     width: 100%;
     height: 100%;
     margin: auto;
-    overflow: hidden;
-    background: var(--body-bg);
-    /* background: url('../images/bg.svg'); */
+    background-color: #181719;
+    overflow: hidden; /* Prevents scrolling */
+}
+
+.bgb {
+    background-color: #181719;
 }
 
 /*--------------------------------------------------------------
@@ -124,13 +210,10 @@ body {
     color: #fff;
     padding: 30px;
     text-align: center;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    box-shadow: var(--box-shadow);
 }
 #loadingDiv h1 {
     font-size: 60px;
-    font-family: 'Comfortaa';
+    font-family: 'Roboto';
 }
 #loadingDiv img {
     margin-top: 5px;
@@ -138,7 +221,19 @@ body {
 }
 #loadingDiv pre {
     padding: 5px;
-    font-family: 'Comfortaa';
+    font-family: 'Roboto';
+}
+.loading-font,
+.loading-img  {
+    width: 60%;
+}
+
+@media (max-width: 640px)  {
+    .loading-font,
+    .loading-img  {
+        width: 150%;
+        margin-left: -25%;
+    }
 }
 
 /*--------------------------------------------------------------
@@ -146,29 +241,101 @@ body {
 --------------------------------------------------------------*/
 
 .init-modal-size {
-    width: 1024px !important;
+    width: 924px !important;
     height: auto !important;
 }
 
 .init-user {
     display: flex;
-    padding: 5px;
+    flex-direction: column;
+    height: 70vh; /* Full viewport height */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box; /* Ensure padding and borders are included in the element's width and height */
 }
 
 .init-video-container {
-    position: relative;
-    width: 100%;
+    flex-grow: 1; /* Allow the video container to grow and fill available space */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align the video to the bottom of the container */
+    padding: 0;
 }
 
 .init-video-container video {
-    z-index: 0;
-    position: relative;
-    height: 240px;
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain; /* Fit the video within the container */
 }
 
 .initComands {
-    width: 100%;
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    margin: 0;
+    box-sizing: border-box;
 }
+
+.initComands button {
+    height: 40px;
+    padding: 5px 10px;
+}
+
+@media (max-width: 768px) {
+    .init-user {
+        height: 37vh; /* Full viewport height */
+    }
+    
+}
+
+@media (max-width: 480px) {
+    .initComands {
+        margin-left: 0; /* Remove margin for very small screens */
+        gap: 5px; /* Reduce gap between buttons */
+        padding: 5px; /* Reduce padding */
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #181719;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 18px;
+    width: 300px;
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
 
 @media screen and (max-width: 1024px) {
     .init-modal-size {
@@ -190,10 +357,10 @@ body {
     width: 100%;
     margin-top: 15px;
     padding: 10px;
-    background: var(--select-bg);
-    color: white;
+    background: #000000;
+    color: rgb(255, 255, 255);
     border: var(--border);
-    border-radius: 5px;
+    border-radius: 18px;
     box-shadow: none;
     cursor: pointer;
 }
@@ -230,7 +397,8 @@ body {
     right: var(--btns-right);
     left: var(--btns-left);
     margin-left: var(--btns-margin-left);
-    width: var(--btns-width);
+    width: 601px;
+height: 50px;
     flex-direction: var(--btns-flex-direction);
 
     justify-content: center;
@@ -240,30 +408,29 @@ body {
     -ms-transform: translate(0%, -50%);
     transform: translate(0%, -50%);
 
-    /* background: var(--body-bg); */
+    background: black;
     box-shadow: 0px 8px 16px 0px rgb(33 33 33);
-    border: var(--border);
-    border-radius: 10px;
+    border-radius: 16px;
     overflow: hidden;
+    border: none; /* Remove any border from the bar */
 }
 
 #buttonsBar button {
     padding: 4px;
-    border: none;
-    background: var(--btn-bar-bg-color);
+    background: transparent;
     color: var(--btn-bar-color);
-    font-size: 1.5rem;
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
+    border: none; /* Ensure buttons have no border */
 }
 
 #buttonsBar button:hover {
     color: var(--hover-color);
-    transform: var(--btns-hover-scale);
+    background-color: transparent; /* Ensure the hover doesn't create a border effect */
 }
 
 #buttonsBar button:focus {
     outline: none;
+    background-color: transparent;
+    border: none;
 }
 
 #buttonsBar #leaveRoomBtn {
@@ -274,6 +441,7 @@ body {
 .fa-video-slash {
     color: #e74c3c !important;
 }
+
 
 /*--------------------------------------------------------------
 # Caption
@@ -841,6 +1009,13 @@ button:hover {
 /*--------------------------------------------------------------
 # Room QR
 --------------------------------------------------------------*/
+#container {
+    border: 1px  #ff5e00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
 
 #qrRoomContainer {
     display: flex;
@@ -855,42 +1030,46 @@ button:hover {
 #mySettings {
     z-index: 16;
     position: absolute;
+    right: 0;
+    margin-left: 50%;
+    transform: translateY(-50%); /* Adjust vertical centering */
     display: none;
-    margin: auto;
     padding: 10px;
-    width: 50%;
+    width: 40%;
+    height: 82%;
     min-height: 480px;
-    background: var(--body-bg);
+    background: #3C3C3C;
     box-shadow: var(--box-shadow);
     border: var(--border);
     border-radius: 10px;
     overflow: hidden;
-}
-
-.mySettingsMain {
-    display: flex;
+    margin: 0; /* Remove auto margin */
 }
 
 @media screen and (max-width: 1030px) {
     #mySettings {
         width: 75%;
+        right: 0; /* Keep the box on the right */
     }
 }
 
 @media screen and (max-width: 830px) {
     #mySettings {
         width: 80%;
+        right: 0; /* Keep the box on the right */
         min-height: auto;
-    }
-    .mySettingsMain {
-        flex-direction: column;
     }
 }
 
 @media screen and (max-width: 500px) {
     #mySettings {
         width: 90%;
+        right: 0; /* Keep the box on the right */
     }
+}
+
+.mySettingsMain {
+    display: flex;
 }
 
 #mySettingsHeader {
@@ -1295,12 +1474,15 @@ input:checked + .slider:before {
 .swal2-input {
     text-align: center;
     color: white !important;
-    background-color: transparent !important;
+}
+
+.swal2-title {
+    font-family: 'Poppins', sans-serif;
 }
 
 .swal2-input {
-    border: var(--border) !important;
-    box-shadow: none !important;
+    border-radius: 8px;
+    background-color: white;
 }
 
 .swal2-file {
@@ -1310,19 +1492,17 @@ input:checked + .slider:before {
 
 .swal2-html-container {
     color: rgb(165, 165, 165) !important;
-    background-color: transparent !important;
 }
 
 .swal2-popup {
-    border: var(--border) !important;
+    background-color: transparent !important;
 }
 
 .swal2-popup .swal2-styled:focus {
-    box-shadow: none !important;
+    background-color: transparent !important;
 }
 
 .swal2-select {
-    background-color: var(--select-bg) !important;
     color: white !important;
     border-radius: 6px !important;
 }

@@ -36,12 +36,12 @@ const images = {
     confirmation: '../images/image-placeholder.png',
     share: '../images/share.png',
     locked: '../images/locked.png',
-    videoOff: '../images/cam-off.png',
-    audioOff: '../images/audio-off.png',
+    videoOff: '../images/camOff.png',
+    audioOff: '../images/micOff.png',
     audioGif: '../images/audio.gif',
     delete: '../images/delete.png',
     message: '../images/message.png',
-    leave: '../images/leave-room.png',
+    leave: '../images/endcall.png',
     vaShare: '../images/va-share.png',
     about: '../images/mirotalk-logo.gif',
     feedback: '../images/feedback.png',
@@ -51,14 +51,45 @@ const images = {
 }; // nice free icon: https://www.iconfinder.com
 
 const className = {
+    user: '../images/user.png',
+    clock: '../images/clock.png',
+    hideMeOn: '../images/hideMeOn.png',
+    hideMeOff: '../images/hideMeOff.png',
+    audioOn: '../images/micOn.png',
+    audioOff: '../images/micOff.png',
+    videoOn: '../images/camOn.png',
+    videoOff: '../images/camOff.png',
+    screenOn: '../images/screenOn.png',
+    screenOff: '../images/screenOff.png',
+    handPulsate: '../images/handPulsate.png',
+    privacy: '../images/privacy.png',
+    snapShot: '../images/snapShot.png',
+    pinUnpin: '../images/pinUnpin.png',
+    mirror: '../images/mirror.png',
+    zoomIn: '../images/zoomIn.png',
+    zoomOut: '../images/zoomOut.png',
+    fullScreen: '../images/fullScreen.png',
+    fsOn: '../images/fsOn.png',
+    fsOff: '../images/fsOff.png',
+    msgPrivate: '../images/msgPrivate.png',
+    shareFile: '../images/shareFile.png',
+    shareVideoAudio: '../images/shareVideoAudio.png',
+    kickOut: '../images/kickOut.png',
+    chatOn: '../images/chatOn.png',
+    chatOff: '../images/chatOff.png',
+    ghost: '../images/ghost.png',
+    undo: '../images/undo.png',
+    captionOn: '../images/captionOn.png',
+    trash: '../images/trash.png',
+    copy: '../images/copy.png',
+    speech: '../images/speech.png',
+    heart: '../images/heart.png',
+    pip: '../images/pip.png',
+
     user: 'fas fa-user',
     clock: 'fas fa-clock',
     hideMeOn: 'fas fa-user-slash',
     hideMeOff: 'fas fa-user',
-    audioOn: 'fas fa-microphone',
-    audioOff: 'fas fa-microphone-slash',
-    videoOn: 'fas fa-video',
-    videoOff: 'fas fa-video-slash',
     screenOn: 'fas fa-desktop',
     screenOff: 'fas fa-stop-circle',
     handPulsate: 'fas fa-hand-paper pulsate',
@@ -72,20 +103,17 @@ const className = {
     fsOn: 'fas fa-compress-alt',
     fsOff: 'fas fa-expand-alt',
     msgPrivate: 'fas fa-paper-plane',
-    shareFile: 'fas fa-upload',
     shareVideoAudio: 'fab fa-youtube',
     kickOut: 'fas fa-sign-out-alt',
-    chatOn: 'fas fa-comment',
-    chatOff: 'fas fa-comment-slash',
     ghost: 'fas fa-ghost',
     undo: 'fas fa-undo',
     captionOn: 'fas fa-closed-captioning',
     trash: 'fas fa-trash',
     copy: 'fas fa-copy',
-    speech: 'fas fa-volume-high',
     heart: 'fas fa-heart',
-    pip: 'fas fa-images',
 };
+
+
 // https://fontawesome.com/search?o=r&m=free
 
 const icons = {
@@ -611,9 +639,9 @@ let peerVideoMediaElements = {}; // keep track of our peer <video> tags, indexed
 let peerAudioMediaElements = {}; // keep track of our peer <audio> tags, indexed by peer_id_audio
 
 // main buttons
-let mainButtonsBarPosition = 'vertical'; // vertical - horizontal
+let mainButtonsBarPosition = 'horizontal'; // vertical - horizontal
 let placement = 'right'; // https://atomiks.github.io/tippyjs/#placements
-let isButtonsVisible = false;
+let isButtonsVisible = true;
 let isButtonsBarOver = false;
 
 // video
@@ -1491,14 +1519,13 @@ async function whoAreYou() {
         allowOutsideClick: false,
         allowEscapeKey: false,
         background: swBg,
-        title: 'MiroTalk P2P',
         position: 'center',
         input: 'text',
         inputPlaceholder: 'Enter your name',
         inputAttributes: { maxlength: 32 },
         inputValue: window.localStorage.peer_name ? window.localStorage.peer_name : '',
         html: initUser, // inject html
-        confirmButtonText: `Join meeting`,
+        confirmButtonText: `Join`,
         customClass: { popup: 'init-modal-size' },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -1528,38 +1555,76 @@ async function whoAreYou() {
         playSound('addPeer');
     });
 
-    // select video - audio
+            // Get the modal
+        var modal = document.getElementById("settingsModal");
 
+        // Get the button that opens the modal
+        var btn = document.getElementById("settingsBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+    // select video - audio
     initVideoSelect.onchange = async () => {
         await changeInitCamera(initVideoSelect.value);
         await handleLocalCameraMirror();
         videoSelect.selectedIndex = initVideoSelect.selectedIndex;
         refreshLsDevices();
     };
+    
     initMicrophoneSelect.onchange = async () => {
         await changeLocalMicrophone(initMicrophoneSelect.value);
         audioInputSelect.selectedIndex = initMicrophoneSelect.selectedIndex;
         refreshLsDevices();
     };
+    
     initSpeakerSelect.onchange = async () => {
         await changeAudioDestination();
         audioOutputSelect.selectedIndex = initSpeakerSelect.selectedIndex;
         refreshLsDevices();
     };
-
-    // init video -audio buttons
+    
+    // Initialize video and audio buttons
     if (!useVideo) {
-        initVideoBtn.className = className.videoOff;
+        // Update the image source for the video button
+        const initVideoImgElement = initVideoBtn.querySelector('img');
+        if (initVideoImgElement) {
+            initVideoImgElement.src = className.videoOff;
+        }
         setMyVideoStatus(useVideo);
     }
+    
     if (!useAudio) {
-        initAudioBtn.className = className.audioOff;
+        // Update the image source for the audio button
+        const initAudioImgElement = initAudioBtn.querySelector('img');
+        if (initAudioImgElement) {
+            initAudioImgElement.src = className.audioOff;
+        }
         setMyAudioStatus(useAudio);
     }
-
+    
+    // Set tooltips for video and audio buttons
     setTippy(initAudioBtn, 'Stop the audio', 'top');
     setTippy(initVideoBtn, 'Stop the video', 'top');
-}
+}    
 
 /**
  * Refresh all LS devices
@@ -2426,7 +2491,7 @@ function handleRemovePeer(config) {
  */
 function setCustomTheme() {
     const color = themeCustom.color;
-    swBg = `radial-gradient(${color}, ${color})`;
+    swBg = `#181719`;
     setSP('--body-bg', `radial-gradient(${color}, ${color})`);
     setSP('--msger-bg', `radial-gradient(${color}, ${color})`);
     setSP('--msger-private-bg', `radial-gradient(${color}, ${color})`);
@@ -2455,7 +2520,7 @@ function setTheme() {
     switch (theme) {
         case 'dark':
             // dark theme
-            swBg = 'radial-gradient(#393939, #000000)';
+            swBg = '#181719';
             setSP('--body-bg', 'radial-gradient(#393939, #000000)');
             setSP('--msger-bg', 'radial-gradient(#393939, #000000)');
             setSP('--msger-private-bg', 'radial-gradient(#393939, #000000)');
@@ -3060,20 +3125,40 @@ async function loadLocalMedia(stream, kind) {
 
             if (!useVideo) {
                 elemDisplay(myVideoAvatarImage, true, 'block');
-                myVideoStatusIcon.className = className.videoOff;
-                videoBtn.className = className.videoOff;
+            
+                // Update the image source for the video status icon and button
+                const myVideoStatusImgElement = myVideoStatusIcon.querySelector('img');
+                if (myVideoStatusImgElement) {
+                    myVideoStatusImgElement.src = className.videoOff;
+                }
+            
+                const videoImgElement = videoBtn.querySelector('img');
+                if (videoImgElement) {
+                    videoImgElement.src = className.videoOff;
+                }
+            
                 if (!isMobileDevice) {
                     setTippy(myVideoStatusIcon, 'My video is disabled', 'bottom');
                 }
             }
-
+            
             if (!useAudio) {
-                myAudioStatusIcon.className = className.audioOff;
-                audioBtn.className = className.audioOff;
+                // Update the image source for the audio status icon and button
+                const myAudioStatusImgElement = myAudioStatusIcon.querySelector('img');
+                if (myAudioStatusImgElement) {
+                    myAudioStatusImgElement.src = className.audioOff;
+                }
+            
+                const audioImgElement = audioBtn.querySelector('img');
+                if (audioImgElement) {
+                    audioImgElement.src = className.audioOff;
+                }
+            
                 if (!isMobileDevice) {
                     setTippy(myAudioStatusIcon, 'My audio is disabled', 'bottom');
                 }
             }
+            
             break;
         case 'audio':
             //alert('local audio');
@@ -5678,35 +5763,92 @@ function shareRoomMeetingURL(checkScreen = false) {
     Swal.fire({
         background: swBg,
         position: 'center',
-        title: 'Share the room',
         html: `
-        <div id="qrRoomContainer">
-            <canvas id="qrRoom"></canvas>
-        </div>
-        <br/>
-        <p style="color:rgb(8, 189, 89);">Join from your mobile device</p>
-        <p style="background:transparent; color:white; font-family: Arial, Helvetica, sans-serif;">No need for apps, simply capture the QR code with your mobile camera Or Invite someone else to join by sending them the following URL</p>
-        <p style="color:rgb(8, 189, 89);">${roomURL}</p>`,
-        showDenyButton: true,
-        showCancelButton: true,
+        <style>
+            @media (max-width: 600px) {
+                #contentContainer {
+                    padding: 20px;
+                    border-radius: 10px;
+                }
+                h2 {
+                    font-size: 1.5em;
+                }
+                #qrRoomContainer {
+                    margin-bottom: 10px;
+                }
+                p {
+                    font-size: 0.9em;
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+                #gmailButton img, #outlookButton img {
+                    width: 32px;
+                }
+                div[style*="gap: 20px;"] {
+                    gap: 10px;
+                    flex-direction: column;
+                }
+            }
+        </style>
+        <div id="contentContainer" style="border: 1px solid #ff5e00; padding: 40px; border-radius: 0px;">
+            <h2 style="color: white; text-align: center;">SCAN QR CODE</h2>
+            <div id="qrRoomContainer" style="display: flex; justify-content: center; margin-bottom: 20px;">
+                <canvas id="qrRoom"></canvas>
+            </div>
+            <p style="color:white; display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+                ${roomURL}
+                <button id="copyButton" style="background: none; border: none; cursor: pointer; margin-left: 10px;">
+                    <img src="../svg/copyURL.svg">
+                </button>
+            </p>
+            <br/>
+            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; color: white; flex-wrap: wrap;">
+                <span>Share via:</span>
+                <button id="gmailButton" style="background: none; border: none; cursor: pointer;">
+                    <img src="../svg/gmail_logo.svg" style="width: 44px;">
+                </button>
+                <button id="outlookButton" style="background: none; border: none; cursor: pointer;">
+                    <img src="../svg/outlook_logo.svg" style="width: 44px;">
+                </button>
+            </div>
+        </div>`,
+        showDenyButton: false,
+        showCancelButton: false,
         cancelButtonColor: 'red',
+        showConfirmButton: false,
         denyButtonColor: 'green',
-        confirmButtonText: `Copy URL`,
-        denyButtonText: `Email invite`,
-        cancelButtonText: `Close`,
+        confirmButtonColor: 'blue',
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
+        didOpen: () => {
+            const copyButton = document.getElementById('copyButton');
+            const gmailButton = document.getElementById('gmailButton');
+            const outlookButton = document.getElementById('outlookButton');
+
+            copyButton.addEventListener('click', () => {
+                copyRoomURL();  // Copy the URL to the clipboard
+            });
+
+            gmailButton.addEventListener('click', () => {
+                window.location.href = `mailto:?subject=Join%20the%20Room&body=${encodeURIComponent(roomURL)}`;
+            });
+
+            outlookButton.addEventListener('click', () => {
+                window.location.href = `mailto:?subject=Join%20the%20Room&body=${encodeURIComponent(roomURL)}&to=someone@example.com`;
+            });
+        }
     }).then((result) => {
         if (result.isConfirmed) {
             copyRoomURL();
         } else if (result.isDenied) {
             shareRoomByEmail();
         }
-        // share screen on join room
         if (checkScreen) checkShareScreen();
     });
     makeRoomQR();
 }
+
+
 
 /**
  * Make Room QR
@@ -5792,21 +5934,34 @@ function getRoomURL() {
  */
 function handleAudio(e, init, force = null) {
     if (!useAudio) return;
-    // https://developer.mozilla.org/en-US/docs/Web/API/MediaStream/getAudioTracks
 
     const audioStatus = force !== null ? force : !myAudioStatus;
-    const audioClassName = audioStatus ? className.audioOn : className.audioOff;
+    const audioImageSrc = audioStatus ? className.audioOn : className.audioOff;
 
     myAudioStatus = audioStatus;
 
+    // Enable or disable the audio track
     localAudioMediaStream.getAudioTracks()[0].enabled = audioStatus;
 
-    force != null ? (e.className = audioClassName) : (e.target.className = audioClassName);
+    // Update the image source for the audio button and status icon
+    const audioImgElement = audioBtn.querySelector('img');
+    if (audioImgElement) {
+        audioImgElement.src = audioImageSrc;
+    }
 
-    audioBtn.className = audioClassName;
+    if (force != null) {
+        e.className = audioImageSrc;
+    } else {
+        e.target.className = audioImageSrc;
+    }
+
+    // Update the init audio button image source
+    const initAudioImgElement = initAudioBtn.querySelector('img');
+    if (initAudioImgElement) {
+        initAudioImgElement.src = audioImageSrc;
+    }
 
     if (init) {
-        initAudioBtn.className = audioClassName;
         setTippy(initAudioBtn, audioStatus ? 'Stop the audio' : 'Start the audio', 'top');
         initMicrophoneSelect.disabled = !audioStatus;
         initSpeakerSelect.disabled = !audioStatus;
@@ -5815,6 +5970,7 @@ function handleAudio(e, init, force = null) {
 
     setMyAudioStatus(myAudioStatus);
 }
+
 
 /**
  * Stop audio track from MediaStream
@@ -5835,21 +5991,22 @@ async function stopAudioTracks(stream) {
  */
 async function handleVideo(e, init, force = null) {
     if (!useVideo) return;
-    // https://developer.mozilla.org/en-US/docs/Web/API/MediaStream/getVideoTracks
 
     const videoStatus = force !== null ? force : !myVideoStatus;
-    const videoClassName = videoStatus ? className.videoOn : className.videoOff;
+    const videoImageSrc = videoStatus ? className.videoOn : className.videoOff;
 
     myVideoStatus = videoStatus;
 
+    // Update the image source for the video button
+    const videoImgElement = videoBtn.querySelector('img');
+    if (videoImgElement) {
+        videoImgElement.src = videoImageSrc;
+    }
+
     localVideoMediaStream.getVideoTracks()[0].enabled = videoStatus;
 
-    force != null ? (e.className = videoClassName) : (e.target.className = videoClassName);
-
-    videoBtn.className = videoClassName;
-
     if (init) {
-        initVideoBtn.className = videoClassName;
+        initVideoBtn.querySelector('img').src = videoImageSrc;
         setTippy(initVideoBtn, videoStatus ? 'Stop the video' : 'Start the video', 'top');
         videoStatus ? elemDisplay(initVideo, true, 'block') : elemDisplay(initVideo, false);
         initVideoSelect.disabled = !videoStatus;
@@ -5860,7 +6017,6 @@ async function handleVideo(e, init, force = null) {
 
     if (!videoStatus) {
         if (!isScreenStreaming) {
-            // Stop the video track based on the condition
             if (init) {
                 await stopVideoTracks(initStream); // Stop init video track (camera LED off)
             } else {
@@ -5870,16 +6026,15 @@ async function handleVideo(e, init, force = null) {
         }
     } else {
         if (init) {
-            // Resume the video track for the init camera (camera LED on)
             await changeInitCamera(initVideoSelect.value);
         } else if (!isScreenStreaming) {
-            // Resume the video track for the local camera (camera LED on)
             await changeLocalCamera(videoSelect.value);
         }
     }
 
     setMyVideoStatus(videoStatus);
 }
+
 
 /**
  * Handle initVideoContainer
@@ -6125,18 +6280,36 @@ function setScreenSharingStatus(status) {
  */
 async function setMyVideoStatusTrue() {
     if (myVideoStatus || !useVideo) return;
+
     // Put video status already ON
     localVideoMediaStream.getVideoTracks()[0].enabled = true;
     myVideoStatus = true;
-    initVideoBtn.className = className.videoOn;
-    videoBtn.className = className.videoOn;
-    myVideoStatusIcon.className = className.videoOn;
+
+    const videoImageSrc = className.videoOn;
+
+    // Update the image sources for the video buttons and icon
+    const initVideoImgElement = initVideoBtn.querySelector('img');
+    if (initVideoImgElement) {
+        initVideoImgElement.src = videoImageSrc;
+    }
+
+    const videoImgElement = videoBtn.querySelector('img');
+    if (videoImgElement) {
+        videoImgElement.src = videoImageSrc;
+    }
+
+    const myVideoStatusImgElement = myVideoStatusIcon.querySelector('img');
+    if (myVideoStatusImgElement) {
+        myVideoStatusImgElement.src = videoImageSrc;
+    }
+
     elemDisplay(myVideoAvatarImage, false);
     elemDisplay(myVideo, true, 'block');
     setTippy(videoBtn, 'Stop the video', placement);
     setTippy(initVideoBtn, 'Stop the video', 'top');
     emitPeerStatus('video', myVideoStatus);
 }
+
 
 /**
  * Enter - esc on full screen mode

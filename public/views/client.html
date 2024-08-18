@@ -3,24 +3,23 @@
     <head>
         <!-- Title and Icon -->
 
-        <title id="clientTitle">MiroTalk WebRTC Video call, Chat Room & Screen Sharing.</title>
-        <link id="icon" rel="shortcut icon" href="../images/logo.svg" />
+        <title id="landingTitle">FLASH</title>
+        <link id="shortcutIcon" rel="shortcut icon" href="../images/logo.svg" />
         <link id="appleTouchIcon" rel="apple-touch-icon" href="../images/logo.svg" />
 
         <!-- Meta Information -->
 
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-        />
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <meta
             name="description"
-            content="MiroTalk powered by WebRTC, Real-time Simple Secure Fast video calls, chat and screen sharing capabilities in the browser, from your mobile or desktop."
+            content="Revolutionize Your Learning Experience with Seamless Video Conferencing"
         />
         <meta
             name="keywords"
-            content="webrtc, openAI, chatGPT, webrtc stun, webrtc turn, video meeting, video chat, multi video chat, peer to peer, p2p, zoom"
+            content="webrtc, self hosted, voip, sip, real-time communications, chat, messaging, meet, webrtc stun, webrtc turn, video meeting, video chat, video conference, multi video chat, multi video conference, peer to peer, p2p, rtc, alternative to, zoom, microsoft teams, google meet, jitsi, meeting"
         />
 
         <!-- https://ogp.me -->
@@ -67,6 +66,25 @@
     </head>
 
     <body>
+        <header class="site-header reveal-from-top">
+            <div class="container">
+                <div class="site-header-inner">
+                    <div class="brand">
+                        <div class="m-0">
+                            <a href="/">
+                                <img
+                                    src="../images/logo.svg"
+                                    alt="MiroTalk P2P"
+                                    width="96"
+                                    height="auto"
+                                    style="margin-top: 30px"
+                                />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
         <noscript>You need to enable JavaScript to run this app.</noscript>
 
         <!-- just 4SEO Optimization -->
@@ -77,15 +95,14 @@
 
         <!-- show this before to join -->
 
-        <div id="loadingDiv" class="center pulsate">
-            <h1>Loading</h1>
-            <img class="loading-img" src="../images/loading.gif" />
-            <pre>
-Please allow the camera or microphone
-access to use this app.
-            </pre>
+        <div id="loadingDiv" class="center">
+            <img class="loading-img" src="../images/loading.gif" /><br/>
+            <img class="loading-font" src="../images/loading-font.gif"/>
         </div>
 
+
+        <button id="initScreenShareBtn" class="fas fa-desktop" style="visibility: hidden; width:0%;"></button>
+        <button id="initVideoMirrorBtn" class="fas fa-arrow-right-arrow-left" style="visibility: hidden; width:0%;"></button>
         <!-- init user devices -->
 
         <div id="initUser" class="init-user hidden">
@@ -100,38 +117,54 @@ access to use this app.
                 ></video>
             </div>
             <div class="initComands">
-                <button id="initVideoBtn" class="fas fa-video"></button>
-                <button id="initAudioBtn" class="fas fa-microphone"></button>
-                <button id="initScreenShareBtn" class="fas fa-desktop"></button>
-                <button id="initVideoMirrorBtn" class="fas fa-arrow-right-arrow-left"></button>
-                <select id="initVideoSelect" class="form-select text-light bg-dark"></select>
-                <select id="initMicrophoneSelect" class="form-select text-light bg-dark"></select>
-                <select id="initSpeakerSelect" class="form-select text-light bg-dark"></select>
+                <button id="initVideoBtn" class="icon-button"><img src="../images/camOn.png" style="width:80%; margin-bottom: 5%;" alt="Video On"></button>
+                <button id="initAudioBtn" class="icon-button"><img src="../images/micOn.png" alt="Audio On"></button>
+                <button id="settingsBtn" class="icon-button"><img src="../images/settings.png" alt="Audio On"></button>
+            </div>
+            
+            <!-- Modal or Dropdown for Settings -->
+            <div id="settingsModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Settings</h2>
+                    <label for="initVideoSelect">Video:</label>
+                    <select id="initVideoSelect" class="form-select text-light bg-dark"></select><br/>
+            
+                    <label for="initMicrophoneSelect">Microphone:</label>
+                    <select id="initMicrophoneSelect" class="form-select text-light bg-dark"></select><br/>
+            
+                    <label for="initSpeakerSelect">Speaker:</label>
+                    <select id="initSpeakerSelect" class="form-select text-light bg-dark"></select><br/>
+                </div>
             </div>
         </div>
 
+        <button id="shareRoomBtn" class="fas fa-share-alt" style="visibility: hidden; width:0%;"></button>
+            <button id="aboutBtn" class="fas fa-question" style="visibility: hidden; width:0%;"></button>
+            <button id="whiteboardBtn" class="fas fa-chalkboard-teacher" style="visibility: hidden; width:0%;"></button>
+            <button id="recordStreamBtn" class="fas fa-record-vinyl" style="visibility: hidden; width:0%;"></button>
+            <button id="captionBtn" class="fas fa-closed-captioning"style="visibility: hidden; width:0%;"></button>
+            <button id="captionBtn" class="fas fa-closed-captioning" style="visibility: hidden; width:0%;"></button>
+            <button id="hideMeBtn" class="fas fa-user" style="visibility: hidden; width:0%;"></button>
+            <button id="fullScreenBtn" style="visibility: hidden; width:0%;"></button>
+        
+
         <!-- Start buttons bar https://fontawesome.com/icons?d=gallery -->
 
-        <div id="buttonsBar" class="fadein">
-            <button id="shareRoomBtn" class="fas fa-share-alt"></button>
-            <button id="hideMeBtn" class="fas fa-user"></button>
-            <button id="swapCameraBtn" class="fas fa-camera-rotate"></button>
-            <button id="videoBtn" class="fas fa-video"></button>
-            <button id="audioBtn" class="fas fa-microphone"></button>
-            <button id="screenShareBtn" class="fas fa-desktop"></button>
-            <button id="recordStreamBtn" class="fas fa-record-vinyl"></button>
-            <button id="fullScreenBtn" class="fas fa-expand-alt"></button>
-            <button id="chatRoomBtn" class="fas fa-comment"></button>
-            <button id="captionBtn" class="fas fa-closed-captioning"></button>
-            <button id="roomEmojiPickerBtn" class="fas fa-face-smile"></button>
-            <button id="myHandBtn" class="fas fa-hand-paper"></button>
-            <button id="whiteboardBtn" class="fas fa-chalkboard-teacher"></button>
-            <button id="fileShareBtn" class="fas fa-folder-open"></button>
-            <button id="documentPiPBtn" class="fas fa-images"></button>
-            <button id="mySettingsBtn" class="fas fa-cogs"></button>
-            <button id="aboutBtn" class="fas fa-question"></button>
-            <button id="leaveRoomBtn" class="fas fa-right-from-bracket"></button>
+        <div id="buttonsBar" class="fadein" style="justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+            <button id="audioBtn"><img src="../images/micOn.png" /></button>
+            <button id="videoBtn"><img src="../images/camOn2.png" style="margin-bottom: 5%;"/></button>
+            <button id="screenShareBtn"><img src="../images/screenShare.png" /></button>
+            <button id="swapCameraBtn"><img src="../images/cameraRotate.png" /></button>
+            <button id="roomEmojiPickerBtn"><img src="../images/emoji.png" /></button>
+            <button id="myHandBtn"><img src="../images/hand.png" /></button>
+            <button id="documentPiPBtn"><img src="../images/pip.png" style="margin-bottom: 5%;"/></button>
+            <button id="chatRoomBtn"><img src="../images/chat.png" /></button>
+            <button id="fileShareBtn"><img src="../images/fileShare.png" /></button>
+            <button id="mySettingsBtn"><img src="../images/settings.png" /></button>
+            <button id="leaveRoomBtn"><img src="../images/endcall.png" /></button>
         </div>
+        
         <!-- End left buttons -->
 
         <!-- Start room emoji picker -->
