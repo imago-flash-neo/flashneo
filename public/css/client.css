@@ -82,7 +82,7 @@
 
 * {
     outline: none;
-    font-family: 'Roboto';
+    font-family: 'Poppins', sans-serif;
 }
 
 .site-header {
@@ -183,6 +183,7 @@ body {
     margin: auto;
     background-color: #181719;
     overflow: hidden; /* Prevents scrolling */
+    font-family: 'Poppins', sans-serif;
 }
 
 .bgb {
@@ -213,7 +214,7 @@ body {
 }
 #loadingDiv h1 {
     font-size: 60px;
-    font-family: 'Roboto';
+    font-family: 'Poppins', sans-serif;
 }
 #loadingDiv img {
     margin-top: 5px;
@@ -221,7 +222,7 @@ body {
 }
 #loadingDiv pre {
     padding: 5px;
-    font-family: 'Roboto';
+    font-family: 'Poppins', sans-serif;
 }
 .loading-font,
 .loading-img  {
@@ -392,22 +393,15 @@ body {
     display: none;
     position: fixed;
     padding: 10px;
-
-    top: var(--btns-top);
-    right: var(--btns-right);
-    left: var(--btns-left);
-    margin-left: var(--btns-margin-left);
-    width: 601px;
-height: 50px;
-    flex-direction: var(--btns-flex-direction);
-
+    bottom: 10px; /* Stick to the bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust horizontal centering */
+    width: 100%;
+    max-width: 601px;
+    height: 50px;
+    flex-direction: row; /* Ensure buttons are in a row */
     justify-content: center;
     grid-gap: 0.4rem;
-
-    -webkit-transform: translate(0%, -50%);
-    -ms-transform: translate(0%, -50%);
-    transform: translate(0%, -50%);
-
     background: black;
     box-shadow: 0px 8px 16px 0px rgb(33 33 33);
     border-radius: 16px;
@@ -440,6 +434,24 @@ height: 50px;
 .fa-microphone-slash,
 .fa-video-slash {
     color: #e74c3c !important;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 480px) {
+    #buttonsBar {
+        padding: 8px;
+        max-width: 100%;
+        height: 60px; /* Increase the height to accommodate larger images */
+    }
+
+    #buttonsBar button {
+        padding: 6px;
+    }
+
+    #buttonsBar button img {
+        width: 17px; /* Increase the size of the button images for better visibility */
+        height: auto; /* Maintain aspect ratio */
+    }
 }
 
 
@@ -566,6 +578,124 @@ height: 50px;
     color: var(--hover-color);
     transform: var(--btns-hover-scale);
     transition: all 0.3s ease-in-out;
+}
+
+/*--------------------------------------------------------------
+# bottom bar
+--------------------------------------------------------------*/
+
+.bottom-bar2 {
+    border-bottom: 2px solid rgb(255, 255, 255);
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding and borders are included in width */
+    display: block; /* Ensure it takes up the full width of its container */
+}
+
+
+/*--------------------------------------------------------------
+# Participands
+--------------------------------------------------------------*/
+
+.close-btn {
+    background: transparent;
+    border: none;
+    color: #fff; /* Adjust color as needed */
+    font-size: 24px; /* Adjust size as needed */
+    cursor: pointer;
+    position: absolute;
+    top: 10px; /* Adjust position as needed */
+    right: 10px; /* Adjust position as needed */
+}
+
+/* Container Styling */
+#tabParticipants {
+    /* Ensure that the tabParticipants div has relative positioning */
+    display: none; /* Initially hidden */
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+    background: #3c3c3c; /* Same background color as .tabcontent */
+    padding: 20px; /* Same padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Same box shadow */
+    position: fixed; /* Fixed positioning to make it float */
+    top: 50%; /* Position it 50% from the top */
+    right: 20px; /* Position it 20px from the right of the screen */
+    transform: translateY(-50%); /* Center it vertically */
+    width: 400px; /* Adjust width as needed */
+    height: 80%;
+    z-index: 1000; /* Ensure it's above other content */
+    border-radius: 4px; /* Match border-radius if applicable */
+}
+
+/* Styling for title inside participants window */
+#tabParticipants .title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd; /* Border similar to .tab */
+    padding-bottom: 10px; /* Add some padding */
+}
+
+/* Style for buttons inside participants window */
+#tabParticipants button {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ddd; /* Add border to match tab button style */
+    background-color: #3c3c3c; /* Background color for button */
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 4px; /* Match button border-radius */
+}
+
+#tabParticipants button:hover {
+    background-color: #e0e0e0;
+    transform: scale(0.95); /* Consistent hover effect */
+}
+
+/* Ensure content has the same font and padding */
+#tabParticipants p,
+#tabParticipants h1,
+#tabParticipants h2,
+#tabParticipants h3,
+#tabParticipants h4,
+#tabParticipants h5,
+#tabParticipants h6,
+#tabParticipants table,
+#tabParticipants input,
+#tabParticipants select,
+#tabParticipants button {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 830px) {
+    #tabParticipants {
+        width: calc(100% - 20px); /* Full width on smaller screens */
+        right: 10px; /* Adjust right position on smaller screens */
+        top: 10px; /* Adjust top position on smaller screens */
+        transform: none; /* Remove translation on mobile view */
+        border-radius: 10px; /* Rounded corners on mobile */
+        height: calc(100% - 20px); /* Full height on smaller screens */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #tabParticipants {
+        width: 100vw; /* Full viewport width */
+        height: 100vh; /* Full viewport height */
+        right: 0; /* Align with the right edge of the viewport */
+        top: 0; /* Align with the top edge of the viewport */
+        transform: none; /* Remove translation */
+        border-radius: 0; /* No border-radius for fullscreen */
+        padding: 20px; /* Maintain padding */
+        box-shadow: none; /* Optionally remove box-shadow */
+    }
+
+    .close-btn {
+        font-size: 28px; /* Larger close button on smaller screens */
+        top: 10px; /* Adjust position of the close button */
+        right: 10px; /* Adjust position of the close button */
+    }
 }
 
 /*--------------------------------------------------------------
@@ -1030,46 +1160,43 @@ button:hover {
 #mySettings {
     z-index: 16;
     position: absolute;
-    right: 0;
-    margin-left: 50%;
-    transform: translateY(-50%); /* Adjust vertical centering */
     display: none;
+    margin: auto;
     padding: 10px;
-    width: 40%;
-    height: 82%;
+    width: 50%;
     min-height: 480px;
-    background: #3C3C3C;
+    background: #3c3c3c;
     box-shadow: var(--box-shadow);
     border: var(--border);
     border-radius: 10px;
     overflow: hidden;
-    margin: 0; /* Remove auto margin */
+    font-family: 'Poppins', sans-serif;
+}
+
+.mySettingsMain {
+    display: flex;
 }
 
 @media screen and (max-width: 1030px) {
     #mySettings {
         width: 75%;
-        right: 0; /* Keep the box on the right */
     }
 }
 
 @media screen and (max-width: 830px) {
     #mySettings {
         width: 80%;
-        right: 0; /* Keep the box on the right */
         min-height: auto;
+    }
+    .mySettingsMain {
+        flex-direction: column;
     }
 }
 
 @media screen and (max-width: 500px) {
     #mySettings {
         width: 90%;
-        right: 0; /* Keep the box on the right */
     }
-}
-
-.mySettingsMain {
-    display: flex;
 }
 
 #mySettingsHeader {
@@ -1288,58 +1415,55 @@ th {
 # Style the tab
 --------------------------------------------------------------*/
 
-.tab {
-    padding: 10px;
-    overflow: hidden;
-    border-radius: 5px;
-    width: 35%;
-    background-color: var(--body-bg);
-    min-height: 480px;
+/* Style the tab container */
+.tab-container {
     display: flex;
     flex-direction: column;
-    border-right: var(--border);
+    height: 100%;
 }
 
-.tabActions {
-    position: relative;
-    width: 65%;
-    background-color: var(--body-bg);
-    min-height: 500px;
-    max-height: 500px;
-    overflow-x: none;
-    overflow-y: auto;
+/* Style for the tab buttons */
+.tab {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    border-bottom: 1px solid #ddd;
 }
 
-@media screen and (max-width: 830px) {
-    .tab {
-        width: 100%;
-        min-height: auto;
-        flex-direction: row;
-        border-right: none !important;
-    }
-    .tabActions {
-        width: 100%;
-        border-radius: 10px;
-    }
-    .tabButtonText {
-        display: none !important;
-    }
-}
-
-/* Style the buttons inside the tab */
+/* Style for each tab button */
 .tab button {
-    margin: 3px;
-    padding: 11px;
-    float: left;
-    text-align: left;
-    color: #fff;
-    border: var(--border);
-    border-radius: 5px;
-    background-color: rgba(0, 0, 0, 0.2);
-    outline: none;
+    background: none;
+    border: none;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
 }
+
+.tab button i {
+    margin-right: 8px;
+}
+
+.tabButtonText {
+    margin: 0;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Style for the active tab button */
+.tab button.active {
+    border-bottom: 2px solid #007bff;
+    color: #007bff;
+}
+
+/* Style for the tab content */
+.tabActions {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
 
 /* Change background color of buttons on hover */
 .tab button:hover {
@@ -1349,31 +1473,57 @@ th {
 
 /* Create an active/current tablink class */
 .tab button.active {
-    background-color: var(--tab-btn-active);
+    background-color: #232120;
+    border: 1px solid #ff5e00;
 }
 
 /* Style the tab content */
 .tabcontent {
-    display: none;
+    font-family: 'Poppins', sans-serif;
     padding: 6px 12px;
     border-top: none;
+    display: none; /* Hide content by default */
+    width: 100%; /* Ensure full width */
 }
 
+.tabcontent p, 
+.tabcontent h1, 
+.tabcontent h2, 
+.tabcontent h3, 
+.tabcontent h4, 
+.tabcontent h5, 
+.tabcontent h6, 
+.tabcontent table, 
+.tabcontent input, 
+.tabcontent select, 
 .tabcontent button {
-    margin-top: 10px;
-    width: 100%;
-    text-align: left;
+    font-family: 'Poppins', sans-serif;
 }
 
-.tabcontent button:hover {
-    background-color: rgba(0, 0, 0, 0.2);
-    transform: scale(1);
-}
-
-/* on open display devices tab */
-#tabRoom {
+/* Display tab content when active */
+.tabcontent.show {
     display: block;
 }
+
+/* Ensure that the tab content container is positioned below the tab buttons */
+.tab-container {
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 830px) {
+    .tab {
+        flex-direction: column; /* Stack tabs vertically on smaller screens */
+        width: 100%;
+    }
+    .tabcontent {
+        border-radius: 10px;
+    }
+    .tabButtonText {
+        display: none !important;
+    }
+}
+
 
 /*--------------------------------------------------------------
 # Settings - microphone volume indicator
@@ -1383,7 +1533,7 @@ th {
     display: flex;
     align-items: center;
     width: 100%;
-    background-color: var(--body-bg);
+    background-color: #181719;
     border-radius: 8px;
 }
 
@@ -1620,7 +1770,7 @@ input:checked + .slider:before {
     padding: 10px;
     color: #fff;
     font-size: 1rem;
-    background: var(--body-bg);
+    background: #181719;
     box-shadow: var(--box-shadow);
     overflow: hidden;
 }
@@ -1952,7 +2102,7 @@ button {
 
 /* Styles for the dropdown button */
 .dropdown-toggle {
-    background-color: var(--body-bg); /* Change this to your desired button background color */
+    background-color: #181719; /* Change this to your desired button background color */
     color: #fff; /* Change this to your desired text color */
     border: none;
     border-radius: 5px;
@@ -1963,7 +2113,7 @@ button {
 /* Styles for the dropdown menu container */
 .dropdown-menu {
     display: none;
-    background-color: var(--body-bg); /* Change this to your desired menu background color */
+    background-color: #181719; /* Change this to your desired menu background color */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     border: none;
     margin-bottom: 20px;
@@ -2001,13 +2151,13 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--body-bg);
+    background: #181719;
     border-radius: 5px;
     cursor: pointer;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--body-bg);
+    background-color: #181719;
 }
 
 ::-webkit-scrollbar-track {

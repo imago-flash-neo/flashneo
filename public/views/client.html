@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <!-- Title and Icon -->
+        <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
 
         <title id="landingTitle">FLASH</title>
         <link id="shortcutIcon" rel="shortcut icon" href="../images/logo.svg" />
@@ -117,7 +118,7 @@
                 ></video>
             </div>
             <div class="initComands">
-                <button id="initVideoBtn" class="icon-button"><img src="../images/camOn.png" style="width:80%; margin-bottom: 5%;" alt="Video On"></button>
+                <button id="initVideoBtn" class="icon-button"><img src="../images/camOn.png" alt="Video On"></button>
                 <button id="initAudioBtn" class="icon-button"><img src="../images/micOn.png" alt="Audio On"></button>
                 <button id="settingsBtn" class="icon-button"><img src="../images/settings.png" alt="Audio On"></button>
             </div>
@@ -147,26 +148,62 @@
             <button id="captionBtn" class="fas fa-closed-captioning" style="visibility: hidden; width:0%;"></button>
             <button id="hideMeBtn" class="fas fa-user" style="visibility: hidden; width:0%;"></button>
             <button id="fullScreenBtn" style="visibility: hidden; width:0%;"></button>
+            <button id="tabRecordingBtn" class="tablinks" style="visibility: hidden; width:0%;">
+                <i class="fas fa-record-vinyl"></i>
+            </button>
+            <button id="tabVideoShareBtn" class="tablinks" style="visibility: hidden; width:0%;">
+                <i class="fab fa-youtube"></i>
+            </button>
+            <button id="tabNetworkBtn" class="tablinks"style="visibility: hidden; width:0%;">
+                <i class="fa-solid fa-network-wired"></i>
+            </button>
+            <button id="tabLanguagesBtn" class="tablinks" style="visibility: hidden; width:0%;">
+                <i class="fas fa-globe"></i>
+            </button>
+            <button id="tabParticipantsBtn" class="tablinks" style="visibility: hidden; width:0%;">
+                <i class="fa-solid fa-users"></i>
+            </button>
         
 
         <!-- Start buttons bar https://fontawesome.com/icons?d=gallery -->
 
         <div id="buttonsBar" class="fadein" style="justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
-            <button id="audioBtn"><img src="../images/micOn.png" /></button>
-            <button id="videoBtn"><img src="../images/camOn2.png" style="margin-bottom: 5%;"/></button>
+            <button id="audioBtn"><img src="../images/micOn.png" style="margin-bottom: 5%;"/></button>
+            <button id="videoBtn"><img src="../images/camOn.png"  style="margin-bottom: -10%;"/></button>
             <button id="screenShareBtn"><img src="../images/screenShare.png" /></button>
             <button id="swapCameraBtn"><img src="../images/cameraRotate.png" /></button>
             <button id="roomEmojiPickerBtn"><img src="../images/emoji.png" /></button>
             <button id="myHandBtn"><img src="../images/hand.png" /></button>
             <button id="documentPiPBtn"><img src="../images/pip.png" style="margin-bottom: 5%;"/></button>
-            <button id="chatRoomBtn"><img src="../images/chat.png" /></button>
+            <button id="chatRoomBtn"><img src="../images/chat.png" style="margin-bottom: -5%;"/></button>
             <button id="fileShareBtn"><img src="../images/fileShare.png" /></button>
+            <button id="participantsBtn"><img src="../images/participants.png" /></button>
             <button id="mySettingsBtn"><img src="../images/settings.png" /></button>
             <button id="leaveRoomBtn"><img src="../images/endcall.png" /></button>
         </div>
         
         <!-- End left buttons -->
 
+        <!-- Participants Window -->
+        <div id="tabParticipants" class="tabcontent">
+            <div class="title">
+                <h2 class="bottom-bar2" style="width: 100;">Participants<br/></h2>
+                <i class="fa-solid fa-users"></i>
+                <p id="peersCount">Participants: 0</p>
+                <!-- Close Button with FontAwesome Icon -->
+                <button id="closeParticipantsBtn" class="close-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="tabRoomParticipants"><br/>
+                <button id="muteEveryoneBtn"><i class="fas fa-microphone"></i>Mute everyone</button>
+                <button id="hideEveryoneBtn"><i class="fas fa-video"></i>&nbsp;Hide everyone</button>
+                <button id="ejectEveryoneBtn">
+                    <i class="fas fa-right-from-bracket"></i>&nbsp;Eject everyone
+                </button>
+            </div>
+        </div>
+        
         <!-- Start room emoji picker -->
 
         <div id="emojiPickerContainer" class="roomEmoji fadein">
@@ -311,40 +348,26 @@
                 <button id="mySettingsCloseBtn" class="fas fa-times"></button>
             </header>
             <main class="mySettingsMain">
-                <div class="tab">
-                    <button id="tabRoomBtn" class="fas fa-home tablinks">
-                        <p class="tabButtonText">Room</p>
-                    </button>
-                    <button id="tabVideoBtn" class="fas fa-video tablinks">
-                        <p class="tabButtonText">Video</p>
-                    </button>
-                    <button id="tabAudioBtn" class="fas fa-microphone tablinks">
-                        <p class="tabButtonText">Audio</p>
-                    </button>
-                    <button id="tabRecordingBtn" class="fas fa-record-vinyl tablinks">
-                        <p class="tabButtonText">Recording</p>
-                    </button>
-                    <button id="tabVideoShareBtn" class="fab fa-youtube tablinks">
-                        <p class="tabButtonText">Media</p>
-                    </button>
-                    <button id="tabParticipantsBtn" class="fa-solid fa-users tablinks">
-                        <p class="tabButtonText">Participants</p>
-                    </button>
-                    <button id="tabProfileBtn" class="fa-solid fa-user tablinks">
-                        <p class="tabButtonText">Profile</p>
-                    </button>
-                    <button id="tabNetworkBtn" class="fa-solid fa-network-wired">
-                        <p class="tabButtonText">Network</p>
-                    </button>
-                    <button id="tabStylingBtn" class="fas fa-palette tablinks">
-                        <p class="tabButtonText">Style</p>
-                    </button>
-                    <button id="tabLanguagesBtn" class="fas fa-globe tablinks">
-                        <p class="tabButtonText">Language</p>
-                    </button>
-                </div>
-
-                <div class="tabActions">
+                <div class="tab-container">
+                    <div class="tab">
+                        <button id="tabRoomBtn" class="tablinks">
+                            <p class="tabButtonText">Room</p>
+                        </button>
+                        <button id="tabVideoBtn" class="tablinks">
+                            <p class="tabButtonText">Video</p>
+                        </button>
+                        <button id="tabAudioBtn" class="tablinks">
+                            <p class="tabButtonText">Audio</p>
+                        </button>
+                        <button id="tabProfileBtn" class="tablinks">
+                            <p class="tabButtonText">Profile</p>
+                        </button>
+                        <button id="tabStylingBtn" class="tablinks">
+                            <p class="tabButtonText">Style</p>
+                        </button>
+                    </div>
+        
+                    <div class="tabActions">
                     <div id="tabRoom" class="tabcontent">
                         <br />
                         <table class="settingsTable">
@@ -851,6 +874,7 @@
                         <br />
                     </div>
                     <br />
+                    </div>
                 </div>
             </main>
         </section>

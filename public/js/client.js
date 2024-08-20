@@ -4613,6 +4613,44 @@ function setChatRoomBtn() {
     if (isMobileDevice) msgerInput.style.fontSize = 'xx-small';
 }
 
+document.getElementById('closeParticipantsBtn').addEventListener('click', function() {
+    const tabParticipants = document.getElementById('tabParticipants');
+    tabParticipants.style.display = 'none'; // Hide the participants tab
+});
+
+// Function to show the participants tab again if needed
+function showParticipants() {
+    const tabParticipants = document.getElementById('tabParticipants');
+    tabParticipants.style.display = 'block'; // Show the participants tab
+}
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const participantsBtn = document.getElementById('participantsBtn');
+    const tabParticipants = document.getElementById('tabParticipants');
+    const closeEmojiPickerContainer = document.getElementById('closeEmojiPickerContainer');
+    const emojiPickerContainer = document.getElementById('emojiPickerContainer');
+
+    // Toggle participants window visibility
+    participantsBtn.addEventListener('click', () => {
+        if (tabParticipants.style.display === 'none' || tabParticipants.style.display === '') {
+            tabParticipants.style.display = 'block';
+            emojiPickerContainer.style.display = 'none'; // Hide emoji picker if open
+        } else {
+            tabParticipants.style.display = 'none';
+        }
+    });
+
+    // Hide participants window when clicking outside or closing it
+    document.addEventListener('click', (e) => {
+        if (!participantsBtn.contains(e.target) && !tabParticipants.contains(e.target)) {
+            tabParticipants.style.display = 'none';
+        }
+    });
+});
+
+
 /**
  * Caption room buttons click event
  */
@@ -5765,53 +5803,125 @@ function shareRoomMeetingURL(checkScreen = false) {
         position: 'center',
         html: `
         <style>
-            @media (max-width: 600px) {
-                #contentContainer {
-                    padding: 20px;
-                    border-radius: 10px;
-                }
-                h2 {
-                    font-size: 1.5em;
-                }
-                #qrRoomContainer {
-                    margin-bottom: 10px;
-                }
-                p {
-                    font-size: 0.9em;
-                    flex-direction: column;
-                    align-items: flex-start;
-                }
-                #gmailButton img, #outlookButton img {
-                    width: 32px;
-                }
-                div[style*="gap: 20px;"] {
-                    gap: 10px;
-                    flex-direction: column;
-                }
+            /* Base styles */
+        #contentContainer {
+            border: 1px solid #ff5e00;
+            padding: 40px;
+            border-radius: 0px;
+            background-color: #000; /* Adjust as needed */
+        }
+
+        h2 {
+            color: white;
+            text-align: center;
+        }
+
+        #qrRoomContainer {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        #qrRoom {
+            width: 200px; /* Default size */
+            height: 200px; /* Default size */
+        }
+
+        p {
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        #gmailButton img, #outlookButton img {
+            width: 44px; /* Default size */
+            margin-bottom: -30%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            #contentContainer {
+                padding: 20px;
+                border-radius: 10px;
             }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            #qrRoomContainer {
+                margin-bottom: 10px;
+            }
+
+            #qrRoom {
+                width: 150px; /* Smaller size on smaller screens */
+                height: 150px; /* Smaller size on smaller screens */
+            }
+
+            p {
+                font-size: 0.9em;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            #gmailButton img, #outlookButton img {
+                width: 32px; /* Smaller logos on smaller screens */
+            }
+
+            div[style*="gap: 20px;"] {
+                gap: 10px;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #qrRoom {
+                width: 120px; /* Even smaller size on very small screens */
+                height: 120px; /* Even smaller size on very small screens */
+            }
+
+            #gmailButton img, #outlookButton img {
+                width: 24px; /* Even smaller logos on very small screens */
+            }
+
+            button{
+                width: 60px; /* Even smaller size on very small screens */
+                height: 60px;
+            }
+        }
+
         </style>
-        <div id="contentContainer" style="border: 1px solid #ff5e00; padding: 40px; border-radius: 0px;">
-            <h2 style="color: white; text-align: center;">SCAN QR CODE</h2>
-            <div id="qrRoomContainer" style="display: flex; justify-content: center; margin-bottom: 20px;">
-                <canvas id="qrRoom"></canvas>
+        <div id="contentContainer">
+            <h2>SCAN QR CODE</h2>
+            <div id="qrRoomContainer">
+                <canvas id="qrRoom" alt="QR Code"></canvas>
             </div>
-            <p style="color:white; display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
+            <p>
                 ${roomURL}
-                <button id="copyButton" style="background: none; border: none; cursor: pointer; margin-left: 10px;">
-                    <img src="../svg/copyURL.svg">
+                <button id="copyButton">
+                    <img src="../svg/copyURL.svg" alt="Copy URL">
                 </button>
             </p>
             <br/>
-            <div style="display: flex; justify-content: center; align-items: center; gap: 20px; color: white; flex-wrap: wrap;">
+            <div style="gap: 20px;">
                 <span>Share via:</span>
-                <button id="gmailButton" style="background: none; border: none; cursor: pointer;">
-                    <img src="../svg/gmail_logo.svg" style="width: 44px;">
+                <button id="gmailButton">
+                    <img src="../svg/gmail_logo.svg" alt="Gmail Logo">
                 </button>
-                <button id="outlookButton" style="background: none; border: none; cursor: pointer;">
-                    <img src="../svg/outlook_logo.svg" style="width: 44px;">
+                <button id="outlookButton">
+                    <img src="../svg/outlook_logo.svg" alt="Outlook Logo">
                 </button>
             </div>
-        </div>`,
+        </div>
+        `,
         showDenyButton: false,
         showCancelButton: false,
         cancelButtonColor: 'red',
@@ -7791,35 +7901,24 @@ function emitMsg(from, to, msg, privateMsg, id) {
  * https://platform.openai.com/docs/introduction
  * @param {string} msg
  */
-async function getChatGPTmessage(msg) {
-    console.log('Send ChatGPT message:', msg);
-    signalingSocket
-        .request('data', {
-            room_id: roomId,
-            peer_id: myPeerId,
-            peer_name: myPeerName,
-            method: 'getChatGPT',
-            params: {
-                time: getDataTimeString(),
-                prompt: msg,
-                context: chatGPTcontext,
-            },
-        })
-        .then(
-            function (completion) {
-                if (!completion) return;
-                const { message, context } = completion;
-                chatGPTcontext = context ? context : [];
-                setPeerChatAvatarImgName('left', 'ChatGPT');
-                appendMessage('ChatGPT', leftChatAvatar, 'left', message, true);
-                cleanMessageInput();
-                speechInMessages ? speechMessage(true, 'ChatGPT', message) : playSound('message');
-            }.bind(this),
-        )
-        .catch((err) => {
-            console.log('ChatGPT error:', err);
+document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.tab button');
+    const tabContents = document.querySelectorAll('.tabActions .tabcontent');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.style.display = 'none');
+
+            tab.classList.add('active');
+            document.getElementById(tab.id.replace('tab', 'tab')).style.display = 'block';
         });
-}
+    });
+
+    // Activate the first tab by default
+    tabs[0].click();
+});
+
 
 /**
  * Hide - Show emoji picker div
@@ -7898,19 +7997,23 @@ function hideShowMySettings() {
  * @param {string} tabName name of the tab to open
  */
 function openTab(evt, tabName) {
-    const tabN = getId(tabName);
-    const tabContent = getEcN('tabcontent');
-    const tabLinks = getEcN('tablinks');
-    let i;
-    for (i = 0; i < tabContent.length; i++) {
-        elemDisplay(tabContent[i], false);
+    // Hide all tab content by default
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
     }
-    for (i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].className = tabLinks[i].className.replace(' active', '');
+    // Remove "active" class from all tab links
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-    elemDisplay(tabN, true, 'block');
-    evt.currentTarget.className += ' active';
+    // Show the clicked tab content and add "active" class to the clicked tab link
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
 }
+
+
 
 /**
  * Update myPeerName to other peers in the room
