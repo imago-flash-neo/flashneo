@@ -88,8 +88,6 @@ const className = {
 
     user: 'fas fa-user',
     clock: 'fas fa-clock',
-    hideMeOn: 'fas fa-user-slash',
-    hideMeOff: 'fas fa-user',
     screenOn: 'fas fa-desktop',
     screenOff: 'fas fa-stop-circle',
     handPulsate: 'fas fa-hand-paper pulsate',

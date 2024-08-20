@@ -1123,6 +1123,34 @@ button:hover {
     border: none;
 }
 
+/* Restrict the picker to show only one line of emojis */
+.emoji-mart {
+    max-height: 40px !important; /* Adjust this to the height of one line */
+    overflow: hidden !important;
+}
+
+/* Optional: Adjust the emoji size and padding */
+.emoji-mart-emoji {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+
+/*--------------------------------------------------------------
+# mini arrow
+--------------------------------------------------------------*/
+
+
+#emojiShareBtn img {
+    width: 20px; /* Adjust the size of the arrow icon */
+    transition: transform 0.3s ease; /* Optional: Add a smooth transition */
+}
+
+#emojiShareBtn:hover img {
+    transform: scale(1.1); /* Optional: Slightly enlarge the arrow on hover */
+}
+
+
 /*--------------------------------------------------------------
 # Data time picker
 --------------------------------------------------------------*/
@@ -1410,6 +1438,18 @@ th {
 .width-180 {
     width: 160px;
 }
+.width-250 {
+    width: 250px;
+}
+.width-500 {
+    width: 500px;
+}
+
+/*--------------------------------------------------------------
+# Hide me button
+--------------------------------------------------------------*/
+
+
 
 /*--------------------------------------------------------------
 # Style the tab
@@ -1439,6 +1479,7 @@ th {
     display: flex;
     align-items: center;
     font-size: 16px;
+    margin-bottom: 10px;
 }
 
 .tab button i {
@@ -1460,9 +1501,11 @@ th {
 /* Style for the tab content */
 .tabActions {
     flex-grow: 1;
-    overflow-y: auto;
+    overflow-y: auto; /* Keeps vertical scrolling */
+    overflow-x: hidden; /* Hides horizontal scrolling */
     padding: 20px;
 }
+
 
 
 /* Change background color of buttons on hover */
@@ -1475,6 +1518,7 @@ th {
 .tab button.active {
     background-color: #232120;
     border: 1px solid #ff5e00;
+    border-radius: 8px;
 }
 
 /* Style the tab content */
