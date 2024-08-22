@@ -117,7 +117,7 @@
                     poster="../images/loader.gif"
                 ></video>
             </div>
-            <div class="initComands">
+            <div class="initComands" style="overflow: hidden;">
                 <button id="initVideoBtn" class="icon-button"><img src="../images/camOn.png" alt="Video On"></button>
                 <button id="initAudioBtn" class="icon-button"><img src="../images/micOn.png" alt="Audio On"></button>
                 <button id="settingsBtn" class="icon-button"><img src="../images/settings.png" alt="Audio On"></button>
@@ -191,20 +191,15 @@
         <!-- Participants Window -->
         <div id="tabParticipants" class="tabcontent">
             <div class="title">
-                <h2 class="bottom-bar2" style="width: 100;">Participants<br/></h2>
-                <i class="fa-solid fa-users"></i>
-                <p id="peersCount">Participants: 0</p>
-                <!-- Close Button with FontAwesome Icon -->
+                <p>Participants<br/></p>
                 <button id="closeParticipantsBtn" class="close-btn">
                     <i class="fas fa-times"></i>
                 </button>
-            </div>
+            </div><br/>
+            <div id="participantsList"></div>
             <div id="tabRoomParticipants"><br/>
-                <button id="muteEveryoneBtn"><i class="fas fa-microphone"></i>Mute everyone</button>
-                <button id="hideEveryoneBtn"><i class="fas fa-video"></i>&nbsp;Hide everyone</button>
-                <button id="ejectEveryoneBtn">
-                    <i class="fas fa-right-from-bracket"></i>&nbsp;Eject everyone
-                </button>
+                <button id="muteEveryoneBtn">Mute All</button>
+                <button id="ejectEveryoneBtn">Eject All</button>
             </div>
         </div>
         
@@ -228,28 +223,8 @@
             <section id="msger" class="msger">
                 <header id="msgerHeader" class="msger-header">
                     <div class="msger-header-title">
-                        <button id="msgerClose" class="fas fa-times"></button>
-                        <button id="msgerMaxBtn" class="fas fa-expand"></button>
-                        <button id="msgerMinBtn" class="fas fa-compress"></button>
-                        <div id="msgerShowChatOnMsgDiv" class="title ml-10">
-                            <i class="fa-solid fa-eye"></i>
-                            <label class="switch ml-10">
-                                <input id="msgerShowChatOnMsg" type="checkbox" checked />
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div id="msgerSpeechMsgDiv" class="title">
-                            <i class="fas fa-volume-high ml-10"></i>
-                            <label class="switch ml-10">
-                                <input id="msgerSpeechMsg" type="checkbox" />
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="msger-header-options">
-                        <button id="msgerTheme" class="fas fa-ghost"></button>
-                        <button id="msgerSaveBtn" class="fas fa-save"></button>
-                        <button id="msgerClean" class="fas fa-trash"></button>
+                        <p style="color: white; margin-top: -5px;">Chat</p>
+                        <button id="msgerClose" class="fas fa-times close-btn"></button>
                     </div>
                 </header>
 
@@ -267,20 +242,8 @@
                         cols="1"
                         id="msgerInput"
                         class="msger-input"
-                        placeholder="Write a message..."
+                        placeholder="Type message here..."
                     ></textarea>
-                </div>
-
-                <div class="msger-input-buttons">
-                    <button id="msgerEmojiBtn" class="fas fa-smile"></button>
-                    <button id="msgerMarkdownBtn" class="fab fa-markdown"></button>
-                    <button id="msgerGPTBtn" class="fas fa-robot"></button>
-                    <button id="msgerShareFileBtn" class="fas fa-paperclip"></button>
-                    <button id="msgerVideoUrlBtn" class="fab fa-youtube"></button>
-                    <button id="msgerCPBtn" class="fas fa-users"></button>
-                    <button id="msgerCleanTextBtn" class="fas fa-trash"></button>
-                    <button id="msgerPasteBtn" class="fas fa-paste"></button>
-                    <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
                 </div>
             </section>
 
@@ -346,6 +309,7 @@
         <!-- End of caption section -->
 
         <!--Hidden-->
+        <button id="hideEveryoneBtn" style="visibility: hidden;"><i class="fas fa-video"></i>&nbsp;Hide everyone</button>
         <div id="videoFpsDiv"  style="visibility: hidden; width:0%;">
             <br />
             <div class="title" style="visibility: hidden; width:0%;">
@@ -386,11 +350,66 @@
             <p>Extra info:</p>
         </div>
         <pre id="extraInfo" style="visibility: hidden; width: 0%;"></pre>
+        <div class="title" style="visibility: hidden; width: 0%;">
+            <p>Custom theme</p>
+        </div>
+        <input id="themeColorPicker" class="theme-color-picker" type="text" style="visibility: hidden; width: 0%;" />
+        <div class="inline-check-box" style="visibility: hidden; width: 0%;">
+                <div class="title" style="visibility: hidden; width: 0%;">
+                    <p>Keep custom</p>
+                </div>
+            <input id="keepCustomTheme" class="toggle" type="checkbox" style="visibility: hidden; width: 0%;"/>
+        </div>
+        <div id="pinUnpinGridDiv" style="visibility: hidden; width: 0%;">
+            <div class="title">
+                <p>Pin video position</p>
+            </div>
+            <select id="pinVideoPositionSelect"  style="visibility: hidden; width: 0%;" >
+                <option value="vertical">Vertical</option>
+                <option value="horizontal">Horizontal</option>
+                <option value="top">Top</option>
+            </select>
+        </div>
+        <div id="tabEmailInvitation" style="visibility: hidden;">
+        </div>
+        <button id="unlockRoomBtn" style="visibility: hidden;">&nbsp;Unlock room</button>
+        <button id="lockRoomBtn" style="visibility: hidden;">Lock room</button>
+        <div id="msgerShowChatOnMsgDiv" class="title ml-10" style="visibility: hidden;">
+            <label class="switch ml-10">
+                <input id="msgerShowChatOnMsg" type="checkbox" checked />
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <div id="msgerSpeechMsgDiv" class="title" style="visibility: hidden;">
+            <label class="switch ml-10">
+                <input id="msgerSpeechMsg" type="checkbox" />
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <button id="msgerMaxBtn" class="fas fa-expand" style="visibility: hidden;"></button>
+                        <button id="msgerMinBtn" class="fas fa-compress" style="visibility: hidden;"></button>
+                        <div class="msger-header-options" style="visibility: hidden;">
+                            <button id="msgerTheme" class="fas fa-ghost"></button>
+                            <button id="msgerSaveBtn" class="fas fa-save"></button>
+                            <button id="msgerClean" class="fas fa-trash"></button>
+        </div>
+
+        <div class="msger-input-buttons" style="visibility: hidden;">
+            <button id="msgerEmojiBtn" class="fas fa-smile"></button>
+            <button id="msgerMarkdownBtn" class="fab fa-markdown"></button>
+            <button id="msgerGPTBtn" class="fas fa-robot"></button>
+            <button id="msgerShareFileBtn" class="fas fa-paperclip"></button>
+            <button id="msgerVideoUrlBtn" class="fab fa-youtube"></button>
+            <button id="msgerCPBtn" class="fas fa-users"></button>
+            <button id="msgerCleanTextBtn" class="fas fa-trash"></button>
+            <button id="msgerPasteBtn" class="fas fa-paste"></button>
+            <button id="msgerSendBtn" class="fas fa-paper-plane"></button>
+        </div>
 
         <!-- Start my settings -->
 
         <section id="mySettings" class="center fadein">
-            <p style="margin-left: 1%; margin-bottom: -2%; color: white;">Settings</0>
+            <p style="margin-left: 1%; margin-bottom: -2%; color: white;">Settings</p>
             <header id="mySettingsHeader">
                 <button id="mySettingsCloseBtn" class="fas fa-times"></button>
             </header>
@@ -410,36 +429,31 @@
                             <p class="tabButtonText">Profile</p>
                         </button>
                         <button id="tabStylingBtn" class="tablinks">
-                            <p class="tabButtonText">Style</p>
+                            <p class="tabButtonText">Styles</p>
                         </button>
                     </div>
         
                     <div class="tabActions">
                     <div id="tabRoom" class="tabcontent">
-                        <br />
                         <table class="settingsTable">
                             <tr>
                                 <td>
                                     <div class="title" style="margin-top: -10%;">
-                                        <h3>Room Name</h3>
-                                        <p id="myRoomId" class="cp">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</p>&nbsp;&nbsp;&nbsp;
-                                        <button style="width: 79px; height: 34px; color: white; background-color: #ff5e00; border: none; border-radius: 8px;">Share</button>
+                                        <p>Room Name</p><br/>
+                                        <p id="myRoomId" class="cp">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</p>
+                                        <button id="roomSendEmailBtn">Share</button>
                                     </div>
                                 </td>
                             </tr>
                         </table>
+                        <br/>
                         <div id="tabRoomSecurity">
-                            <button id="lockRoomBtn">Lock room</button>
-                            <button id="unlockRoomBtn">&nbsp;Unlock room</button>
-                            <br />
-                        </div>
-                        <div id="tabEmailInvitation">
-                            <button id="roomSendEmailBtn">
-                                &nbsp;Send email invitation
-                                <br />
+                            <label for="roomPasswordInput" style="color: white;">Lock Room:</label><br/>
+                            <input type="text" id="roomPasswordInput" placeholder="Set Room password" /><br/>
+                            <button id="lockUnlockBtn">
+                                <img id="lockIcon" src="../images/lock.png" alt="Lock Room"/>
                             </button>
-                        </div>
-                        <br />
+                        </div>                                                
                         <br />
                         <table id="mySettingsTable">
                             <tr>
@@ -470,7 +484,6 @@
                     </div>
 
                     <div id="tabVideo" class="tabcontent">
-                        <br />
                         <div>
                             <div class="title">
                                 <p>Camera</p>
@@ -507,7 +520,6 @@
                     </div>
 
                     <div id="tabAudio" class="tabcontent width-500">
-                        <br />
                         <div>
                             <div class="title">
                                 <p>Microphone</p>
@@ -822,12 +834,11 @@
                     </div>
 
                     <div id="tabStyling" class="tabcontent">
-                        <br />
                         <div class="title">
                             <p>Theme</p>
                         </div>
                         <br />
-                        <select id="mirotalkTheme">
+                        <select id="mirotalkTheme" class="width-500">
                             <option value="dark">⚫️ Dark</option>
                             <option value="grey">⚪️ Grey</option>
                             <option value="green">🟢 Green</option>
@@ -836,57 +847,13 @@
                         </select>
                         <br />
                         <div class="title">
-                            <i class="fas fa-fill-drip"></i>
-                            <p>Custom theme</p>
-                        </div>
-                        <br />
-                        <input id="themeColorPicker" class="theme-color-picker" type="text" />
-                        <br />
-                        <div class="inline-check-box">
-                            <div class="width-130">
-                                <div class="title">
-                                    <i class="fas fa-save"></i>
-                                    <p>Keep custom</p>
-                                </div>
-                            </div>
-                            <input id="keepCustomTheme" class="toggle" type="checkbox" />
-                        </div>
-                        <br />
-                        <div class="title">
-                            <i class="fa-solid fa-up-down-left-right"></i>
                             <p>Buttons bar</p>
                         </div>
                         <br />
-                        <select id="mainButtonsBarPosition">
+                        <select id="mainButtonsBarPosition" class="width-500">
                             <option value="vertical">Vertical</option>
                             <option value="horizontal">Horizontal</option>
                         </select>
-                        <br />
-                        <div id="pinUnpinGridDiv">
-                            <div class="title">
-                                <i class="fa-solid fa-map-pin"></i>
-                                <p>Pin video position</p>
-                            </div>
-                            <br />
-                            <select id="pinVideoPositionSelect">
-                                <option value="vertical">Vertical</option>
-                                <option value="horizontal">Horizontal</option>
-                                <option value="top">Top</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="tabLanguages" class="tabcontent">
-                        <br />
-                        <div class="title">
-                            <i class="fa-solid fa-language"></i>
-                            <p>Language</p>
-                        </div>
-                        <br />
-                        <div id="google_translate_element"></div>
-                        <br />
-                    </div>
-                    <br />
                     </div>
                 </div>
             </main>

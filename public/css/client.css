@@ -77,7 +77,7 @@
     /* 
         https://developer.mozilla.org/it/docs/Web/CSS/object-fit 
     */
-    --video-object-fit: cover;
+    --video-object-fit: contain;
 }
 
 * {
@@ -241,6 +241,7 @@ body {
 # Init User
 --------------------------------------------------------------*/
 
+/* General styles */
 .init-modal-size {
     width: 924px !important;
     height: auto !important;
@@ -253,6 +254,7 @@ body {
     padding: 0;
     margin: 0;
     box-sizing: border-box; /* Ensure padding and borders are included in the element's width and height */
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
 }
 
 .init-video-container {
@@ -261,6 +263,7 @@ body {
     justify-content: center;
     align-items: flex-end; /* Align the video to the bottom of the container */
     padding: 0;
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
 }
 
 .init-video-container video {
@@ -277,6 +280,7 @@ body {
     padding: 10px;
     margin: 0;
     box-sizing: border-box;
+    overflow: hidden; /* Hide overflow to prevent scrollbars */
 }
 
 .initComands button {
@@ -284,20 +288,75 @@ body {
     padding: 5px 10px;
 }
 
+/* Mobile Layout */
 @media (max-width: 768px) {
     .init-user {
-        height: 37vh; /* Full viewport height */
+        height: 60vh; /* Adjust height for smaller screens */
+        flex-direction: row;
+        overflow: hidden; /* Hide any overflow */
     }
-    
+
+    .init-video-container {
+        height: 50%; /* Allocate space for the video container */
+    }
+
+    .initComands {
+        display: flex;
+        flex-direction: row; /* Arrange buttons in a row */
+        gap: 10px; /* Space between buttons */
+        padding: 10px;
+        overflow: hidden; /* Ensure no scrollbar appears */
+    }
+
+    .initComands button {
+        height: 50px; /* Larger buttons on mobile */
+        width: 100%; /* Full width for each button */
+        padding: 10px;
+    }
+
+    .initComands button img {
+        width: 26px; /* Larger image size on mobile */
+        height: auto; /* Maintain aspect ratio */
+    }
 }
 
 @media (max-width: 480px) {
+    .init-user {
+        height: 47vh; /* Adjust height for very small screens */
+        margin-bottom: -100px; /* Remove negative margin */
+        overflow: hidden; /* Hide overflow */
+    }
+    
     .initComands {
-        margin-left: 0; /* Remove margin for very small screens */
-        gap: 5px; /* Reduce gap between buttons */
-        padding: 5px; /* Reduce padding */
+        padding: 5px;
+        gap: 5px; /* Reduce space between buttons */
+        overflow: hidden; /* Ensure no scrollbar appears */
+    }
+
+    .initComands button {
+        height: 45px; /* Adjust button height */
+        width: 100%; /* Full width for each button */
+    }
+
+    .initComands button img {
+        width: 26px; /* Ensure consistent image size on very small screens */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Additional style to ensure no horizontal scrollbar */
+    body {
+        overflow-x: hidden; /* Hide horizontal scrollbar */
+    }
+
+    /* Hide scrollbar in webkit browsers (Chrome, Safari) */
+    ::-webkit-scrollbar {
+        display: none; /* Hide the scrollbar */
     }
 }
+
+
+
+
 
 /* Modal Styles */
 .modal {
@@ -472,7 +531,7 @@ body {
     width: var(--caption-width);
     min-height: var(--caption-height);
     min-width: var(--caption-width);
-    background: var(--msger-bg);
+    background: #181719;
     border: var(--border);
     /* text-align: justify; */
     resize: both;
@@ -487,7 +546,7 @@ body {
     display: flex;
     flex-flow: column wrap;
     justify-content: space-between;
-    background: var(--msger-bg);
+    background: #181719;
 }
 
 .caption-header {
@@ -586,9 +645,32 @@ body {
 
 .bottom-bar2 {
     border-bottom: 2px solid rgb(255, 255, 255);
-    width: 100%;
+    margin-top: 5px;
+    width: 400px;
     box-sizing: border-box; /* Ensure padding and borders are included in width */
     display: block; /* Ensure it takes up the full width of its container */
+}
+
+/*--------------------------------------------------------------
+# Participands list
+--------------------------------------------------------------*/
+
+
+.participant {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.participant-avatar {
+    width: 26px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.participant-name {
+    color: white;
+    font-size: 15px;
 }
 
 
@@ -609,20 +691,18 @@ body {
 
 /* Container Styling */
 #tabParticipants {
-    /* Ensure that the tabParticipants div has relative positioning */
-    display: none; /* Initially hidden */
     font-family: 'Poppins', sans-serif; /* Consistent font */
     background: #3c3c3c; /* Same background color as .tabcontent */
-    padding: 20px; /* Same padding */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Same box shadow */
-    position: fixed; /* Fixed positioning to make it float */
-    top: 50%; /* Position it 50% from the top */
-    right: 20px; /* Position it 20px from the right of the screen */
-    transform: translateY(-50%); /* Center it vertically */
-    width: 400px; /* Adjust width as needed */
-    height: 80%;
-    z-index: 1000; /* Ensure it's above other content */
-    border-radius: 4px; /* Match border-radius if applicable */
+    padding: 20px; /* Padding around the content */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    position: fixed; /* Fixed position to keep it on screen */
+    top: 50%; /* Vertically centered */
+    right: 20px; /* Positioned 20px from the right */
+    transform: translateY(-50%); /* Adjusted vertical centering */
+    width: 400px; /* Width of the participants tab */
+    height: 80%; /* Height of the participants tab */
+    z-index: 1000; /* Ensures it's above other content */
+    border-radius: 4px; /* Border radius for rounded corners */
 }
 
 /* Styling for title inside participants window */
@@ -631,6 +711,7 @@ body {
     font-weight: bold;
     margin-bottom: 10px;
     border-bottom: 1px solid #ddd; /* Border similar to .tab */
+    width: 400px;
     padding-bottom: 10px; /* Add some padding */
 }
 
@@ -652,6 +733,29 @@ body {
     transform: scale(0.95); /* Consistent hover effect */
 }
 
+#tabRoomParticipants {
+    position: absolute;
+    bottom: 20px; /* 20px from the bottom of the container */
+    left: 20px;
+    right: 20px;
+}
+#tabRoomParticipants button {
+    width: 98px; /* Full width buttons */
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none; /* Button border */
+    border-radius: 4px;
+    background-color: #ff5e00; /* Button background */
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+}
+
+#tabRoomParticipants button:hover {
+    background-color: #e0e0e0;
+    transform: scale(0.95); /* Hover effect */
+}
+
 /* Ensure content has the same font and padding */
 #tabParticipants p,
 #tabParticipants h1,
@@ -670,25 +774,37 @@ body {
 /* Responsive adjustments */
 @media screen and (max-width: 830px) {
     #tabParticipants {
-        width: calc(100% - 20px); /* Full width on smaller screens */
-        right: 10px; /* Adjust right position on smaller screens */
-        top: 10px; /* Adjust top position on smaller screens */
-        transform: none; /* Remove translation on mobile view */
-        border-radius: 10px; /* Rounded corners on mobile */
-        height: calc(100% - 20px); /* Full height on smaller screens */
+        width: 90%; /* Adjust width for smaller screens */
+        right: 10px; /* Adjust right positioning */
+        top: 10px; /* Adjust top positioning */
+        transform: none; /* Remove transform on smaller screens */
+        border-radius: 10px; /* More rounded corners */
+        height: calc(100% - 20px); /* Full height minus padding */
+    }
+
+    #tabRoomParticipants {
+        bottom: 10px; /* Adjust bottom margin */
+        left: 10px;
+        right: 10px;
     }
 }
 
 @media screen and (max-width: 480px) {
     #tabParticipants {
-        width: 100vw; /* Full viewport width */
-        height: 100vh; /* Full viewport height */
-        right: 0; /* Align with the right edge of the viewport */
-        top: 0; /* Align with the top edge of the viewport */
-        transform: none; /* Remove translation */
-        border-radius: 0; /* No border-radius for fullscreen */
+        width: 100%; /* Full viewport width */
+        height: 100%; /* Full viewport height */
+        right: 0; /* Align with the right edge */
+        top: 0; /* Align with the top edge */
+        transform: none; /* Remove transform */
+        border-radius: 0; /* No border-radius */
         padding: 20px; /* Maintain padding */
         box-shadow: none; /* Optionally remove box-shadow */
+    }
+
+    #tabRoomParticipants {
+        bottom: 20px; /* Adjust bottom margin */
+        left: 20px;
+        right: 20px;
     }
 
     .close-btn {
@@ -698,6 +814,26 @@ body {
     }
 }
 
+.search-container {
+    margin-bottom: 10px;
+}
+
+#searchParticipantBar {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.participant-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+}
+
+
+
 /*--------------------------------------------------------------
 # Chat room aka msger
 --------------------------------------------------------------*/
@@ -705,33 +841,55 @@ body {
 .msger-draggable {
     z-index: 14;
     display: none;
-    position: fixed;
-    /* center screen */
-    top: var(--msger-top);
-    left: var(--msger-left);
-    transform: translate(-50%, -50%);
-    /* end center screen  */
+    position: relative; /* Changed to relative */
     height: var(--msger-height);
     width: var(--msger-width);
     min-height: var(--msger-height);
     min-width: var(--msger-width);
-    background: var(--msger-bg);
+    background: #3C3C3C;
     border: var(--border);
-    /* text-align: justify; */
+    margin-left: 100%;
     resize: both;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: var(--box-shadow);
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* Example reset for surrounding elements */
+.container, .parent-element {
+    background: none; /* or set to desired background */
+    border: none; /* or adjust border settings */
 }
 
+
 .msger {
-    width: 100%;
-    height: 100%;
     display: flex;
-    flex-flow: column wrap;
+    flex-direction: column;
     justify-content: space-between;
-    background: var(--msger-bg);
+    background: #3c3c3c;
+    font-family: 'Poppins', sans-serif; /* Consistent font */
+    padding: 20px; /* Padding around the content */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    position: fixed; /* Fixed position to keep it on screen */
+    top: 50%; /* Vertically centered */
+    right: 20px; /* Positioned 20px from the right */
+    transform: translateY(-50%); /* Adjusted vertical centering */
+    width: 400px; /* Width of the participants tab */
+    height: 80%; /* Height of the participants tab */
+    z-index: 1000; /* Ensures it's above other content */
+    border-radius: 4px; /* Border radius for rounded corners */
 }
+
+@media (max-width: 768px) {
+    .msger {
+        width: 100%; /* Full width on mobile devices */
+        height: 100vh; /* Full viewport height on mobile devices */
+        border-left: none; /* Remove border on mobile if needed */
+        box-shadow: none; /* Remove shadow on mobile if needed */
+    }
+}
+
 
 /*--------------------------------------------------------------
 # Chat room header
@@ -741,16 +899,15 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.2);
+    background: #3c3c3c;
     color: #666;
-    cursor: move;
 }
 
 .msger-private-header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.2);
+    background: #3c3c3c;
     color: #666;
 }
 
@@ -760,7 +917,7 @@ body {
     /* border: var(--border); */
     border: none;
     font-size: 1.1rem;
-    background: rgba(0, 0, 0, 0.2);
+    background: #3c3c3c;
     color: #fff;
     border-radius: 5px;
     transition: all 0.3s ease-in-out;
@@ -947,7 +1104,9 @@ button:hover {
 .msger-inputarea {
     display: flex;
     padding: 10px;
-    background: var(--msger-bg);
+    background: #181719;
+    border: none;
+    border-radius: 4px;
 }
 
 .msger-input {
@@ -958,13 +1117,14 @@ button:hover {
     color: #fff;
     font-size: 14px !important;
     background: rgba(0, 0, 0, 0.2);
-    border-top-left-radius: 10px;
+    border-radius: 4px;
     -webkit-transition: height 1s;
     -moz-transition: height 1s;
     -ms-transition: height 1s;
     -o-transition: height 1s;
     transition: height 1s;
-    border: var(--border);
+    border: none;
+    overflow: hidden;
 }
 
 .msger-input::-webkit-scrollbar {
@@ -985,7 +1145,7 @@ button:hover {
 
 .msger-input-buttons {
     padding: 10px;
-    background: var(--msger-bg);
+    background: #181719;
 }
 
 .msger-input-buttons button {
@@ -995,7 +1155,7 @@ button:hover {
     border-radius: 5px;
     font-size: 1rem;
     color: #fff;
-    background: var(--msger-bg);
+    background: #181719;
     transition: background 0.23s;
 }
 
@@ -1066,7 +1226,7 @@ button:hover {
 .msger-peer-inputarea {
     display: flex;
     padding: 10px;
-    background: var(--msger-bg);
+    background: #181719;
 }
 
 .msger-peer-inputarea * {
@@ -1340,6 +1500,37 @@ button:hover {
 /*--------------------------------------------------------------
 # Settings buttons
 --------------------------------------------------------------*/
+#tabRoomSecurity {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+#roomPasswordInput {
+    padding: 10px;
+    font-size: 12px;
+    margin-top: 5px;
+    background-color: #232120;
+    color: white;
+    width: 250px;
+    border: none;
+    border-radius: 8px;
+}
+
+
+#lockUnlockBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: -285px;
+    margin-top: 5px;
+}
+
+#lockIcon {
+    width: 20px;
+    height: 20px;
+}
+
 
 #myPeerNameSet {
     width: 50%;
@@ -1366,7 +1557,6 @@ button:hover {
 #muteEveryoneBtn,
 #hideEveryoneBtn,
 #ejectEveryoneBtn,
-#roomSendEmailBtn,
 #lockRoomBtn,
 #unlockRoomBtn {
     padding: 10px;
@@ -1375,6 +1565,36 @@ button:hover {
     color: #fff;
     background-color: transparent;
 }
+
+#roomSendEmailBtn{
+    padding: 5px;
+    margin-left: 150px;
+    border-radius: 8px;
+    background-color: #ff5e00;
+    width: 78px;
+    border: none;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    #roomSendEmailBtn {
+        padding: 4px;
+        margin-left: 100px;
+        width: 65px;
+        font-size: 12px;
+    }
+}
+
+/* Further adjustment for mobile phones */
+@media (max-width: 480px) {
+    #roomSendEmailBtn {
+        padding: 3px;
+        margin-left: 150px;
+        width: 65px;
+        font-size: 10px;
+    }
+}
+
 
 #recImage {
     width: 128px;
@@ -1456,10 +1676,12 @@ th {
 --------------------------------------------------------------*/
 
 /* Style the tab container */
+/* Container for the tabs */
 .tab-container {
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
 }
 
 /* Style for the tab buttons */
@@ -1468,6 +1690,7 @@ th {
     flex-wrap: wrap;
     justify-content: flex-start;
     border-bottom: 1px solid #ddd;
+    width: 100%;
 }
 
 /* Style for each tab button */
@@ -1480,12 +1703,15 @@ th {
     align-items: center;
     font-size: 16px;
     margin-bottom: 10px;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
+/* Icon margin adjustment */
 .tab button i {
     margin-right: 8px;
 }
 
+/* Text inside tab buttons */
 .tabButtonText {
     margin: 0;
     font-size: 14px;
@@ -1501,12 +1727,10 @@ th {
 /* Style for the tab content */
 .tabActions {
     flex-grow: 1;
-    overflow-y: auto; /* Keeps vertical scrolling */
-    overflow-x: hidden; /* Hides horizontal scrolling */
+    overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px;
 }
-
-
 
 /* Change background color of buttons on hover */
 .tab button:hover {
@@ -1514,7 +1738,7 @@ th {
     transform: scale(0.95);
 }
 
-/* Create an active/current tablink class */
+/* Active/current tab link style */
 .tab button.active {
     background-color: #232120;
     border: 1px solid #ff5e00;
@@ -1527,21 +1751,7 @@ th {
     padding: 6px 12px;
     border-top: none;
     display: none; /* Hide content by default */
-    width: 100%; /* Ensure full width */
-}
-
-.tabcontent p, 
-.tabcontent h1, 
-.tabcontent h2, 
-.tabcontent h3, 
-.tabcontent h4, 
-.tabcontent h5, 
-.tabcontent h6, 
-.tabcontent table, 
-.tabcontent input, 
-.tabcontent select, 
-.tabcontent button {
-    font-family: 'Poppins', sans-serif;
+    width: 100%;
 }
 
 /* Display tab content when active */
@@ -1549,24 +1759,29 @@ th {
     display: block;
 }
 
-/* Ensure that the tab content container is positioned below the tab buttons */
-.tab-container {
-    width: 100%;
-}
-
 /* Responsive adjustments */
 @media screen and (max-width: 830px) {
     .tab {
-        flex-direction: column; /* Stack tabs vertically on smaller screens */
-        width: 100%;
-    }
-    .tabcontent {
-        border-radius: 10px;
-    }
-    .tabButtonText {
-        display: none !important;
+        flex-direction: row; /* Stack tabs vertically on smaller screens */
     }
 }
+
+@media (max-width: 768px) {
+    .tabButtonText {
+        font-size: 12px; /* Adjust font size for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    .tabButtonText {
+        font-size: 12px; /* Further reduce font size for small screens */
+    }
+    
+    .tab button {
+        padding: 8px 15px; /* Adjust padding for small screens */
+    }
+}
+
 
 
 /*--------------------------------------------------------------
@@ -1677,6 +1892,7 @@ input:checked + .slider:before {
 .swal2-input {
     border-radius: 8px;
     background-color: white;
+    margin-top: -200px;
 }
 
 .swal2-file {

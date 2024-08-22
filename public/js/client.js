@@ -85,30 +85,6 @@ const className = {
     speech: '../images/speech.png',
     heart: '../images/heart.png',
     pip: '../images/pip.png',
-
-    user: 'fas fa-user',
-    clock: 'fas fa-clock',
-    screenOn: 'fas fa-desktop',
-    screenOff: 'fas fa-stop-circle',
-    handPulsate: 'fas fa-hand-paper pulsate',
-    privacy: 'far fa-circle',
-    snapShot: 'fas fa-camera-retro',
-    pinUnpin: 'fas fa-map-pin',
-    mirror: 'fas fa-arrow-right-arrow-left',
-    zoomIn: 'fas fa-magnifying-glass-plus',
-    zoomOut: 'fas fa-magnifying-glass-minus',
-    fullScreen: 'fas fa-expand',
-    fsOn: 'fas fa-compress-alt',
-    fsOff: 'fas fa-expand-alt',
-    msgPrivate: 'fas fa-paper-plane',
-    shareVideoAudio: 'fab fa-youtube',
-    kickOut: 'fas fa-sign-out-alt',
-    ghost: 'fas fa-ghost',
-    undo: 'fas fa-undo',
-    captionOn: 'fas fa-closed-captioning',
-    trash: 'fas fa-trash',
-    copy: 'fas fa-copy',
-    heart: 'fas fa-heart',
 };
 
 
@@ -365,6 +341,7 @@ const msgerCP = getId('msgerCP');
 const msgerCPHeader = getId('msgerCPHeader');
 const msgerCPCloseBtn = getId('msgerCPCloseBtn');
 const msgerCPList = getId('msgerCPList');
+const participantsList = getId('participantsList');
 const searchPeerBarName = getId('searchPeerBarName');
 
 // Caption section
@@ -7594,6 +7571,29 @@ async function msgerAddPeers(peers) {
     }
 }
 
+
+async function msgerAddPeers(peers) {
+    // Clear the existing list
+    participantsList.innerHTML = '';
+
+    // Add all current participants
+    for (const peer_id in peers) {
+        const peer_name = peers[peer_id]['peer_name'];
+        // Bypass inserting myself in the list
+        if (peer_id != myPeerId && peer_name) {
+            const avatarSvg = isValidEmail(peer_name) ? genGravatar(peer_name) : genAvatarSvg(peer_name, 24);
+            const participantDiv = `
+                <div class="participant">
+                    <img class="participant-avatar" src="${avatarSvg}" alt="${peer_name}'s avatar"> 
+                    <span class="participant-name">${peer_name}</span>
+                </div>
+            `;
+            participantsList.insertAdjacentHTML('beforeend', participantDiv);
+        }
+    }
+}
+
+
 /**
  * Search peer by name in chat room lists to send the private messages
  */
@@ -7608,6 +7608,7 @@ function searchPeer() {
             : elemDisplay(msgerPeerInputarea[i], false);
     }
 }
+
 
 /**
  * Remove participant from chat room lists
@@ -8711,8 +8712,51 @@ function disablePeer(peer_id, element) {
  * @param {object} config data
  * @param {boolean} emit data to signaling server
  */
+let roomLocked = false; // Track the lock state
+
+document.getElementById('lockUnlockBtn').addEventListener('click', lockOrUnlockRoom);
+document.getElementById('roomPasswordInput').addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        lockOrUnlockRoom();
+    }
+});
+
+function lockOrUnlockRoom() {
+    const passwordInput = document.getElementById('roomPasswordInput');
+    const lockIcon = document.getElementById('lockIcon');
+
+    if (!roomLocked) {
+        // Lock the room
+        const pwd = passwordInput.value.trim();
+        if (!pwd) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please enter the Room password!',
+            });
+        } else {
+            thisRoomPassword = pwd;
+            handleRoomAction({
+                action: 'lock',
+                password: thisRoomPassword
+            }, true);
+            roomLocked = true;
+            lockIcon.src = '../images/unlock.png'; // Change to unlock icon
+            lockIcon.alt = 'Unlock Room';
+        }
+    } else {
+        // Unlock the room
+        handleRoomAction({
+            action: 'unlock'
+        }, true);
+        roomLocked = false;
+        lockIcon.src = '../images/lock.png'; // Change back to lock icon
+        lockIcon.alt = 'Lock Room';
+    }
+}
+
 function handleRoomAction(config, emit = false) {
-    const { action } = config;
+    const { action, password } = config;
     if (emit) {
         const thisConfig = {
             room_id: roomId,
@@ -8720,35 +8764,13 @@ function handleRoomAction(config, emit = false) {
             peer_name: myPeerName,
             peer_uuid: myPeerUUID,
             action: action,
-            password: null,
+            password: password || null, // Use the password from config
         };
         switch (action) {
             case 'lock':
                 playSound('newMessage');
-
-                Swal.fire({
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showDenyButton: true,
-                    background: swBg,
-                    imageUrl: images.locked,
-                    input: 'text',
-                    inputPlaceholder: 'Set Room password',
-                    confirmButtonText: `OK`,
-                    denyButtonText: `Cancel`,
-                    showClass: { popup: 'animate__animated animate__fadeInDown' },
-                    hideClass: { popup: 'animate__animated animate__fadeOutUp' },
-                    inputValidator: (pwd) => {
-                        if (!pwd) return 'Please enter the Room password';
-                        thisRoomPassword = pwd;
-                    },
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        thisConfig.password = thisRoomPassword;
-                        sendToServer('roomAction', thisConfig);
-                        handleRoomStatus(thisConfig);
-                    }
-                });
+                sendToServer('roomAction', thisConfig);
+                handleRoomStatus(thisConfig);
                 break;
             case 'unlock':
                 sendToServer('roomAction', thisConfig);
@@ -8762,6 +8784,35 @@ function handleRoomAction(config, emit = false) {
         handleRoomStatus(config);
     }
 }
+
+
+
+document.getElementById('lockRoomBtn').addEventListener('click', () => {
+    const passwordInput = document.getElementById('roomPasswordInput');
+    passwordInput.style.display = 'inline-block'; // Show the input field
+    passwordInput.focus(); // Focus on the input field
+
+    passwordInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') { // Handle Enter key press
+            const pwd = passwordInput.value.trim();
+            if (!pwd) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please enter the Room password!',
+                });
+            } else {
+                // Set the password and proceed with the lock action
+                thisRoomPassword = pwd;
+                handleRoomAction({
+                    action: 'lock',
+                    password: thisRoomPassword
+                }, true);
+            }
+        }
+    });
+});
+
 
 /**
  * Handle room status
@@ -9743,57 +9794,79 @@ function selectFileToShare(peer_id, broadcast = false) {
 
     Swal.fire({
         allowOutsideClick: false,
-        background: swBg,
-        imageAlt: 'mirotalk-file-sharing',
-        imageUrl: images.share,
+        background: '#3c3c3c',
         position: 'center',
-        title: 'Share file',
-        input: 'file',
         html: `
-        <div id="dropArea">
-            <p>Drag and drop your file here</p>
-        </div>
+            <div style="position: relative; background: #3c3c3c; padding: 20px; border-radius: 5px;">
+                <div style="color: white; font-size: 18px; margin-bottom: 20px;">
+                    File Sharing
+                </div>
+                <div id="dropArea" style="padding: 20px; border: none; border-radius: 4px; background: #232120; color: white; text-align: center;">
+                    <p style="font-size: 14px;">Drag and drop</p>
+                    <input type="file" id="fileInput" style="display: none;">
+                    <label for="fileInput" style="display: inline-block; padding: 10px 20px; background: transparent; color: blue; cursor: pointer; font-size: 14px;">
+                        or browse  your file here
+                    </label>
+                </div>
+                <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+                    <button id="confirmButton" class="swal2-confirm swal2-styled" style="background-color: #007bff; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;">
+                        Send
+                    </button>
+                    <button id="denyButton" class="swal2-cancel swal2-styled" style="background-color: #6c757d; color: white; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; margin-left: 10px;">
+                        Cancel
+                    </button>
+                </div>
+            </div>
         `,
-        inputAttributes: {
-            accept: fileSharingInput,
-            'aria-label': 'Select file',
-        },
         didOpen: () => {
             const dropArea = getId('dropArea');
+            const fileInput = getId('fileInput');
+            const confirmButton = getId('confirmButton');
+            const denyButton = getId('denyButton');
+    
             dropArea.addEventListener('dragenter', handleDragEnter);
             dropArea.addEventListener('dragover', handleDragOver);
             dropArea.addEventListener('dragleave', handleDragLeave);
             dropArea.addEventListener('drop', handleDrop);
+            fileInput.addEventListener('change', handleFileSelect);
+    
+            confirmButton.addEventListener('click', () => {
+                const file = fileInput.files[0];
+                if (file) {
+                    Swal.close();
+                    sendFileInformations(file, peer_id, broadcast);
+                }
+            });
+    
+            denyButton.addEventListener('click', () => {
+                Swal.close();
+            });
         },
-        showDenyButton: true,
-        confirmButtonText: `Send`,
-        denyButtonText: `Cancel`,
+        showConfirmButton: false,
+        showCancelButton: false,
+        showDenyButton: false,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
-    }).then((result) => {
-        if (result.isConfirmed) {
-            sendFileInformations(result.value, peer_id, broadcast);
-        }
-    });
+    });        
 
     function handleDragEnter(e) {
         e.preventDefault();
         e.stopPropagation();
         e.target.style.background = 'var(--body-bg)';
     }
-
+    
     function handleDragOver(e) {
         e.preventDefault();
         e.stopPropagation();
         e.dataTransfer.dropEffect = 'copy';
     }
-
+    
     function handleDragLeave(e) {
         e.preventDefault();
         e.stopPropagation();
         e.target.style.background = '';
     }
-
+    
     function handleDrop(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -9802,15 +9875,14 @@ function selectFileToShare(peer_id, broadcast = false) {
         handleFiles(files);
         e.target.style.background = '';
     }
-
-    function handleFiles(files) {
-        if (files.length > 0) {
-            const file = files[0];
-            console.log('Selected file:', file);
+    
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (file) {
             Swal.close();
             sendFileInformations(file, peer_id, broadcast);
         }
-    }
+    }    
 }
 
 /**
