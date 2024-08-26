@@ -30,19 +30,19 @@ const footer = document.getElementById('footer');
 
 const brand = {
     app: {
-        name: 'FlashBro',
+        name: 'Flash',
         title: 'Revolutionize Your Learning<br />Experience with Seamless Video<br />Conferencing',
         description:
             'Empowering educators and students to connect, collaborate, and excel from anywhere with high-quality video, interactive tools, and secure, user-friendly platforms designed for modern education.',
     },
     site: {
-        landingTitle: 'FlashBro',
-        newCallTitle: 'FlashBro',
-        loginTitle: 'FlashBro',
-        clientTitle: 'FlashBro',
-        privacyPolicyTitle: 'FlashBro',
+        landingTitle: 'Flash',
+        newCallTitle: 'Flash',
+        loginTitle: 'Flash',
+        clientTitle: 'Flash',
+        privacyPolicyTitle: 'Flash',
         stunTurnTitle: 'Test Stun/Turn Servers.',
-        notFoundTitle: 'FlashBro - 404 Page not found.',
+        notFoundTitle: 'Flash - 404 Page not found.',
         shortcutIcon: '../images/logo.svg',
         appleTouchIcon: '../images/logo.svg',
     },

@@ -2118,28 +2118,54 @@ textarea.form-input {
     flex-wrap: wrap;
     flex-direction: column;
     height: 100%;
-    width: 350px;
+    width: 100%; /* Make the width responsive */
     margin-left: -25px;
     padding: 32px 24px;
 }
 
+/* For screens narrower than 750px */
+@media (max-width: 770px) {
+    .tiles-row {
+        flex-direction: column; /* Stack items in a column */
+        align-items: center;
+    }
+    .tiles-item-inner {
+        width: 100%; /* Full width on smaller screens */
+        padding-left: 20px;
+        max-width: 350px; /* Limit the width */
+    }
+}
+
+/* For screens wider than 750px */
+@media (min-width: 771px) {
+    .tiles-row {
+        flex-direction: row; /* Align items in a row */
+        align-items: flex-start;
+    }
+    .tiles-item-inner {
+        width: 100%; /* Ensure full width usage */
+        max-width: none; /* Allow it to expand fully in a row */
+        padding-left: 0; /* Align padding as needed */
+    }
+}
+
+/* For screens narrower than 640px */
 @media (max-width: 640px) {
     .section:first-of-type {
         min-height: calc(100vh - (80px / 2));
     }
     .tiles-item {
         margin-bottom: 24px;
-        max-width: 100%;
-    }
-    .tiles-row {
-        flex-direction: column;
-        align-items: center;
+        max-width: 100%; /* Ensure full width usage */
     }
     .tiles-item-inner {
-        width: 350px;
+        width: 100%; /* Use a percentage to ensure responsiveness */
         padding-left: 20px;
-    }    
+        max-width: 350px; /* Set a maximum width to avoid stretching */
+    }
 }
+
+
 
 .site-header {
     position: absolute !important;
@@ -2525,10 +2551,27 @@ textarea.form-input {
 }
 
 .hero-figure img {
-    max-width: 100%;
-    height: auto;
+    max-width: 100%;    /* Ensures the image scales to fit its container */
+    height: auto;       /* Maintains the aspect ratio */
+    object-fit: cover;  /* Ensures the image covers the container without distortion */
+    width: 100%;        /* Ensures full width usage within its container */
 }
 
+/* For screens 640px wide and below */
+@media (max-width: 640px) {
+    .hero-figure img {
+        display: none;  /* Hide the image on small screens */
+    }
+}
+
+/* For screens larger than 640px, additional adjustments */
+@media (min-width: 641px) {
+    .hero-figure img {
+        display: block;     /* Ensure the image is displayed */
+        max-height: 100vh;  /* Adjust the image height to never exceed the viewport height */
+        max-width: 100%;    /* Ensure the image scales to its container */
+    }
+}
 
 .hero-inner > .hero-content + .hero-figure,
 .hero-inner > .hero-figure + .hero-content {
@@ -2560,24 +2603,39 @@ textarea.form-input {
     }
 }
 
+/* Keep the original styling for larger screens */
 @media (min-width: 641px) {
+    .hero .split-wrap .split-item {
+        min-height: 492px;
+    }
+
     .hero-inner > .hero-content + .hero-figure,
     .hero-inner > .hero-figure + .hero-content {
         margin-top: 64px;
     }
 
     #appTitle {
-        font-size: 2rem; /* Adjusted for medium screens */
+        font-size: 2rem;
         line-height: 1.3;
     }
 
     #appDescription {
-        font-size: 1.125rem; /* Adjusted for medium screens */
+        font-size: 1.125rem;
         line-height: 1.6;
     }
 }
 
+/* Adjust the background and content for smaller screens */
 @media (max-width: 640px) {
+    .hero-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content {
+        margin-right: 0;
+    }
+
     .hero .split-wrap .split-item .split-item-content {
         margin-bottom: 48px;
     }
@@ -2586,20 +2644,24 @@ textarea.form-input {
         margin-bottom: 48px;
     }
 
-}
+    #appTitle {
+        font-size: 1.5rem; /* Slightly reduce the font size for small screens */
+        line-height: 1.2;
+    }
 
-@media (min-width: 641px) {
-    .hero-inner > .hero-content + .hero-figure,
-    .hero-inner > .hero-figure + .hero-content {
-        margin-top: 64px;
+    #appDescription {
+        font-size: 1rem; /* Adjust font size to match the screen */
+        line-height: 1.5;
     }
 }
+
 
 @media (min-width: 641px) {
     .features-split .section-header {
         padding-bottom: 92px;
     }
 }
+
 
 .features-tiles .tiles-wrap {
     margin-right: -16px;
@@ -2902,9 +2964,24 @@ ul.pricing-item-features-list li {
 }
 
 @media (max-width: 640px) {
-    .illustration-section-01::after {
-        height: 1200px; /* Adjust height for small screens */
+    .illustration-section-01 {
+        position: relative;
+        overflow: hidden;
+        min-height: 100%; /* Ensure a minimum height to prevent splitting */
+        padding: 20px; /* Add padding to ensure the background is visible */
     }
+
+    .illustration-section-01::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%; /* Ensure the pseudo-element covers the full height */
+        background-image: url('../images/bg.svg');
+        background-repeat: no-repeat;
+        background-size: cover; /* Ensure the background covers the section */
+        background-position: center; /* Center the background image */
+    }
+
 }
 
 .illustration-section-02::after {
@@ -2926,12 +3003,34 @@ ul.pricing-item-features-list li {
     color: #6a6f82;
 }
 
+
 .features-tiles-item-image {
     display: inline-flex;
     padding: 1rem;
     border-radius: 1rem;
     background: transparent;
+    width: 120px;
+    height: auto;
 }
+
+/* Responsive styling for screens 640px and below */
+@media (max-width: 640px) {
+    .features-tiles-item-image {
+        width: 60%;           /* Width set to 60% of the container */
+        padding-bottom: 60%;  /* Height set to maintain the aspect ratio */
+        max-width: 100%;      /* Ensure it doesn't exceed container width */
+    }
+}
+
+/* Additional styling for screens between 641px and 917px */
+@media (min-width: 641px) and (max-width: 917px) {
+    .features-tiles-item-image {
+        width: 50%;           /* Adjust as needed for this screen range */
+        padding-bottom: 50%;  /* Maintain aspect ratio */
+        max-width: 100%;      /* Ensure it doesn't exceed container width */
+    }
+}
+
 
 .pricing .tiles-item-inner {
     background: #292b32;

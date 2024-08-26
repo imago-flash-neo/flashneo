@@ -720,7 +720,7 @@ let surveyURL = 'https://www.questionpro.com/t/AUs7VZq00L';
 
 // Redirect on leave room
 let redirectActive = false;
-let redirectURL = '/newcall';
+let redirectURL = '/';
 
 /**
  * Load all Html elements by Id
@@ -5821,6 +5821,10 @@ function shareRoomMeetingURL(checkScreen = false) {
             margin-bottom: -30%;
         }
 
+        #roomURL {
+            font-size: 16px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 600px) {
             #contentContainer {
@@ -5849,6 +5853,7 @@ function shareRoomMeetingURL(checkScreen = false) {
 
             #gmailButton img, #outlookButton img {
                 width: 32px; /* Smaller logos on smaller screens */
+                margin-bottom: 0%;
             }
 
             div[style*="gap: 20px;"] {
@@ -5865,11 +5870,15 @@ function shareRoomMeetingURL(checkScreen = false) {
 
             #gmailButton img, #outlookButton img {
                 width: 24px; /* Even smaller logos on very small screens */
+                margin-bottom: -10%;
             }
 
             button{
                 width: 60px; /* Even smaller size on very small screens */
                 height: 60px;
+            }
+            #roomURL {
+                font-size: 10px;
             }
         }
 
@@ -5880,7 +5889,7 @@ function shareRoomMeetingURL(checkScreen = false) {
                 <canvas id="qrRoom" alt="QR Code"></canvas>
             </div>
             <p>
-                ${roomURL}
+               <p class="roomURL"> ${roomURL}</p>
                 <button id="copyButton">
                     <img src="../svg/copyURL.svg" alt="Copy URL">
                 </button>
@@ -8863,7 +8872,7 @@ function handleRoomLocked() {
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then((result) => {
-        if (result.isConfirmed) openURL('/newcall');
+        if (result.isConfirmed) openURL('/');
     });
 }
 
@@ -10338,7 +10347,7 @@ function handleKickedOut(config) {
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then(() => {
         checkRecording();
-        openURL('/newcall');
+        openURL('/');
     });
 }
 
@@ -10413,7 +10422,7 @@ function leaveFeedback() {
         background: swBg,
         imageUrl: images.feedback,
         title: 'Leave a feedback',
-        text: 'Do you want to rate your MiroTalk experience?',
+        text: 'Do you want to rate your Flash experience?',
         confirmButtonText: `Yes`,
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
@@ -10428,7 +10437,7 @@ function leaveFeedback() {
 }
 
 function redirectOnLeave() {
-    redirectActive ? openURL(redirectURL) : openURL('/newcall');
+    redirectActive ? openURL(redirectURL) : openURL('/');
 }
 
 /**
