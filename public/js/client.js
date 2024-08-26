@@ -1501,23 +1501,26 @@ async function whoAreYou() {
         inputValue: window.localStorage.peer_name ? window.localStorage.peer_name : '',
         html: initUser, // inject html
         confirmButtonText: `Join`,
-        customClass: { popup: 'init-modal-size' },
+        customClass: {
+            popup: 'init-modal-size',
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
         inputValidator: async (value) => {
             if (!value) return 'Please enter your name';
             // Long name
             if (value.length > 30) return 'Name must be max 30 char';
-
+    
             // prevent xss execution itself
             myPeerName = filterXSS(value);
-
+    
             // prevent XSS injection to remote peer
             if (isHtml(myPeerName)) {
                 myPeerName = '';
                 return 'Invalid name!';
             }
-
+    
             // check if peer name is already in use in the room
             if (await checkUserName()) {
                 return 'Username is already in use!';
@@ -1529,6 +1532,16 @@ async function whoAreYou() {
     }).then(() => {
         playSound('addPeer');
     });
+    
+        // Add this CSS to style the Join button
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .custom-join-button {
+                background-color: #ff5e00 !important;
+                border-color: #ff5e00 !important;
+            }
+        `;
+        document.head.appendChild(style);
 
             // Get the modal
         var modal = document.getElementById("settingsModal");
@@ -5349,6 +5362,35 @@ function setupMySettings() {
         handleRoomAction({ action: 'unlock' }, true);
     });
 }
+
+document.getElementById('moreBtn').addEventListener('click', function() {
+    document.getElementById('moreMenu').style.display = 'block';
+});
+
+document.getElementById('moreMenuCloseBtn').addEventListener('click', function() {
+    document.getElementById('moreMenu').style.display = 'none';
+});
+
+// Example functionality for buttons
+document.getElementById('documentPiPBtn').addEventListener('click', function() {
+    // Add functionality for Picture in Picture button
+    alert('Picture in Picture clicked');
+});
+
+document.getElementById('fileShareBtn').addEventListener('click', function() {
+    // Add functionality for File Sharing button
+    alert('File Sharing clicked');
+});
+
+document.getElementById('participantsBtn').addEventListener('click', function() {
+    // Add functionality for Participants button
+    alert('Participants clicked');
+});
+
+document.getElementById('mySettingsBtn').addEventListener('click', function() {
+    // Add functionality for Settings button
+    alert('Settings clicked');
+});
 
 /**
  * Load settings from local storage

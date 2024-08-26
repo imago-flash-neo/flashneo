@@ -1923,6 +1923,7 @@ textarea.form-input {
     display: flex;
     flex-direction: column;
 }
+
 .split-item-image {
     flex: 1;
     display: flex;
@@ -1935,18 +1936,18 @@ textarea.form-input {
 .split-item-image img.responsive-image {
     max-width: 100%;
     height: auto;
+    object-fit: cover; /* Ensure the image covers the container without distortion */
+    transition: width 0.3s ease; /* Smooth resizing transition */
 }
 
 .split-wrap .split-item .split-item-image {
     position: relative;
-    width: 100%;
+    width: 100%; /* Ensure full width within the container */
 }
 
 .split-wrap .split-item .split-item-image img,
 .split-wrap .split-item .split-item-image svg,
 .split-wrap .split-item .split-item-image video {
-    width: auto;
-    height: auto;
     max-width: 100%;
     overflow: visible;
 }
@@ -1957,7 +1958,26 @@ textarea.form-input {
     width: 100%;
 }
 
+@media (max-width: 1024px) {
+    .split-item-image img.responsive-image {
+        width: 70vw; /* Image scales to 70% of the viewport width */
+    }
+}
+
+@media (max-width: 768px) {
+    .split-item-image img.responsive-image {
+        width: 50vw; /* Image scales to 50% of the viewport width */
+    }
+}
+
 @media (max-width: 640px) {
+    .split-item-image img.responsive-image {
+        width: 100%; /* Image takes full width of its container */
+        max-width: 100%; /* Ensure image does not exceed container size */
+        height: auto; /* Maintain aspect ratio */
+        object-fit: contain; /* Adjusts image to contain within the container */
+    }
+
     .split-wrap .split-item .split-item-content {
         margin-bottom: 32px;
     }
@@ -1970,6 +1990,7 @@ textarea.form-input {
     .split-wrap.invert-mobile .split-item .split-item-image {
         margin-bottom: 32px;
     }
+
     .hero-inner {
         flex-direction: row;
         text-align: left;
@@ -2551,27 +2572,42 @@ textarea.form-input {
 }
 
 .hero-figure img {
-    max-width: 100%;    /* Ensures the image scales to fit its container */
-    height: auto;       /* Maintains the aspect ratio */
-    object-fit: cover;  /* Ensures the image covers the container without distortion */
-    width: 100%;        /* Ensures full width usage within its container */
+    width: 50vw;         /* Image width is 50% of the viewport width */
+    max-width: 100%;     /* Ensure the image does not exceed the container size */
+    height: auto;        /* Maintain the aspect ratio */
+    object-fit: cover;   /* Ensure the image covers the container without distortion */
+    transition: width 0.3s ease; /* Smooth transition for resizing */
 }
 
-/* For screens 640px wide and below */
+/* Reduce the image width gradually as the screen size decreases */
+@media (max-width: 1200px) {
+    .hero-figure img {
+        width: 40vw;
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero-figure img {
+        width: 35vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-figure img {
+        width: 30vw;
+    }
+}
+
+/* Hide the image on screens 640px wide or smaller */
 @media (max-width: 640px) {
     .hero-figure img {
-        display: none;  /* Hide the image on small screens */
+        display: none;
     }
 }
 
-/* For screens larger than 640px, additional adjustments */
-@media (min-width: 641px) {
-    .hero-figure img {
-        display: block;     /* Ensure the image is displayed */
-        max-height: 100vh;  /* Adjust the image height to never exceed the viewport height */
-        max-width: 100%;    /* Ensure the image scales to its container */
-    }
-}
+
+
+
 
 .hero-inner > .hero-content + .hero-figure,
 .hero-inner > .hero-figure + .hero-content {
