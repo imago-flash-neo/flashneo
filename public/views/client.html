@@ -372,8 +372,6 @@
         </div>
         <div id="tabEmailInvitation" style="visibility: hidden;">
         </div>
-        <button id="unlockRoomBtn" style="visibility: hidden;">&nbsp;Unlock room</button>
-        <button id="lockRoomBtn" style="visibility: hidden;">Lock room</button>
         <div id="msgerShowChatOnMsgDiv" class="title ml-10" style="visibility: hidden;">
             <label class="switch ml-10">
                 <input id="msgerShowChatOnMsg" type="checkbox" checked />
@@ -409,7 +407,7 @@
         <!-- Start my settings -->
 
         <section id="mySettings" class="center fadein">
-            <p style="margin-left: 1%; margin-bottom: -2%; color: white;">Settings</p>
+            <p class="mtm-10">Settings</p>
             <header id="mySettingsHeader">
                 <button id="mySettingsCloseBtn" class="fas fa-times"></button>
             </header>
@@ -448,12 +446,10 @@
                         </table>
                         <br/>
                         <div id="tabRoomSecurity">
-                            <label for="roomPasswordInput" style="color: white;">Lock Room:</label><br/>
-                            <input type="text" id="roomPasswordInput" placeholder="Set Room password" /><br/>
-                            <button id="lockUnlockBtn">
-                                <img id="lockIcon" src="../images/lock.png" alt="Lock Room"/>
-                            </button>
-                        </div>                                                
+                            <button id="lockRoomBtn"><i class="fas fa-lock-open"></i>&nbsp;Lock room</button>
+                            <button id="unlockRoomBtn"><i class="fas fa-lock"></i>&nbsp;Unlock room</button>
+                            <br />
+                        </div>                                               
                         <br />
                         <table id="mySettingsTable">
                             <tr>

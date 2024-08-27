@@ -1376,7 +1376,9 @@ button:hover {
     z-index: 16;
     position: absolute;
     display: none;
-    margin: auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the element */
     padding: 10px;
     width: 50%;
     min-height: 480px;
@@ -1386,10 +1388,18 @@ button:hover {
     border-radius: 10px;
     overflow: hidden;
     font-family: 'Poppins', sans-serif;
+    margin: 0; /* Remove any margin that might affect centering */
 }
 
 .mySettingsMain {
     display: flex;
+}
+
+.mtm-10 {
+    margin-top: 0;
+    margin-left: 1%;
+    margin-bottom: -2%; 
+    color: white;
 }
 
 @media screen and (max-width: 1030px) {
@@ -1400,7 +1410,7 @@ button:hover {
 
 @media screen and (max-width: 830px) {
     #mySettings {
-        width: 80%;
+        width: 70%;
         min-height: auto;
     }
     .mySettingsMain {
@@ -1410,9 +1420,21 @@ button:hover {
 
 @media screen and (max-width: 500px) {
     #mySettings {
-        width: 90%;
+        width: 10%;
+        max-height: 95vh; /* Maximum height set to 90% of the viewport height */
+        min-height: auto;
+        box-sizing: border-box; /* Include padding in the width calculation */
+        overflow-y: auto; /* Allow vertical scrolling if content exceeds the max height */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Center the element */
+    }
+    .mtm-10 {
+        margin-top: 10px;
     }
 }
+
+
 
 #mySettingsHeader {
     height: 25px;
@@ -1531,6 +1553,9 @@ button:hover {
     display: flex;
     align-items: center;
     font-size: 14px;
+    margin-left: -248px;
+    margin-top: -150px;
+    margin-bottom: -150px;
 }
 
 #roomPasswordInput {
@@ -1551,6 +1576,13 @@ button:hover {
     cursor: pointer;
     margin-left: -285px;
     margin-top: 5px;
+}
+
+@media  (max-width: 640px) {
+    #tabRoomSecurity {
+        margin-left: -118px;
+
+    }
 }
 
 #lockIcon {

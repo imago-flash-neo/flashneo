@@ -1309,6 +1309,9 @@ function handleUnauthorized() {
         title: 'Oops, Unauthorized',
         text: 'The host has user authentication enabled',
         confirmButtonText: `Login`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then(() => {
@@ -1334,6 +1337,9 @@ function roomIsBusy() {
         html: `The room is limited to ${userLimits.count} users. <br/> Please try again later`,
         showDenyButton: false,
         confirmButtonText: `OK`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then((result) => {
@@ -1656,6 +1662,9 @@ function userNameAlreadyInRoom() {
         html: `The Username is already in use. <br/> Please try with another one`,
         showDenyButton: false,
         confirmButtonText: `OK`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then((result) => {
@@ -3185,6 +3194,9 @@ function checkShareScreen() {
             text: 'Do you want to share your screen?',
             showDenyButton: true,
             confirmButtonText: `Yes`,
+            customClass: {
+                confirmButton: 'custom-join-button'
+            },
             denyButtonText: `No`,
             showClass: { popup: 'animate__animated animate__fadeInDown' },
             hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -6030,6 +6042,9 @@ function shareRoomByEmail() {
         html: '<input type="text" id="datetimePicker" class="flatpickr" />',
         showCancelButton: true,
         confirmButtonText: 'OK',
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         cancelButtonColor: 'red',
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -6762,6 +6777,9 @@ function recordingOptions(options, audioMixerTracks) {
         cancelButtonColor: 'red',
         denyButtonColor: 'green',
         confirmButtonText: `Camera`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `Screen/Window`,
         cancelButtonText: `Cancel`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
@@ -7212,6 +7230,9 @@ function cleanMessages() {
         imageUrl: images.delete,
         showDenyButton: true,
         confirmButtonText: `Yes`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -7244,6 +7265,9 @@ function cleanCaptions() {
         imageUrl: images.delete,
         showDenyButton: true,
         confirmButtonText: `Yes`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -7554,6 +7578,9 @@ function deleteMessage(id) {
         imageUrl: images.delete,
         showDenyButton: true,
         confirmButtonText: `Yes`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -8375,6 +8402,9 @@ function sendPrivateMsgToPeer(toPeerId, toPeerName) {
         input: 'text',
         showCancelButton: true,
         confirmButtonText: `Send`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then((result) => {
@@ -8671,6 +8701,9 @@ function disableAllPeers(element) {
                 : "Once hided, you won't be able to unhide them, but they can unhide themselves at any time.",
         showDenyButton: true,
         confirmButtonText: element == 'audio' ? `Mute` : `Hide`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `Cancel`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -8707,6 +8740,9 @@ function ejectEveryone() {
         text: 'Are you sure to want eject all participants from the room?',
         showDenyButton: true,
         confirmButtonText: `Yes`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -8737,6 +8773,9 @@ function disablePeer(peer_id, element) {
                 : "Once hided, you won't be able to unhide them, but they can unhide themselves at any time.",
         showDenyButton: true,
         confirmButtonText: element == 'audio' ? `Mute` : `Hide`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `Cancel`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -8763,51 +8802,8 @@ function disablePeer(peer_id, element) {
  * @param {object} config data
  * @param {boolean} emit data to signaling server
  */
-let roomLocked = false; // Track the lock state
-
-document.getElementById('lockUnlockBtn').addEventListener('click', lockOrUnlockRoom);
-document.getElementById('roomPasswordInput').addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        lockOrUnlockRoom();
-    }
-});
-
-function lockOrUnlockRoom() {
-    const passwordInput = document.getElementById('roomPasswordInput');
-    const lockIcon = document.getElementById('lockIcon');
-
-    if (!roomLocked) {
-        // Lock the room
-        const pwd = passwordInput.value.trim();
-        if (!pwd) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Please enter the Room password!',
-            });
-        } else {
-            thisRoomPassword = pwd;
-            handleRoomAction({
-                action: 'lock',
-                password: thisRoomPassword
-            }, true);
-            roomLocked = true;
-            lockIcon.src = '../images/unlock.png'; // Change to unlock icon
-            lockIcon.alt = 'Unlock Room';
-        }
-    } else {
-        // Unlock the room
-        handleRoomAction({
-            action: 'unlock'
-        }, true);
-        roomLocked = false;
-        lockIcon.src = '../images/lock.png'; // Change back to lock icon
-        lockIcon.alt = 'Lock Room';
-    }
-}
-
 function handleRoomAction(config, emit = false) {
-    const { action, password } = config;
+    const { action } = config;
     if (emit) {
         const thisConfig = {
             room_id: roomId,
@@ -8815,13 +8811,38 @@ function handleRoomAction(config, emit = false) {
             peer_name: myPeerName,
             peer_uuid: myPeerUUID,
             action: action,
-            password: password || null, // Use the password from config
+            password: null,
         };
         switch (action) {
             case 'lock':
                 playSound('newMessage');
-                sendToServer('roomAction', thisConfig);
-                handleRoomStatus(thisConfig);
+
+                Swal.fire({
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showDenyButton: true,
+                    background: swBg,
+                    imageUrl: images.locked,
+                    input: 'text',
+                    inputPlaceholder: 'Set Room password',
+                    confirmButtonText: `OK`,
+                    customClass: {
+                        confirmButton: 'custom-join-button'
+                    },
+                    denyButtonText: `Cancel`,
+                    showClass: { popup: 'animate__animated animate__fadeInDown' },
+                    hideClass: { popup: 'animate__animated animate__fadeOutUp' },
+                    inputValidator: (pwd) => {
+                        if (!pwd) return 'Please enter the Room password';
+                        thisRoomPassword = pwd;
+                    },
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        thisConfig.password = thisRoomPassword;
+                        sendToServer('roomAction', thisConfig);
+                        handleRoomStatus(thisConfig);
+                    }
+                });
                 break;
             case 'unlock':
                 sendToServer('roomAction', thisConfig);
@@ -8835,35 +8856,6 @@ function handleRoomAction(config, emit = false) {
         handleRoomStatus(config);
     }
 }
-
-
-
-document.getElementById('lockRoomBtn').addEventListener('click', () => {
-    const passwordInput = document.getElementById('roomPasswordInput');
-    passwordInput.style.display = 'inline-block'; // Show the input field
-    passwordInput.focus(); // Focus on the input field
-
-    passwordInput.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter') { // Handle Enter key press
-            const pwd = passwordInput.value.trim();
-            if (!pwd) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Please enter the Room password!',
-                });
-            } else {
-                // Set the password and proceed with the lock action
-                thisRoomPassword = pwd;
-                handleRoomAction({
-                    action: 'lock',
-                    password: thisRoomPassword
-                }, true);
-            }
-        }
-    });
-});
-
 
 /**
  * Handle room status
@@ -8911,10 +8903,13 @@ function handleRoomLocked() {
         text: 'The room is locked, try with another one.',
         showDenyButton: false,
         confirmButtonText: `Ok`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then((result) => {
-        if (result.isConfirmed) openURL('/');
+        if (result.isConfirmed) openURL('/newcall');
     });
 }
 
@@ -8933,6 +8928,9 @@ function handleUnlockTheRoom() {
         input: 'text',
         inputPlaceholder: 'Enter the Room password',
         confirmButtonText: `OK`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
         inputValidator: (pwd) => {
@@ -8951,6 +8949,7 @@ function handleUnlockTheRoom() {
         elemDisplay(unlockRoomBtn, true);
     });
 }
+
 
 /**
  * Handle whiteboard toogle
@@ -9095,6 +9094,9 @@ function whiteboardAddObj(type) {
                 input: 'text',
                 showCancelButton: true,
                 confirmButtonText: 'OK',
+                customClass: {
+                    confirmButton: 'custom-join-button'
+                },
                 showClass: { popup: 'animate__animated animate__fadeInDown' },
                 hideClass: { popup: 'animate__animated animate__fadeOutUp' },
             }).then((result) => {
@@ -9206,6 +9208,9 @@ function setupFileSelection(title, accept, renderToCanvas) {
         },
         showDenyButton: true,
         confirmButtonText: `OK`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `Cancel`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -9570,6 +9575,9 @@ function confirmCleanBoard() {
         text: 'Are you sure you want to clean the board?',
         showDenyButton: true,
         confirmButtonText: `Yes`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -10076,6 +10084,9 @@ function endDownload() {
                 imageAlt: 'mirotalk-file-img-download',
                 showDenyButton: true,
                 confirmButtonText: `Save`,
+                customClass: {
+                    confirmButton: 'custom-join-button'
+                },
                 denyButtonText: `Cancel`,
                 showClass: { popup: 'animate__animated animate__fadeInDown' },
                 hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -10097,6 +10108,9 @@ function endDownload() {
             text: incomingFileInfo.file.fileName + ' size ' + bytesToSize(incomingFileInfo.file.fileSize),
             showDenyButton: true,
             confirmButtonText: `Save`,
+            customClass: {
+                confirmButton: 'custom-join-button'
+            },
             denyButtonText: `Cancel`,
             showClass: { popup: 'animate__animated animate__fadeInDown' },
             hideClass: { popup: 'animate__animated animate__fadeOutUp' },
@@ -10142,6 +10156,9 @@ function sendVideoUrl(peer_id = null) {
         input: 'text',
         showCancelButton: true,
         confirmButtonText: `Share`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
     }).then((result) => {
@@ -10466,6 +10483,9 @@ function leaveFeedback() {
         title: 'Leave a feedback',
         text: 'Do you want to rate your Flash experience?',
         confirmButtonText: `Yes`,
+        customClass: {
+            confirmButton: 'custom-join-button'
+        },
         denyButtonText: `No`,
         showClass: { popup: 'animate__animated animate__fadeInDown' },
         hideClass: { popup: 'animate__animated animate__fadeOutUp' },
