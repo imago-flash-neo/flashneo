@@ -1,6 +1,6 @@
 {
-    "name": "mirotalk",
-    "version": "1.3.40",
+    "name": "flashneo",
+    "version": "24.8.6",
     "description": "A free WebRTC browser-based video call",
     "main": "server.js",
     "scripts": {
@@ -8,20 +8,20 @@
         "start-dev": "nodemon app/src/server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "npx prettier --write .",
-        "docker-build": "docker build --tag mirotalk/p2p:latest .",
+        "docker-build": "docker build --tag realmad/flashneo:latest .",
         "docker-rmi": "docker images |grep '<none>' |awk '{print $3}' |xargs docker rmi",
-        "docker-push": "docker push mirotalk/p2p:latest",
-        "docker-pull": "docker pull mirotalk/p2p:latest",
-        "docker-rmc": "docker container rm mirotalk --force",
-        "docker-run": "docker run -d -p 3000:3000 --name mirotalk mirotalk/p2p:latest",
-        "docker-rune": "docker run -d -p 3000:3000 -v .env:/src/.env:ro --name mirotalk mirotalk/p2p:latest",
-        "docker-run-vm": "docker run -d -p 3000:3000 -v .env:/src/.env:ro -v ./app/:/src/app/:ro -v ./public/:/src/public/:ro --name mirotalk mirotalk/p2p:latest",
-        "docker-start": "docker start mirotalk",
-        "docker-stop": "docker stop mirotalk"
+        "docker-push": "docker push realmad/flashneo:latest",
+        "docker-pull": "docker pull realmad/flashneo:latest",
+        "docker-rmc": "docker container rm flashneo --force",
+        "docker-run": "docker run -d -p 3000:3000 --name flashneo realmad/flashneo:latest",
+        "docker-rune": "docker run -d -p 3000:3000 -v .env:/src/.env:ro --name flashneo realmad/flashneo:latest",
+        "docker-run-vm": "docker run -d -p 3000:3000 -v .env:/src/.env:ro -v ./app/:/src/app/:ro -v ./public/:/src/public/:ro --name flashneo realmad/flashneo:latest",
+        "docker-start": "docker start flashneo",
+        "docker-stop": "docker stop flashneo"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/miroslavpejic85/mirotalk"
+        "url": "https://github.com/imago-flash-neo/flash-p2p.git"
     },
     "keywords": [
         "webrtc",
@@ -36,9 +36,9 @@
         "server",
         "streaming"
     ],
-    "author": "Miroslav Pejic",
+    "author": "Imago Techs",
     "license": "AGPL-3.0",
-    "homepage": "https://github.com/miroslavpejic85/mirotalk",
+    "homepage": "https://imago.us",
     "dependencies": {
         "@sentry/integrations": "^7.114.0",
         "@sentry/node": "^8.13.0",

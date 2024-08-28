@@ -9,20 +9,15 @@
  * @param {integer} length of string
  * @returns {string} random number
  */
-function getRandomNumber(length) {
-    let result = '';
-    const characters = '0123456789';
-    const charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return result;
+function getRandomNumber() {
+    const generatedRoomName = (Math.floor(10000000 + Math.random() * 90000000)).toString();
+    return generatedRoomName;
 }
 
 // Typing Effect
 
 let i = 0;
-let num = getRandomNumber(6); // Generate a random number string with 10 digits
+let num = getRandomNumber(); // Generate a random number string with 10 digits
 let speed = 100;
 
 /**
@@ -64,7 +59,7 @@ if (lastRoomContainer && lastRoom && lastRoomName) {
 // Add event listeners to all generate room buttons
 genRoomButtons.forEach((genRoomButton, index) => {
     genRoomButton.onclick = (e) => {
-        const newRoomName = getRandomNumber(10); // Generate a random number string with 10 digits
+        const newRoomName = getRandomNumber(); // Generate a random number
         roomNameInputs.forEach(input => input.value = newRoomName);
     };
 });
@@ -95,7 +90,7 @@ roomNameInputs.forEach((input) => {
 
 // Generate a unique room ID
 function genRoom() {
-    const newRoomName = getRandomNumber(10); // Generate a random number string with 10 digits
+    const newRoomName = getRandomNumber(); // Generate a random number string with 10 digits
     roomNameInputs.forEach(input => input.value = newRoomName);
 }
 

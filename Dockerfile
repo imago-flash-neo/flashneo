@@ -1,5 +1,5 @@
 # Use a lightweight Node.js image 
-FROM node:20-alpine
+FROM node:20-slim
 
 # Set working directory
 WORKDIR /src
@@ -9,12 +9,14 @@ COPY package.json .
 COPY .env.template ./.env
 
 # Install necessary system packages and dependencies
-RUN apk add --no-cache \
+RUN apt-get update && \
+    apt-get install -y \
     bash \
-    vim \
+    nano \
+    net-tools \
     && npm install \
     && npm cache clean --force \
-    && rm -rf /tmp/* /var/tmp/* /usr/share/doc/*
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the application code
 COPY app app

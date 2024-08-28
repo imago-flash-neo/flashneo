@@ -2199,27 +2199,16 @@ textarea.form-input {
     padding-top: 80px;
 }
 
-.site-header .brand {
-    margin-right: 32px;
-}
-
 .site-header-inner {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: end;
     height: 80px;
 }
 
-@media (max-width: 768px) {
-    .site-header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    img {
-        width: 35%;
-        height: auto;
-    }
+.flashlogo {
+    height: 40px;
+    width: auto;
 }
 
 .header-nav {
@@ -2359,6 +2348,7 @@ textarea.form-input {
 
 .site-content {
     flex: 1 0 auto;
+    margin-bottom: 10px;
 }
 
 .site-footer {

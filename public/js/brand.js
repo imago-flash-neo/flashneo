@@ -43,8 +43,8 @@ const brand = {
         privacyPolicyTitle: 'Flash',
         stunTurnTitle: 'Test Stun/Turn Servers.',
         notFoundTitle: 'Flash - 404 Page not found.',
-        shortcutIcon: '../images/logo.svg',
-        appleTouchIcon: '../images/logo.svg',
+        shortcutIcon: '../images/favicon.ico',
+        appleTouchIcon: '../images/favicon.png',
     },
     html: {
         features: true,
