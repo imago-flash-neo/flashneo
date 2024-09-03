@@ -1,6 +1,6 @@
 {
     "name": "flashneo",
-    "version": "24.8.6",
+    "version": "24.9.2",
     "description": "A free WebRTC browser-based video call",
     "main": "server.js",
     "scripts": {

@@ -30,19 +30,19 @@ const footer = document.getElementById('footer');
 
 const brand = {
     app: {
-        name: 'Flash',
+        name: 'Flash Neo',
         title: 'Revolutionize Your Learning<br />Experience with Seamless Video<br />Conferencing',
         description:
             'Empowering educators and students to connect, collaborate, and excel from anywhere with high-quality video, interactive tools, and secure, user-friendly platforms designed for modern education.',
     },
     site: {
-        landingTitle: 'Flash',
-        newCallTitle: 'Flash',
-        loginTitle: 'Flash',
-        clientTitle: 'Flash',
-        privacyPolicyTitle: 'Flash',
+        landingTitle: 'Flash Neo',
+        newCallTitle: 'Flash Neo',
+        loginTitle: 'Flash Neo',
+        clientTitle: 'Flash Neo',
+        privacyPolicyTitle: 'Flash Neo',
         stunTurnTitle: 'Test Stun/Turn Servers.',
-        notFoundTitle: 'Flash - 404 Page not found.',
+        notFoundTitle: 'Flash Neo - 404 Page not found.',
         shortcutIcon: '../images/favicon.ico',
         appleTouchIcon: '../images/favicon.png',
     },
