@@ -2206,6 +2206,11 @@ textarea.form-input {
     height: 80px;
 }
 
+.brand {
+    position: absolute;
+    left: 2em;
+}
+
 .flashlogo {
     height: 40px;
     width: auto;
