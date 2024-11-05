@@ -8,20 +8,20 @@
         "start-dev": "nodemon app/src/server.js",
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "npx prettier --write .",
-        "docker-build": "docker build --tag realmad/flashneo:latest .",
+        "docker-build": "docker build --tag realmad/flashneo:lunatech .",
         "docker-rmi": "docker images |grep '<none>' |awk '{print $3}' |xargs docker rmi",
-        "docker-push": "docker push realmad/flashneo:latest",
-        "docker-pull": "docker pull realmad/flashneo:latest",
+        "docker-push": "docker push realmad/flashneo:lunatech",
+        "docker-pull": "docker pull realmad/flashneo:lunatech",
         "docker-rmc": "docker container rm flashneo --force",
-        "docker-run": "docker run -d -p 3000:3000 --name flashneo realmad/flashneo:latest",
-        "docker-rune": "docker run -d -p 3000:3000 -v .env:/src/.env:ro --name flashneo realmad/flashneo:latest",
-        "docker-run-vm": "docker run -d -p 3000:3000 -v .env:/src/.env:ro -v ./app/:/src/app/:ro -v ./public/:/src/public/:ro --name flashneo realmad/flashneo:latest",
+        "docker-run": "docker run -d -p 3000:3000 --name flashneo realmad/flashneo:lunatech",
+        "docker-rune": "docker run -d -p 3000:3000 -v .env:/src/.env:ro --name flashneo realmad/flashneo:lunatech",
+        "docker-run-vm": "docker run -d -p 3000:3000 -v .env:/src/.env:ro -v ./app/:/src/app/:ro -v ./public/:/src/public/:ro --name flashneo realmad/flashneo:lunatech",
         "docker-start": "docker start flashneo",
         "docker-stop": "docker stop flashneo"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/imago-flash-neo/flash-p2p.git"
+        "url": "https://github.com/imago-flash-neo/flashneo.git"
     },
     "keywords": [
         "webrtc",
