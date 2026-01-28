@@ -464,6 +464,7 @@ h4,
 h2,
 .h2 {
     color: #ffffff;
+    padding: 40px;
 }
 
 .heading2 {
@@ -849,12 +850,21 @@ strong {
     max-width: 1128px;
 }
 
+/* added new container */
+.container2 {
+    max-width: 1500px;
+}
+
 .container-sm {
     max-width: 944px;
 }
 
 .container-xs {
     max-width: 668px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 [class*='container'] [class*='container'] {
@@ -866,8 +876,9 @@ strong {
     max-width: 896px;
 }
 
+/* change the max width from 620px to 1000px */
 [class*='container'] .container-xs {
-    max-width: 620px;
+    max-width: 1000px;
 }
 
 .button {
@@ -2547,6 +2558,7 @@ textarea.form-input {
 }
 
 .section-header {
+    background-color: #4D647B;
     padding-bottom: 48px;
 }
 
