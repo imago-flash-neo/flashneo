@@ -10,7 +10,7 @@
  * @returns {string} random number
  */
 function getRandomNumber() {
-    const generatedRoomName = (Math.floor(10000000 + Math.random() * 90000000)).toString();
+    const generatedRoomName = (Math.floor(100000 + Math.random() * 900000)).toString();
     return generatedRoomName;
 }
 
