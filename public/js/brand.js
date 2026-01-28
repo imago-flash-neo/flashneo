@@ -31,9 +31,9 @@ const footer = document.getElementById('footer');
 const brand = {
     app: {
         name: 'Flash Neo',
-        title: 'Revolutionize Your Learning<br />Experience with Seamless Video<br />Conferencing',
+        title: 'Meet. Collaborate. Decide. <br /> All in One Video Conference',
         description:
-            'Empowering educators and students to connect, collaborate, and excel from anywhere with high-quality video, interactive tools, and secure, user-friendly platforms designed for modern education.',
+            'Host secure, high-quality video meetings with build-in collaboration tools designed for teams, classrooms, and creators.',
     },
     site: {
         landingTitle: 'Flash Neo',
