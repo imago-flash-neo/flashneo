@@ -310,7 +310,7 @@ html {
 }
 
 body {
-    background: #ffffff;
+    background: #ECF1F7;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     border-top-right-radius: 8px;
@@ -458,26 +458,30 @@ h4,
 .h3,
 .h4,
 .heading3 {
-    color: #ff5e00;
+    color: #4D647B; /* All the font colours */
 }
 
 h2,
 .h2 {
-    color: #000000;
+    color: #ffffff;
+}
+
+.heading2 {
+    color: #464547;
+    font-weight: bold;
 }
 
 h5,
 h6,
 .h5,
-.h6,
-.heading2 {
+.h6 {
     font-family: 'Roboto', sans-serif;
     font-weight: 600;
     clear: both;
-    color: #f9faff;
+    color: #ffffff;
     word-wrap: break-word;
     overflow-wrap: break-word;
-}
+} 
 
 h1,
 .h1 {
@@ -494,7 +498,7 @@ h2,
 
 @media screen {
     .heading2 {
-        font-size: 30px;
+        font-size: 40px;
     }
     h1,
     .h1 {
@@ -883,6 +887,7 @@ strong {
     border-radius: 2px;
     cursor: pointer;
     justify-content: center;
+    align-items: center;
     text-align: center;
     letter-spacing: inherit;
     white-space: nowrap;
@@ -951,9 +956,9 @@ strong {
 }
 
 .button-primary {
-    color: #f9faff;
+    color: #000000;
     /* background-color: #376df9; */
-    background-color: #ff5e00;
+    background-color: #88BDF2; /* changed colour */
 }
 
 .button-primary:hover {
@@ -989,7 +994,7 @@ strong {
 }
 
 .button-secondary.is-loading::after {
-    border-color: #f9faff;
+    border-color:   #f9faff;
 }
 
 .button-block {
@@ -2368,12 +2373,13 @@ textarea.form-input {
     width: 100%;
     height: 100%;
     /* background: #16171b; */
-    background: black;
+    background: #4D647B;
     z-index: -3;
 }
 
+/* decreated the padding */
 .site-footer-inner {
-    padding: 48px 0;
+    padding: 24px 0;
 }
 
 .footer-top {
@@ -2514,9 +2520,11 @@ textarea.form-input {
     }
 }
 
-@media (min-width: 641px) {
+@media (min-width: 600px) {
+
+    /* changed padding to top */
     .site-footer-inner {
-        padding: 64px 0;
+        padding: 32px 0;
     }
 
     .footer-top.space-between,
@@ -2554,54 +2562,21 @@ textarea.form-input {
 }
 
 .hero-inner {
-    display: flex;
+    /* display: flex; */
     flex-direction: row;
-    text-align: left;
+    text-align: center;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .hero-content {
-    max-width: 600px;
+    max-width: 1500px;
     margin-right: 20px;
 }
 
 .hero-figure img {
-    width: 50vw;         /* Image width is 50% of the viewport width */
-    max-width: 100%;     /* Ensure the image does not exceed the container size */
-    height: auto;        /* Maintain the aspect ratio */
-    object-fit: cover;   /* Ensure the image covers the container without distortion */
-    transition: width 0.3s ease; /* Smooth transition for resizing */
+    display: none;
 }
-
-/* Reduce the image width gradually as the screen size decreases */
-@media (max-width: 1200px) {
-    .hero-figure img {
-        width: 40vw;
-    }
-}
-
-@media (max-width: 1024px) {
-    .hero-figure img {
-        width: 35vw;
-    }
-}
-
-@media (max-width: 768px) {
-    .hero-figure img {
-        width: 30vw;
-    }
-}
-
-/* Hide the image on screens 640px wide or smaller */
-@media (max-width: 640px) {
-    .hero-figure img {
-        display: none;
-    }
-}
-
-
-
 
 
 .hero-inner > .hero-content + .hero-figure,
@@ -2646,13 +2621,17 @@ textarea.form-input {
     }
 
     #appTitle {
-        font-size: 2rem;
+        font-size: 2.6rem;
         line-height: 1.3;
+        text-align: center;
+       
     }
 
     #appDescription {
-        font-size: 1.125rem;
+        font-size: 1.2rem;
         line-height: 1.6;
+        text-align: center;
+        
     }
 }
 
@@ -2857,18 +2836,6 @@ ul.pricing-item-features-list li {
 .bottom {
     width: 100%;
     max-width: 100%;
-    height: 305px;
-    background-image: url(../images/bg.svg);
-    background-repeat: no-repeat;
-    background-size: cover; /*auto*/
-    background-position: center top;
-    align-items: center;
-}
-
-@media (max-width: 640px) {
-    .bottom {
-        height: 740px; /* Adjust height for small screens */
-    }
 }
 
 .cta-header {
@@ -2880,11 +2847,25 @@ ul.pricing-item-features-list li {
     width: 100%;
 }
 
+.form-group-desktop {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group-desktop .form-input {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+}
+
 .cta .section-inner {
     padding-top: 48px;
     padding-bottom: 48px;
     border-color: white;
     border: 1px;
+
 }
 .cta2 .section-inner {
     display: flex;
@@ -2915,9 +2896,10 @@ ul.pricing-item-features-list li {
 
 @media (min-width: 641px) {
 
-    .cta-content {
-        flex-direction: row; /* Row layout for desktop */
-    }
+    /* Removed to center the text at bottom */
+    /* .cta-content {
+        flex-direction: row; Row layout for desktop 
+    } */
     
     .cta .section-inner {
         padding-top: 64px;
@@ -2930,13 +2912,19 @@ ul.pricing-item-features-list li {
 
     .cta-split {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
     }
 
     .cta-split .cta-slogan {
-        margin-bottom: 0;
-        margin-right: 48px;
+        margin-bottom: 20px;
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .cta-split .cta-body {
+        width: 100%;
     }
 }
 
@@ -2985,7 +2973,10 @@ ul.pricing-item-features-list li {
     width: 100%;
     max-width: 100%;
     height: 854px;
-    background-image: url(../images/bg.svg);
+    
+    /* Removed background */
+    /* background-image: url(../images/bg.svg); */
+    
     background-repeat: no-repeat;
     background-size: cover; /*auto*/
     left: 50%;
@@ -3031,7 +3022,7 @@ ul.pricing-item-features-list li {
 }
 
 .site-footer {
-    color: #6a6f82;
+    color: #ffffff;
 }
 
 
@@ -3155,26 +3146,22 @@ ul.pricing-item-features-list li.is-checked::after {
     border-color: white;
     padding-left: 16px;
     padding-right: 16px;
-    background: black;
+    background-image: url(../images/cta-image-half.svg);
+    opacity: 1;
+    /* background: #88BDF2; changed colour */
+
     box-shadow: 0 0 0 1px white;
     padding: 20px;
     color: white;
     position: relative;
 }
-.cta-inner2 {
-    border: 1px solid white;
-    padding-left: 16px;
-    padding-right: 16px;
-    background: black;
-    box-shadow: 0 0 0 1px white;
-    padding: 20px;
-    color: white;
-    position: relative;
-    width: 100%; /* Make the box full width on mobile */
-    max-width: 350px; /* Limit the width to ensure it doesn't get too large */
-    padding: 24px; /* Reduce padding for mobile */
-    box-sizing: border-box;
-}
+
+/* Bottom pane, keep or delete? */
+/* deleted cta inner2 */
+ 
+
+
+
 
 @media (min-width: 641px) {
     .cta .form-input {
@@ -3903,7 +3890,7 @@ img.has-shadow {
 
 /* Target the scrollbar thumb (the draggable part) */
 ::-webkit-scrollbar-thumb {
-    background: #ff5e00;
+    background: #4D647B;
     border-radius: 5px; /* rounded corners for the thumb */
     cursor: pointer;
 }
