@@ -64,8 +64,17 @@
                             <div class="m-0">
                                 <a href="https://imago.us" target="_new">
                                     <img class="flashlogo" src="../images/logo.svg" alt="Flash Neo" />
+                                 
                                 </a>
                             </div>
+                        </div>
+                        <div>
+                            <button class="header-button">
+                                <img src="../images/Setting.png" alt="Settings" />
+                                Settings </button>
+                           
+                            <button class="header-button">
+                                 <img src="../images/Schedule-Meeting.png" alt="Schedule Meeting" /> Schedule Meeting </button>
                         </div>
                     </div>
                 </div>
@@ -141,33 +150,37 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </section>  
 
                 <section id="features" class="features-tiles section center-content mt-32">
                     <div class="container2">
                         <div class="features-tiles-inner section-inner">
                             <div class="section-header" >
-                                <div class="container-xs reveal-from-bottom" data-reveal-delay="650">
-                                    <h2 class="m-0">
+                                <!-- reduce data-revel-delay from 650 to 100 -->
+                                <div class="container-xs reveal-from-bottom" data-reveal-delay="100">
+                                    <h2 class="m-0 section-header-title">
                                         Build for Clear, Secure, and Real-Time Collaboration. 
                                     </h2>
-                                    <p class="m-0" style="color: white;">
+                                    <p class="m-0 section-header-paragraph">
                                         FlashPro delivers smooth, high-definition video conferencing designed for teams, educators and professionals who value quality, privacy and performance. 
                                     </p>
                                 </div>
                             </div>
                             
-                        <div> 
-                            <h2 class="m-0" style="color: #464547"> Features </h2>
-                        </div>
+                            <div class = "features-handling reveal-from-right" data-reveal-delay="200"> 
+                                <h2 class="m-0 features-title"> Features </h2>
+                            </div>
+                        
                             <div class="tiles-wrap">
                                 <!-- First Row -->
-                                <div class="tiles-row">
-                                    <div class="tiles-item reveal-from-right">
+                                <!-- Change tiles-row to features-bento -->
+                                <div class="features-bento">
+                                    <!-- Screen Sharing -->
+                                    <div class="tiles-item item-screen reveal-from-right">
                                         <div class="tiles-item-inner">
                                             <div class="features-tiles-item-header">
                                                 <div class="features-tiles-item-image mb-17">
-                                                    <img class="wh-150-150" src="../svg/Screen-Sharing.svg" alt="Screen Sharing" />
+                                                    <img class = "wh-300-200" src="../svg/Screen-Sharing.svg" alt="Screen Sharing" />
                                                 </div>
                                             </div>
                                             <div class="features-tiles-item-content">
@@ -175,17 +188,16 @@
                                                 <p class="m-0 text-sm ta-l mbv">
                                                     Share your entire screen, a specific window, or presentations effortlessely -
                                                     with support for stunning 4K resolution and up to 60fps.
-                                                    
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                
-                                    <div class="tiles-item reveal-from-left">
+                                    <!-- Webcam -->
+                                    <div class="tiles-item item-webcam reveal-from-left">
                                         <div class="tiles-item-inner">
                                             <div class="features-tiles-item-header">
                                                 <div class="features-tiles-item-image mt-5 mb-14">
-                                                    <img src="../svg/Camcorder.svg" alt="WebCam Streaming" />
+                                                    <img src="../svg/Camcorder.svg" alt="WebCam Streaming" class="align-left" />
                                                 </div>
                                             </div>
                                             <div class="features-tiles-item-content">
@@ -197,8 +209,8 @@
                                             </div>
                                         </div>
                                     </div>
-                
-                                    <div class="tiles-item reveal-from-right">
+                                    <!-- Chat Room -->
+                                    <div class="tiles-item item-chat reveal-from-right">
                                         <div class="tiles-item-inner">
                                             <div class="features-tiles-item-header">
                                                 <div class="features-tiles-item-image mb-16">
@@ -214,11 +226,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                
-                                <!-- Second Row -->
-                                <div class="tiles-row">
-                                    <div class="tiles-item reveal-from-left">
+                                    <!-- Meeting Recording -->
+                                    <div class="tiles-item item-recording reveal-from-left">
                                         <div class="tiles-item-inner">
                                             <div class="features-tiles-item-header">
                                                 <div class="features-tiles-item-image mb-16">
@@ -234,8 +243,8 @@
                                             </div>
                                         </div>
                                     </div>
-                
-                                    <div class="tiles-item reveal-from-right">
+                                    <!-- Interactive Whiteboard -->
+                                    <div class="tiles-item item-whiteboard reveal-from-right">
                                         <div class="tiles-item-inner">
                                             <div class="features-tiles-item-header">
                                                 <div class="features-tiles-item-image mb-16">
@@ -251,8 +260,8 @@
                                             </div>
                                         </div>
                                     </div>
-                
-                                    <div class="tiles-item reveal-from-left">
+                                    <!-- Secure File Sharing -->
+                                    <div class="tiles-item item-file-sharing reveal-from-left">
                                         <div class="tiles-item-inner">
                                             <div class="features-tiles-item-header">
                                                 <div class="features-tiles-item-image mb-16">
@@ -268,7 +277,6 @@
                                         </div>
                                     </div>
                                 </div>
-                
                                 <!-- Third Row -->
                                 <h2 class = "m-0" style="color: #464547"> Privacy & Security </h2>
                                 <div class="tiles-row">
