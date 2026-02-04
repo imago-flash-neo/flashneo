@@ -852,7 +852,25 @@ strong {
 
 /* added new container */
 .container2 {
+    width: 100%;
     max-width: 1500px;
+    margin: 0 auto;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+@media (max-width: 480px) {
+    .container2 {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+}
+
+@media (min-width: 481px) {
+    .container2 {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
 }
 
 .container-sm {
@@ -888,10 +906,19 @@ strong {
     border-radius: 6px;
     cursor: pointer;
     font-weight: 200;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
 }
 
 .header-button:hover{
     background-color: #D4DAE6;
+}
+
+.header-button img {
+    width: 20px;
+    height: 20px;
 }
 
 .button {
@@ -1444,12 +1471,22 @@ textarea.form-input {
 }
 
 @media (max-width: 640px) {
+    .form-group-desktop {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+    
     .form-group-desktop .form-input {
-        margin-bottom: 12px;
+        flex: 1;
+        min-width: 0;
+        margin-bottom: 0;
     }
 
     .form-group-desktop .button {
-        width: 100%;
+        width: auto;
+        flex-shrink: 0;
+        padding: 10px 14px;
     }
 }
 
@@ -2134,7 +2171,9 @@ textarea.form-input {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 12px;
+    margin: 12px auto;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .features-tiles .section-header {
@@ -2146,6 +2185,31 @@ textarea.form-input {
     max-width: none;
     margin: 0 auto 40px auto;
     box-sizing: border-box;
+}
+
+.features-tiles-inner {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Responsive padding for section header */
+@media (max-width: 640px) {
+    .features-tiles .section-header {
+        padding: 30px 20px;
+        margin: 0 auto 30px auto;
+    }
+    
+    .section-header-title {
+        font-size: 24px;
+    }
+    
+    .section-header-paragraph {
+        font-size: 14px;
+        margin: 12px;
+        margin-bottom: 0;
+    }
 }
 
 .section-header .container-xs {
@@ -2177,6 +2241,24 @@ textarea.form-input {
     font-size: 30px;
     font-weight: bold;
     margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.features-handling {
+    width: 100%;
+    text-align: center;
+    margin: 40px auto;
+}
+
+@media (max-width: 640px) {
+    .features-title {
+        font-size: 24px;
+    }
+    
+    .features-handling {
+        margin: 30px auto;
+    }
 }
 
 .section-title {
@@ -2199,14 +2281,128 @@ textarea.form-input {
     "recording recording file-sharing"
     "whiteboard whiteboard file-sharing";
     max-width: 1200px;
-    margin:40px auto;
+    width: 100%;
+    margin: 40px auto;
     padding-left: 1px;
+    box-sizing: border-box;
     
     /*
     border-right: 1px solid #333333;
     border-bottom: 1px solid #333333; */
     /* justify-content: center;
     margin-bottom: 32px; */
+}
+
+/* Tablet responsiveness (768px and below) */
+@media (max-width: 768px) {
+    .features-bento {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas: 
+        "screen webcam"
+        "screen chat"
+        "recording recording"
+        "whiteboard whiteboard"
+        "file-sharing file-sharing";
+        margin: 20px auto;
+    }
+    
+    .item-screen .features-tiles-item-image,
+    .item-file-sharing .features-tiles-item-image {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .features-bento .tiles-item-inner {
+        padding: 25px 15px;
+        gap: 20px;
+    }
+    
+    /* Slightly reduce font sizes on tablet */
+    .features-bento .tiles-item-inner h4 {
+        font-size: 20px;
+    }
+    
+    .features-tiles-item-image img,
+    .features-tiles-item-image svg {
+        max-width: 100px;
+        height: auto;
+    }
+}
+
+/* Mobile responsiveness (640px and below) */
+@media (max-width: 640px) {
+    .features-bento {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+        "screen"
+        "webcam"
+        "chat"
+        "recording"
+        "whiteboard"
+        "file-sharing";
+        margin: 20px auto;
+        padding: 0;
+        width: 100%;
+    }
+    
+    .features-tiles {
+        overflow-x: hidden;
+    }
+    
+    .features-tiles-inner {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .features-bento .tiles-item-inner {
+        padding: 20px 15px;
+        gap: 10px;
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .item-screen .tiles-item-inner,
+    .item-file-sharing .tiles-item-inner {
+        padding: 20px 15px;
+        gap: 15px;
+    }
+    
+    .item-screen .features-tiles-item-image,
+    .item-file-sharing .features-tiles-item-image {
+        width: 100%;
+        max-width: 180px;
+    }
+    
+    .features-tiles-item-image {
+        margin: 0 auto;
+        max-width: 80px;
+    }
+    
+    /* Reduce heading sizes on mobile */
+    .features-bento .tiles-item-inner h4 {
+        font-size: 18px;
+        margin-top: 10px;
+        margin-bottom: 8px;
+    }
+    
+    /* Reduce paragraph text size */
+    .features-bento .tiles-item-inner p,
+    .features-tiles-item-content p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+    
+    /* Reduce image sizes for all feature items */
+    .features-tiles-item-image img,
+    .features-tiles-item-image svg {
+        max-width: 80px;
+        height: auto;
+    }
+    
+    .item-screen .features-tiles-item-image img,
+    .item-file-sharing .features-tiles-item-image img {
+        max-width: 150px;
+    }
 }
 
 /* name the grid areas */
@@ -2372,6 +2568,11 @@ textarea.form-input {
     z-index: 10 !important;
 }
 
+.site-header .container {
+    max-width: 100%;
+    width: 100%;
+}
+
 .site-header + .site-content .section:first-of-type {
     padding-top: 80px;
 }
@@ -2381,16 +2582,41 @@ textarea.form-input {
     justify-content: space-between;
     align-items: center;
     height: 80px;
+    width: 100%;
 }
 
 .brand {
     position: relative;
-    left: auto;
+    left: 0;
+    flex-shrink: 0;
+    margin-right: auto;
 }
 
 .flashlogo {
     height: 40px;
     width: auto;
+}
+
+/* Button container on the right */
+.site-header-inner > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.site-header-inner > div:last-child img {
+    width: 20px;
+    height: 20px;
+    margin-right: 4px;
+}
+
+.site-header-inner > div:last-child .header-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .header-nav {
@@ -2434,23 +2660,45 @@ textarea.form-input {
     margin-left: 32px;
 }
 
-.site-header-inner > div:last-child {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* Responsive header adjustments: for smaller screen/devices */
+@media (max-width: 640px) {
+    .site-header-inner > div:last-child {
+        gap: 8px;
+    }
+    
+    .site-header-inner > div:last-child .header-button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+    
+    .site-header-inner > div:last-child img {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .flashlogo {
+        height: 32px;
+    }
 }
 
-.site-header-inner > div:last-child img {
-    width: 20px;
-    height: 20px;
-    margin-right: 4px;
-}
-
-.site-header-inner > div:last-child .header-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
+@media (max-width: 480px) {
+    .site-header-inner > div:last-child {
+        gap: 6px;
+    }
+    
+    .site-header-inner > div:last-child .header-button {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+    
+    .site-header-inner > div:last-child img {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .flashlogo {
+        height: 28px;
+    }
 }
 
 .header-nav-center:first-of-type {
@@ -3181,19 +3429,12 @@ ul.pricing-item-features-list li {
     .illustration-section-01 {
         position: relative;
         overflow: hidden;
-        min-height: 100%; /* Ensure a minimum height to prevent splitting */
-        padding: 20px; /* Add padding to ensure the background is visible */
+        min-height: 100%;
+        padding: 20px;
     }
 
     .illustration-section-01::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%; /* Ensure the pseudo-element covers the full height */
-        background-image: url('../images/bg.svg');
-        background-repeat: no-repeat;
-        background-size: cover; /* Ensure the background covers the section */
-        background-position: center; /* Center the background image */
+        display: none;
     }
 
 }
