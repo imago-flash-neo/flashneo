@@ -85,6 +85,16 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.site-header-buttons {
+    display: flex;
+    gap: 1rem;
+    color: white;
+}
+
+.header-button {
+    background-color: transparent;
+}
+
 .site-header {
     position: absolute !important;
     top: 0;
