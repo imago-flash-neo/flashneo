@@ -1543,10 +1543,11 @@ async function whoAreYou() {
         const style = document.createElement('style');
         style.innerHTML = `
             .custom-join-button {
-                background-color: #ff5e00 !important;
-                border-color: #ff5e00 !important;
+                background-color: #88BDF2 !important;
+                border-color: #ffffff !important;
             }
         `;
+        
         document.head.appendChild(style);
 
             // Get the modal
@@ -5834,9 +5835,9 @@ function shareRoomMeetingURL(checkScreen = false) {
         <style>
             /* Base styles */
         #contentContainer {
-            border: 1px solid #ff5e00;
+            border: 1px solid #b6b6b6;
             padding: 40px;
-            border-radius: 0px;
+            border-radius: 10px;
             background-color: #000; /* Adjust as needed */
         }
 
