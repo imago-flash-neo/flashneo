@@ -28,6 +28,8 @@ const signalingServer = getSignalingServer();
 
 // This room
 const myRoomId = getId('myRoomId');
+const headerRoomId = getId('headerRoomId');
+const headerDuration = getId('headerDuration');
 const roomId = getRoomId();
 const myRoomUrl = window.location.origin + '/join/' + roomId; // share room url
 
@@ -241,6 +243,8 @@ const swapCameraBtn = getId('swapCameraBtn');
 const audioBtn = getId('audioBtn');
 const screenShareBtn = getId('screenShareBtn');
 const recordStreamBtn = getId('recordStreamBtn');
+const recordingBtn = getId('recordingBtn');
+const headerRecDot = getId('headerRecDot');
 const fullScreenBtn = getId('fullScreenBtn');
 const chatRoomBtn = getId('chatRoomBtn');
 const captionBtn = getId('captionBtn');
@@ -993,6 +997,8 @@ function getRoomId() {
 
     // Update Room name in settings
     if (myRoomId) myRoomId.innerText = roomId;
+    // Update Room name in page header
+    if (headerRoomId) headerRoomId.innerText = roomId;
 
     // Save room name in local storage
     window.localStorage.lastRoom = roomId;
@@ -1248,6 +1254,7 @@ async function handleConnect() {
         getHtmlElementsById();
         setButtonsToolTip();
         manageLeftButtons();
+        setupHeaderRecordingButton();
         handleButtonsRule();
         setupMySettings();
         loadSettingsFromLocalStorage();
@@ -1255,6 +1262,28 @@ async function handleConnect() {
         startSessionTime();
         await whoAreYou();
     }
+}
+
+function setupHeaderRecordingButton() {
+    if (!recordingBtn) return;
+
+    // Toggle recording using the existing main recording button logic
+    recordingBtn.addEventListener('click', () => {
+        if (recordStreamBtn) recordStreamBtn.click();
+    });
+
+    updateHeaderRecordingIndicator();
+}
+
+function updateHeaderRecordingIndicator() {
+    if (!headerRecDot || !recordingBtn) return;
+
+    const isRecording = !!isStreamRecording;
+    const isPaused = !!isStreamRecordingPaused;
+
+    headerRecDot.classList.toggle('is-recording', isRecording && !isPaused);
+    headerRecDot.classList.toggle('is-paused', isRecording && isPaused);
+    recordingBtn.setAttribute('aria-pressed', String(isRecording));
 }
 
 /**
@@ -3051,8 +3080,6 @@ async function loadLocalMedia(stream, kind) {
             myVideoNavBar.className = 'navbar fadein';
 
             // attach to video nav bar
-            myVideoNavBar.appendChild(mySessionTime);
-
             !isMobileDevice && myVideoNavBar.appendChild(myVideoPinBtn);
 
             myVideoNavBar.appendChild(myVideoMirrorBtn);
@@ -4250,10 +4277,12 @@ function takeSnapshot(video) {
  */
 function startSessionTime() {
     callElapsedTime = 0;
-    elemDisplay(mySessionTime, true);
+    if (mySessionTime) elemDisplay(mySessionTime, true);
+    if (headerDuration) headerDuration.innerText = '0s';
     setInterval(function printTime() {
         callElapsedTime++;
-        mySessionTime.innerText = secondsToHms(callElapsedTime);
+        if (mySessionTime) mySessionTime.innerText = secondsToHms(callElapsedTime);
+        if (headerDuration) headerDuration.innerText = secondsToHms(callElapsedTime).trim() || '0s';
     }, 1000);
 }
 
@@ -5126,13 +5155,19 @@ function setMySettingsBtn() {
         userLog('toast', `${icons.codecs} Recording prioritize h.264 ` + (recPrioritizeH264 ? 'ON' : 'OFF'));
         playSound('switch');
     });
+
     // Recording pause/resume
-    pauseRecBtn.addEventListener('click', (e) => {
-        pauseRecording();
-    });
-    resumeRecBtn.addEventListener('click', (e) => {
-        resumeRecording();
-    });
+    if (pauseRecBtn) {
+        pauseRecBtn.addEventListener('click', () => {
+            pauseRecording();
+        });
+    }
+    if (resumeRecBtn) {
+        resumeRecBtn.addEventListener('click', () => {
+            resumeRecording();
+        });
+    }
+
     // Styles
     themeCustom.check.onchange = (e) => {
         themeCustom.keep = e.currentTarget.checked;
@@ -6713,6 +6748,57 @@ function stopRecordingTimer() {
 }
 
 /**
+ * Pause recording display buttons
+ */
+function pauseRecButtons() {
+    if (!pauseRecBtn || !resumeRecBtn) return;
+    elemDisplay(pauseRecBtn, false);
+    elemDisplay(resumeRecBtn, true);
+}
+
+/**
+ * Resume recording display buttons
+ */
+function resumeRecButtons() {
+    if (!pauseRecBtn || !resumeRecBtn) return;
+    elemDisplay(resumeRecBtn, false);
+    elemDisplay(pauseRecBtn, true);
+}
+
+/**
+ * Reset recording display buttons
+ */
+function resetRecButtons() {
+    if (!pauseRecBtn || !resumeRecBtn) return;
+    elemDisplay(pauseRecBtn, false);
+    elemDisplay(resumeRecBtn, false);
+}
+
+/**
+ * Pause recording
+ */
+function pauseRecording() {
+    if (!mediaRecorder) return;
+    isStreamRecordingPaused = true;
+    mediaRecorder.pause();
+    pauseRecButtons();
+    console.log('Pause recording');
+    updateHeaderRecordingIndicator();
+}
+
+/**
+ * Resume recording
+ */
+function resumeRecording() {
+    if (!mediaRecorder) return;
+    mediaRecorder.resume();
+    isStreamRecordingPaused = false;
+    resumeRecButtons();
+    console.log('Resume recording');
+    updateHeaderRecordingIndicator();
+}
+
+/**
  * Get MediaRecorder MimeTypes
  * @returns {boolean} is mimeType supported by media recorder
  */
@@ -6960,11 +7046,13 @@ function handleMediaRecorderStart(event) {
     emitPeersAction('recStart');
     emitPeerStatus('rec', true);
     console.log('MediaRecorder started: ', event);
+    isStreamRecordingPaused = false;
     isStreamRecording = true;
     recordStreamBtn.style.setProperty('color', '#ff4500');
     setTippy(recordStreamBtn, 'Stop recording', placement);
     if (isMobileDevice) elemDisplay(swapCameraBtn, false);
     playSound('recStart');
+    updateHeaderRecordingIndicator();
 }
 
 /**
@@ -6986,6 +7074,7 @@ function handleMediaRecorderStop(event) {
     stopRecordingTimer();
     emitPeersAction('recStop');
     emitPeerStatus('rec', false);
+    isStreamRecordingPaused = false;
     isStreamRecording = false;
     myVideoParagraph.innerText = myPeerName + ' (me)';
     if (isRecScreenStream) {
@@ -6999,6 +7088,7 @@ function handleMediaRecorderStop(event) {
     setTippy(recordStreamBtn, 'Start recording', placement);
     if (isMobileDevice) elemDisplay(swapCameraBtn, true, 'block');
     playSound('recStop');
+    updateHeaderRecordingIndicator();
 }
 
 /**
@@ -7007,52 +7097,6 @@ function handleMediaRecorderStop(event) {
 function stopStreamRecording() {
     mediaRecorder.stop();
     audioRecorder.stopMixedAudioStream();
-}
-
-/**
- * Pause recording display buttons
- */
-function pauseRecButtons() {
-    elemDisplay(pauseRecBtn, false);
-    elemDisplay(resumeRecBtn, true);
-}
-/**
- * Resume recording display buttons
- */
-function resumeRecButtons() {
-    elemDisplay(resumeRecBtn, false);
-    elemDisplay(pauseRecBtn, true);
-}
-/**
- * Reset recording display buttons
- */
-function resetRecButtons() {
-    elemDisplay(pauseRecBtn, false);
-    elemDisplay(resumeRecBtn, false);
-}
-
-/**
- * Pause recording
- */
-function pauseRecording() {
-    if (mediaRecorder) {
-        isStreamRecordingPaused = true;
-        mediaRecorder.pause();
-        pauseRecButtons();
-        console.log('Pause recording');
-    }
-}
-
-/**
- * Resume recording
- */
-function resumeRecording() {
-    if (mediaRecorder) {
-        mediaRecorder.resume();
-        isStreamRecordingPaused = false;
-        resumeRecButtons();
-        console.log('Resume recording');
-    }
 }
 
 /**
