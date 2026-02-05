@@ -78,10 +78,15 @@
                     <div class = "site-header-buttons">
                         <button id="pinBtn" class="header-button"><img src="../images/Pin-Pro.svg" alt = "Pin"></button>
                         <button id="cameraBtn" class="header-button"><img src="../images/Top-Cam-Pro.svg" alt = "Camera"></button>
-                        <button id="recordingBtn" class="header-button"><img src="../images/Recording-Pro.svg" alt = "Recording"></button>
+                        <button id="recordingBtn" class="header-button header-rec-btn" type="button" aria-pressed="false">
+                            <span id="headerRecDot" class="header-rec-dot" aria-hidden="true"></span>
+                            <span id="headerRecLabel" class="header-rec-label">REC</span>
+                        </button>
                         <button id="gridViewBtn" class="header-button"><img src="../images/Top-Grid-Pro.svg" alt = "Grid View"></button>
                         <button id="qrCodeBtn" class="header-button"><img src="../images/QR-Code-Pro.svg" alt = "QR Code"></button>
-                        <p> Room ID: ---- || Duration </p>
+                        <p class="header-timer">
+                            <span id="headerRoomId"> </span> || <span id="headerDuration">0s</span>
+                        </p>
                     </div>
                 </div>
             </div>
