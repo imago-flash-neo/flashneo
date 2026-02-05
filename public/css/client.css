@@ -87,12 +87,81 @@
 
 .site-header-buttons {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     color: white;
+    margin-left: auto;
+    margin-right: -8em;
+    align-items: center;
 }
 
 .header-button {
     background-color: transparent;
+    border: none;
+    padding: 0;
+    outline: none;
+}
+
+.header-button:hover {
+    background-color: transparent;
+}
+
+.header-button:focus {
+    outline: none;
+    background-color: transparent;
+}
+
+.header-rec-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+}
+
+.header-rec-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    border: 2px solid rgba(255, 255, 255, 0.75);
+    background: transparent;
+}
+
+.header-rec-dot.is-recording {
+    border-color: #ff2d2d;
+    background: #ff2d2d;
+    animation: headerRecBlink 1s steps(1, end) infinite;
+}
+
+.header-rec-dot.is-paused {
+    border-color: #ff2d2d;
+    background: transparent;
+    animation: none;
+}
+
+.header-rec-label {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+@keyframes headerRecBlink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.2;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.header-timer{
+    background-color: #FF5E0030;
+    border-radius: 10px;
+    padding: 5px 10px;  
+    
 }
 
 .site-header {
@@ -110,7 +179,7 @@
     display: flex;
     justify-content: space-between;
     align-items: end;
-    height: 80px;
+    height: 60px;
 }
 
 .brand {
@@ -1710,9 +1779,6 @@ th {
 }
 #mySettingsTable tr td {
     text-align: left;
-}
-#mySettingsTable tr:nth-child(even) {
-    /* background-color: #2b2b2b; */
 }
 
 .width-130 {
