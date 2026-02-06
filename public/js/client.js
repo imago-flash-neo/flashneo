@@ -2072,6 +2072,7 @@ async function handleAddPeer(config) {
 
     await handlePeersConnectionStatus(peer_id);
     await msgerAddPeers(peers);
+    participantsAddPeers(peers);
     await handleOnIceCandidate(peer_id);
     await handleRTCDataChannels(peer_id);
     await handleOnTrack(peer_id, peers);
@@ -2507,6 +2508,8 @@ function handleRemovePeer(config) {
     delete peerVideoMediaElements[peerVideoId];
     delete peerAudioMediaElements[peerAudioId];
     delete allPeers[peer_id];
+
+    participantsAddPeers(allPeers);
 
     playSound('removePeer');
 
@@ -4666,7 +4669,8 @@ document.addEventListener('DOMContentLoaded', () => {
     participantsBtn.addEventListener('click', () => {
         if (tabParticipants.style.display === 'none' || tabParticipants.style.display === '') {
             tabParticipants.style.display = 'block';
-            emojiPickerContainer.style.display = 'none'; // Hide emoji picker if open
+            emojiPickerContainer.style.display = 'none';
+            participantsAddPeers(allPeers || {});
         } else {
             tabParticipants.style.display = 'none';
         }
@@ -5238,7 +5242,7 @@ function setupMySettings() {
         openTab(e, 'tabRecording');
     });
     tabParticipantsBtn.addEventListener('click', (e) => {
-        openTab(e, 'tabParticipants');
+        openTab(e, 'tabParticipantsSettings');
     });
     tabProfileBtn.addEventListener('click', (e) => {
         openTab(e, 'tabProfile');
@@ -7694,25 +7698,102 @@ async function msgerAddPeers(peers) {
     }
 }
 
+/**
+ * Render participants list in the popup participants window.
+ * Shows mic/cam status and raised-hand indicator.
+ * @param {object} peers all peers info connected to the same room
+ */
+function participantsAddPeers(peers) {
+    if (!participantsList) return;
 
-async function msgerAddPeers(peers) {
-    // Clear the existing list
+    const safePeers = peers || {};
+    
+    // Add current user
+    if (myPeerId && myPeerName) {
+        safePeers[myPeerId] = {
+            peer_name: myPeerName,
+            peer_audio_status: myAudioStatus,
+            peer_video_status: myVideoStatus,
+            peer_hand_status: myHandStatus
+        };
+    }
+    
+    const peerIds = Object.keys(safePeers);
+    if (peerIds.length === 0) {
+        participantsList.innerHTML = '<div style="color: white; padding: 10px;">No participants</div>';
+        return;
+    }
+
+    // Sort peers (current user first)
+    peerIds.sort((a, b) => {
+        if (a === myPeerId) return -1;
+        if (b === myPeerId) return 1;
+        return (safePeers[a]?.peer_name || '').localeCompare(safePeers[b]?.peer_name || '');
+    });
+
     participantsList.innerHTML = '';
 
-    // Add all current participants
-    for (const peer_id in peers) {
-        const peer_name = peers[peer_id]['peer_name'];
-        // Bypass inserting myself in the list
-        if (peer_id != myPeerId && peer_name) {
-            const avatarSvg = isValidEmail(peer_name) ? genGravatar(peer_name) : genAvatarSvg(peer_name, 24);
-            const participantDiv = `
-                <div class="participant">
-                    <img class="participant-avatar" src="${avatarSvg}" alt="${peer_name}'s avatar"> 
-                    <span class="participant-name">${peer_name}</span>
-                </div>
-            `;
-            participantsList.insertAdjacentHTML('beforeend', participantDiv);
+    for (const peer_id of peerIds) {
+        const peer = safePeers[peer_id];
+        const peer_name = peer.peer_name;
+        const displayName = peer_id === myPeerId ? `${peer_name} (me)` : peer_name;
+
+        const avatarSvg = isValidEmail(peer_name) ? genGravatar(peer_name) : genAvatarSvg(peer_name, 24);
+        const audioOn = Boolean(peer.peer_audio_status);
+        const videoOn = Boolean(peer.peer_video_status);
+        const handOn = Boolean(peer.peer_hand_status);
+
+        participantsList.innerHTML += `
+            <div class="participant">
+                <img class="participant-avatar" src="${avatarSvg}" alt="${peer_name}'s avatar"> 
+                <span class="participant-name">${displayName}</span>
+                <span class="participant-status">
+                    <i class="fa-solid ${audioOn ? 'fa-microphone' : 'fa-microphone-slash'}"></i>
+                    <i class="fa-solid ${videoOn ? 'fa-video' : 'fa-video-slash'}"></i>
+                    <i class="fa-solid fa-hand" style="visibility: ${handOn ? 'visible' : 'hidden'}"></i>
+                </span>
+            </div>`;
+    }
+}
+
+function participantsSetPeerName(peer_id, peer_name) {
+    const nameEl = getId(peer_id + '_participant_name');
+    const avatarEl = getId(peer_id + '_participant_avatar');
+    if (nameEl) {
+        nameEl.innerText = peer_id === myPeerId ? `${peer_name} (me)` : peer_name;
+    }
+    if (avatarEl) {
+        avatarEl.src = isValidEmail(peer_name) ? genGravatar(peer_name) : genAvatarSvg(peer_name, 24);
+    }
+}
+
+function participantsSetPeerStatus(peer_id, element, status) {
+    switch (element) {
+        case 'audio': {
+            const el = getId(peer_id + '_participant_audio');
+            if (el) {
+                el.className = `fa-solid ${status ? 'fa-microphone' : 'fa-microphone-slash'}`;
+                el.title = status ? 'Mic on' : 'Mic off';
+            }
+            break;
         }
+        case 'video': {
+            const el = getId(peer_id + '_participant_video');
+            if (el) {
+                el.className = `fa-solid ${status ? 'fa-video' : 'fa-video-slash'}`;
+                el.title = status ? 'Camera on' : 'Camera off';
+            }
+            break;
+        }
+        case 'hand': {
+            const el = getId(peer_id + '_participant_hand');
+            if (el) {
+                el.style.visibility = status ? 'visible' : 'hidden';
+            }
+            break;
+        }
+        default:
+            break;
     }
 }
 
@@ -8199,6 +8280,11 @@ function handlePeerName(config) {
     }
     // refresh also peer video avatar name
     setPeerAvatarImgName(peer_id + '_avatar', peer_name);
+
+    if (allPeers && allPeers[peer_id]) {
+        allPeers[peer_id].peer_name = peer_name;
+    }
+    participantsSetPeerName(peer_id, peer_name);
 }
 
 /**
@@ -8254,6 +8340,7 @@ function setMyHandStatus() {
         setTippy(myHandBtn, 'Lower your hand', placement);
     }
     emitPeerStatus('hand', myHandStatus);
+    participantsSetPeerStatus(myPeerId, 'hand', myHandStatus);
 }
 
 /**
@@ -8267,6 +8354,7 @@ function setMyAudioStatus(status) {
     myAudioStatusIcon.className = audioClassName;
     // send my audio status to all peers in the room
     emitPeerStatus('audio', status);
+    participantsSetPeerStatus(myPeerId, 'audio', status);
     setTippy(myAudioStatusIcon, status ? 'My audio is on' : 'My audio is off', 'bottom');
     setTippy(audioBtn, status ? 'Stop the audio' : 'Start the audio', placement);
     status ? playSound('on') : playSound('off');
@@ -8289,6 +8377,7 @@ function setMyVideoStatus(status) {
 
     // send my video status to all peers in the room
     emitPeerStatus('video', status);
+    participantsSetPeerStatus(myPeerId, 'video', status);
 
     if (!isMobileDevice) {
         if (myVideoStatusIcon) setTippy(myVideoStatusIcon, status ? 'My video is on' : 'My video is off', 'bottom');
@@ -8313,6 +8402,14 @@ function setMyVideoStatus(status) {
 function handlePeerStatus(config) {
     //
     const { peer_id, peer_name, element, status } = config;
+
+    if (allPeers && allPeers[peer_id]) {
+        if (element === 'audio') allPeers[peer_id].peer_audio_status = status;
+        if (element === 'video') allPeers[peer_id].peer_video_status = status;
+        if (element === 'hand') allPeers[peer_id].peer_hand_status = status;
+    }
+
+    participantsSetPeerStatus(peer_id, element, status);
 
     switch (element) {
         case 'video':

@@ -745,15 +745,24 @@ body {
 # Participands list
 --------------------------------------------------------------*/
 
+#participantsList {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px 0;
+}
 
 .participant {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .participant-avatar {
     width: 26px;
+    height: 26px;
     border-radius: 50%;
     margin-right: 10px;
 }
@@ -761,6 +770,20 @@ body {
 .participant-name {
     color: white;
     font-size: 15px;
+    flex-grow: 1;
+}
+
+.participant-status {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.participant-status i {
+    color: #fff;
+    opacity: 0.85;
+    font-size: 14px;
 }
 
 
