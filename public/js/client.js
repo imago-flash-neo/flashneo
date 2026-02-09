@@ -246,10 +246,12 @@ const recordStreamBtn = getId('recordStreamBtn');
 const recordingBtn = getId('recordingBtn');
 const headerRecDot = getId('headerRecDot');
 const fullScreenBtn = getId('fullScreenBtn');
+const qrCodeBtn = getId('qrCodeBtn');
 const chatRoomBtn = getId('chatRoomBtn');
 const captionBtn = getId('captionBtn');
 const roomEmojiPickerBtn = getId('roomEmojiPickerBtn');
 const myHandBtn = getId('myHandBtn');
+const handRaiseNotification = getId('handRaiseNotification');
 const whiteboardBtn = getId('whiteboardBtn');
 const fileShareBtn = getId('fileShareBtn');
 const documentPiPBtn = getId('documentPiPBtn');
@@ -649,7 +651,7 @@ let camera = 'user'; // user = front-facing camera on a smartphone. | environmen
 let leftChatAvatar;
 let rightChatAvatar;
 let chatMessagesId = 0;
-let showChatOnMessage = true;
+let showChatOnMessage = false;
 let isChatRoomVisible = false;
 let isCaptionBoxVisible = false;
 let isChatEmojiVisible = false;
@@ -4329,6 +4331,7 @@ function manageLeftButtons() {
     setScreenShareBtn();
     setRecordStreamBtn();
     setFullScreenBtn();
+    setQRCodeBtn();
     setChatRoomBtn();
     setCaptionRoomBtn();
     setRoomEmojiButton();
@@ -4472,6 +4475,16 @@ function setFullScreenBtn() {
     } else {
         elemDisplay(fullScreenBtn, false);
     }
+}
+
+/**
+ * QR Code button click event
+ */
+function setQRCodeBtn() {
+    setTippy(qrCodeBtn, 'Show QR Code', placement);
+    qrCodeBtn.addEventListener('click', (e) => {
+        shareRoomMeetingURL();
+    });
 }
 
 /**
@@ -8328,13 +8341,27 @@ function setMyHandStatus() {
         // Raise hand
         setColor(myHandBtn, 'green');
         elemDisplay(myHandStatusIcon, true);
-        setTippy(myHandBtn, 'Raise your hand', placement);
+        setTippy(myHandBtn, 'Lower your hand', placement);
         playSound('raiseHand');
+        // Show notification for own hand raise
+        if (handRaiseNotification) {
+            handRaiseNotification.textContent = `${myPeerName} raised their hand ✋     `;
+            handRaiseNotification.style.display = 'block';
+            handRaiseNotification.className = 'show';
+            // Hide after 3 seconds
+            setTimeout(() => {
+                handRaiseNotification.className = 'hide';
+                setTimeout(() => {
+                    handRaiseNotification.style.display = 'none';
+                    handRaiseNotification.className = '';
+                }, 300);
+            }, 3000);
+        }
     } else {
         // Lower hand
         setColor(myHandBtn, 'black');
         elemDisplay(myHandStatusIcon, false);
-        setTippy(myHandBtn, 'Lower your hand', placement);
+        setTippy(myHandBtn, 'Raise your hand', placement);
     }
     emitPeerStatus('hand', myHandStatus);
     participantsSetPeerStatus(myPeerId, 'hand', myHandStatus);
@@ -8436,8 +8463,23 @@ function setPeerHandStatus(peer_id, peer_name, status) {
     const peerHandStatus = getId(peer_id + '_handStatus');
     if (status) {
         elemDisplay(peerHandStatus, true);
-        userLog('toast', `${icons.user} ${peer_name} \n has raised the hand!`);
+        // Show hand raise notification
+        if (handRaiseNotification) {
+            handRaiseNotification.textContent = `${peer_name} raised their hand`;
+            handRaiseNotification.style.display = 'block';
+            handRaiseNotification.className = 'show';
+        }
         playSound('raiseHand');
+        // Hide after 3 seconds
+        setTimeout(() => {
+            if (handRaiseNotification) {
+                handRaiseNotification.className = 'hide';
+                setTimeout(() => {
+                    handRaiseNotification.style.display = 'none';
+                    handRaiseNotification.className = '';
+                }, 300);
+            }
+        }, 3000);
     } else {
         elemDisplay(peerHandStatus, false);
     }
