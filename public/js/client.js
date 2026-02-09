@@ -246,10 +246,12 @@ const recordStreamBtn = getId('recordStreamBtn');
 const recordingBtn = getId('recordingBtn');
 const headerRecDot = getId('headerRecDot');
 const fullScreenBtn = getId('fullScreenBtn');
+const qrCodeBtn = getId('qrCodeBtn');
 const chatRoomBtn = getId('chatRoomBtn');
 const captionBtn = getId('captionBtn');
 const roomEmojiPickerBtn = getId('roomEmojiPickerBtn');
 const myHandBtn = getId('myHandBtn');
+const handRaisedNotification = getId('handRaisedNotification');
 const whiteboardBtn = getId('whiteboardBtn');
 const fileShareBtn = getId('fileShareBtn');
 const documentPiPBtn = getId('documentPiPBtn');
@@ -4484,9 +4486,8 @@ function setQRCodeBtn() {
 }
 
 
-/**
- * Chat room buttons click event
- */
+// Chat room buttons click event
+
 function setChatRoomBtn() {
     // adapt chat room size for mobile
     setChatRoomAndCaptionForMobile();
