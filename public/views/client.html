@@ -76,13 +76,13 @@
                         </div>
                     </div>
                     <div class = "site-header-buttons">
-                        <button id="pinBtn" class="header-button"><img src="../images/Pin-Pro.svg" alt = "Pin"></button>
+                        <!-- <button id="pinBtn" class="header-button"><img src="../images/Pin-Pro.svg" alt = "Pin"></button> -->
                         <button id="cameraBtn" class="header-button"><img src="../images/Top-Cam-Pro.svg" alt = "Camera"></button>
                         <button id="recordingBtn" class="header-button header-rec-btn" type="button" aria-pressed="false">
                             <span id="headerRecDot" class="header-rec-dot" aria-hidden="true"></span>
                             <span id="headerRecLabel" class="header-rec-label">REC</span>
                         </button>
-                        <button id="gridViewBtn" class="header-button"><img src="../images/Top-Grid-Pro.svg" alt = "Grid View"></button>
+                        <button id="fullScreenBtn" class="header-button"><img src="../images/Full-Screen-Pro.svg" alt = "Full Screen"></button>
                         <button id="qrCodeBtn" class="header-button"><img src="../images/QR-Code-Pro.svg" alt = "QR Code"></button>
                         <p class="header-timer">
                             <span id="headerRoomId"> </span> || <span id="headerDuration">0s</span>
@@ -185,7 +185,7 @@
             <button id="swapCameraBtn"><img src="../images/cameraRotate.svg" /></button>
             <button id="myHandBtn"><img src="../images/Hands-Up-Pro.svg" /></button>
             <button id="documentPiPBtn"><img src="../images/Picture-in-Picture-Pro.svg" style="margin-bottom: 5%;" /></button>
-            <button id="whiteboardBtn"><img src="../images/Whiteboard-Pro.svg" /></button>
+            <!-- <button id="whiteboardBtn"><img src="../images/Whiteboard-Pro.svg" /></button> -->
             <button id="fileShareBtn"><img src="../images/Folder-Sharing-Pro.svg" /></button>
             <button id="participantsBtn"><img src="../images/User-Pro.svg" /></button>
             <button id="mySettingsBtn"><img src="../images/Setting-Pro.svg" /></button>
@@ -447,9 +447,9 @@
                             <tr>
                                 <td>
                                     <div class="title" style="margin-top: -10%;">
-                                        <p>Room Name</p><br/>
-                                        <p id="myRoomId" class="cp">xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</p>
-                                        <button id="roomSendEmailBtn">Share</button>
+                                        <p>Room ID</p><br/>
+                                        <p id="myRoomId" class="cp">xxxxxx</p>
+                               <button id="roomSendEmailBtn">Share</button>
                                     </div>
                                 </td>
                             </tr>
@@ -988,6 +988,9 @@
         </div>
 
         <!-- End Video container -->
+
+        <!-- Hand Raise Notification -->
+        <div id="handRaiseNotification"></div>
 
         <!--
         - JS scripts https://cdn.jsdelivr.net

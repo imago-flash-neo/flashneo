@@ -70,9 +70,9 @@ const className = {
     mirror: '../images/mirror.png',
     zoomIn: '../images/zoomIn.png',
     zoomOut: '../images/zoomOut.png',
-    fullScreen: '../images/fullScreen.png',
-    fsOn: '../images/fsOn.png',
-    fsOff: '../images/fsOff.png',
+    fullScreen: '../images/Full-Screen-Pro.svg',
+    fsOn: '../images/Full-Screen-Pro.svg', /* Full screen on*/
+    fsOff: '../images/Full-Screen-Pro.svg', /* Full screen off*/
     msgPrivate: '../images/msgPrivate.png',
     shareFile: '../images/Folder-Sharing-Pro.svg',
     shareVideoAudio: '../images/shareVideoAudio.png',
@@ -4462,7 +4462,6 @@ function setFullScreenBtn() {
         document.addEventListener('fullscreenchange', (e) => {
             let fullscreenElement = document.fullscreenElement;
             if (!fullscreenElement) {
-                fullScreenBtn.className = className.fsOff;
                 isDocumentOnFullScreen = false;
                 setTippy(fullScreenBtn, 'View full screen', placement);
             }
@@ -6509,12 +6508,10 @@ async function setMyVideoStatusTrue() {
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
-        fullScreenBtn.className = className.fsOn;
         isDocumentOnFullScreen = true;
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-            fullScreenBtn.className = className.fsOff;
             isDocumentOnFullScreen = false;
         }
     }
