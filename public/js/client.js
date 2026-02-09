@@ -4329,6 +4329,7 @@ function manageLeftButtons() {
     setScreenShareBtn();
     setRecordStreamBtn();
     setFullScreenBtn();
+    setQRCodeBtn();
     setChatRoomBtn();
     setCaptionRoomBtn();
     setRoomEmojiButton();
@@ -4473,6 +4474,15 @@ function setFullScreenBtn() {
         elemDisplay(fullScreenBtn, false);
     }
 }
+
+// QR code button click event
+function setQRCodeBtn() {
+    setTippy(qrCodeBtn, 'Show QR Code', placement);
+    qrCodeBtn.addEventListener('click', (e) => {
+        shareRoomMeetingURL();
+    });
+}
+
 
 /**
  * Chat room buttons click event
@@ -8330,6 +8340,20 @@ function setMyHandStatus() {
         elemDisplay(myHandStatusIcon, true);
         setTippy(myHandBtn, 'Raise your hand', placement);
         playSound('raiseHand');
+        if (handRaiseNotification) {
+            handRaiseNotification.textContent = `${myPeerName} raised their hand ✋     `;
+            handRaiseNotification.style.display = 'block';
+            handRaiseNotification.className = 'show';
+            // Hide after 3 seconds
+            setTimeout(() => {
+                handRaiseNotification.className = 'hide';
+                setTimeout(() => {
+                    handRaiseNotification.style.display = 'none';
+                    handRaiseNotification.className = '';
+                }, 300);
+            }, 3000);
+        }
+
     } else {
         // Lower hand
         setColor(myHandBtn, 'black');
@@ -8436,8 +8460,24 @@ function setPeerHandStatus(peer_id, peer_name, status) {
     const peerHandStatus = getId(peer_id + '_handStatus');
     if (status) {
         elemDisplay(peerHandStatus, true);
-        userLog('toast', `${icons.user} ${peer_name} \n has raised the hand!`);
+        // Show hand raise notification
+        if (handRaiseNotification) {
+            handRaiseNotification.textContent = `${peer_name} raised their hand`;
+            handRaiseNotification.style.display = 'block';
+            handRaiseNotification.className = 'show';
+        }
         playSound('raiseHand');
+        // Hide after 3 seconds
+        setTimeout(() => {
+            if (handRaiseNotification) {
+                handRaiseNotification.className = 'hide';
+                setTimeout(() => {
+                    handRaiseNotification.style.display = 'none';
+                    handRaiseNotification.className = '';
+                }, 300);
+            }
+        }, 3000);
+
     } else {
         elemDisplay(peerHandStatus, false);
     }

@@ -2607,7 +2607,7 @@ button {
 # Hand Raise Notification
 --------------------------------------------------------------*/
 
-/* #handRaiseNotification {
+#handRaiseNotification {
     position: fixed;
     bottom: 20px;
     left: 20px;
@@ -2653,16 +2653,16 @@ button {
         opacity: 0;
         transform: translateX(-100px);
     }
-} */
+}
 
 /*--------------------------------------------------------------
 # Hand Raised Background
 --------------------------------------------------------------*/
 
-/* .hand-raised-background {
+.hand-raised-background {
     background-color: rgba(128, 128, 128, 0.3) !important;
     transition: background-color 0.3s ease;
-} */
+}
 
 /*
 z-index
