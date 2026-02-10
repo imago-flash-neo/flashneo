@@ -247,6 +247,7 @@ const recordingBtn = getId('recordingBtn');
 const headerRecDot = getId('headerRecDot');
 const fullScreenBtn = getId('fullScreenBtn');
 const qrCodeBtn = getId('qrCodeBtn');
+const qrCodeBtn = getId('qrCodeBtn');
 const chatRoomBtn = getId('chatRoomBtn');
 const captionBtn = getId('captionBtn');
 const roomEmojiPickerBtn = getId('roomEmojiPickerBtn');
@@ -652,7 +653,7 @@ let camera = 'user'; // user = front-facing camera on a smartphone. | environmen
 let leftChatAvatar;
 let rightChatAvatar;
 let chatMessagesId = 0;
-let showChatOnMessage = true;
+let showChatOnMessage = false;
 let isChatRoomVisible = false;
 let isCaptionBoxVisible = false;
 let isChatEmojiVisible = false;
@@ -4477,6 +4478,26 @@ function setFullScreenBtn() {
     } else {
         elemDisplay(fullScreenBtn, false);
     }
+}
+
+/**
+ * QR Code button click event
+ */
+function setQRCodeBtn() {
+    setTippy(qrCodeBtn, 'Show QR Code', placement);
+    qrCodeBtn.addEventListener('click', (e) => {
+        shareRoomMeetingURL();
+    });
+}
+
+/**
+ * QR Code button click event
+ */
+function setQRCodeBtn() {
+    setTippy(qrCodeBtn, 'Show QR Code', placement);
+    qrCodeBtn.addEventListener('click', (e) => {
+        shareRoomMeetingURL();
+    });
 }
 
 // QR code button click event
@@ -8341,8 +8362,9 @@ function setMyHandStatus() {
         // Raise hand
         setColor(myHandBtn, 'green');
         elemDisplay(myHandStatusIcon, true);
-        setTippy(myHandBtn, 'Raise your hand', placement);
+        setTippy(myHandBtn, 'Lower your hand', placement);
         playSound('raiseHand');
+        // Show notification for own hand raise
         if (handRaiseNotification) {
             handRaiseNotification.textContent = `${myPeerName} raised their hand ✋     `;
             handRaiseNotification.style.display = 'block';
@@ -8356,12 +8378,11 @@ function setMyHandStatus() {
                 }, 300);
             }, 3000);
         }
-
     } else {
         // Lower hand
         setColor(myHandBtn, 'black');
         elemDisplay(myHandStatusIcon, false);
-        setTippy(myHandBtn, 'Lower your hand', placement);
+        setTippy(myHandBtn, 'Raise your hand', placement);
     }
     emitPeerStatus('hand', myHandStatus);
     participantsSetPeerStatus(myPeerId, 'hand', myHandStatus);
@@ -8480,7 +8501,6 @@ function setPeerHandStatus(peer_id, peer_name, status) {
                 }, 300);
             }
         }, 3000);
-
     } else {
         elemDisplay(peerHandStatus, false);
     }

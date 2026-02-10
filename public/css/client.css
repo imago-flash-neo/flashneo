@@ -2660,8 +2660,10 @@ button {
 --------------------------------------------------------------*/
 
 .hand-raised-background {
+.hand-raised-background {
     background-color: rgba(128, 128, 128, 0.3) !important;
     transition: background-color 0.3s ease;
+}
 }
 
 /*
