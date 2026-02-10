@@ -377,6 +377,7 @@ const networkStun = getId('networkStun');
 const networkTurn = getId('networkTurn');
 const tabRoomBtn = getId('tabRoomBtn');
 const roomSendEmailBtn = getId('roomSendEmailBtn');
+const scheduleBtn = getId('scheduleBtn');
 const tabStylingBtn = getId('tabStylingBtn');
 const tabLanguagesBtn = getId('tabLanguagesBtn');
 const mySettingsCloseBtn = getId('mySettingsCloseBtn');

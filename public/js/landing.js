@@ -220,9 +220,8 @@
     })(),
     (function () {
         'use strict';
-        const e = document.querySelectorAll('[class*=reveal-]');
-        let t = window.innerHeight;
-
+        const e = document.querySelectorAll('[class*=reveal-]');        let t = window.innerHeight;
+ 
         function n(e, t) {
             let n = 0;
             return function () {
@@ -306,3 +305,176 @@
                 });
             }
     })();
+// Schedule Meeting Button Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const scheduleBtn = document.getElementById('scheduleBtn');
+    
+    if (scheduleBtn) {
+        scheduleBtn.addEventListener('click', function() {
+            Swal.fire({
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                background: '#3C3C3C',
+                position: 'center',
+                title: '<span style="color: #fff;">Schedule Meeting</span>',
+                html: `
+                    <style>
+                        .schedule-popup-container {
+                            padding: 20px;
+                            text-align: left;
+                        }
+                        .schedule-form-group {
+                            margin-bottom: 20px;
+                        }
+                        .schedule-form-group label {
+                            display: block;
+                            color: #fff;
+                            margin-bottom: 8px;
+                            font-weight: 500;
+                        }
+                        .schedule-form-group input,
+                        .schedule-form-group textarea {
+                            width: 100%;
+                            padding: 10px;
+                            border: 1px solid #444;
+                            border-radius: 6px;
+                            background: #fff;
+                            color: #000;
+                            font-size: 14px;
+                            box-sizing: border-box;
+                        }
+                        .schedule-form-group textarea {
+                            min-height: 80px;
+                            resize: vertical;
+                        }
+                        .datetime-flex {
+                            display: flex;
+                            gap: 15px;
+                            margin-bottom: 20px;
+                        }
+                        .datetime-flex .schedule-form-group {
+                            flex: 1;
+                            margin-bottom: 0;
+                        }
+                        @media (max-width: 600px) {
+                            .schedule-popup-container {
+                                padding: 10px;
+                            }
+                            .schedule-form-group input,
+                            .schedule-form-group textarea {
+                                font-size: 12px;
+                                padding: 8px;
+                            }
+                            .datetime-flex {
+                                flex-direction: column;
+                                gap: 0;
+                            }
+                            .datetime-flex .schedule-form-group {
+                                margin-bottom: 20px;
+                            }
+                        }
+                    </style>
+                    <div class="schedule-popup-container">
+                        <div class="schedule-form-group">
+                            <label for="meetingTitle">Room Name/ID </label>
+                            <input type="text" id="meetingTitle" placeholder="Enter Room Name or ID" />
+                        </div>
+                        <div class="datetime-flex">
+                            <div class="schedule-form-group">
+                                <label for="datePicker">Date</label>
+                                <input type="text" id="datePicker" class="flatpickr" placeholder="Select date" />
+                            </div>
+                            <div class="schedule-form-group">
+                                <label for="timePicker">Time</label>
+                                <input type="text" id="timePicker" placeholder="Select time" />
+                            </div>
+                        </div>
+                        <div class="schedule-form-group">
+                            <label for="participantEmails">Participant Emails</label>
+                            <input type="text" id="participantEmails" placeholder="email1@example.com, email2@example.com"/>
+                        </div>
+                        <div class="schedule-form-group">
+                            <label for="meetingDescription">Description (Optional)</label>
+                            <textarea id="meetingDescription" placeholder="Add meeting description"></textarea>
+                        </div>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Send Invitation',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#88BDF2',
+                cancelButtonColor: '#dc3545',
+                showClass: { popup: 'animate__animated animate__fadeInDown' },
+                hideClass: { popup: 'animate__animated animate__fadeOutUp' },
+                didOpen: () => {
+                    // Initialize flatpickr date picker
+                    flatpickr('#datePicker', {
+                        dateFormat: 'Y-m-d',
+                        minDate: 'today',
+                    });
+                    
+                    // Initialize flatpickr time picker
+                    flatpickr('#timePicker', {
+                        enableTime: true,
+                        noCalendar: true,
+                        dateFormat: 'H:i',
+                        time_24hr: true,
+                    });
+                },
+                preConfirm: () => {
+                    const title = document.getElementById('meetingTitle').value;
+                    const date = document.getElementById('datePicker').value;
+                    const time = document.getElementById('timePicker').value;
+                    const description = document.getElementById('meetingDescription').value;
+                    const emails = document.getElementById('participantEmails').value;
+
+                    if (!title) {
+                        Swal.showValidationMessage('Please enter a Room Name or ID');
+                        return false;
+                    }
+                    if (!date) {
+                        Swal.showValidationMessage('Please select a date');
+                        return false;
+                    }
+                    if (!time) {
+                        Swal.showValidationMessage('Please select a time');
+                        return false;
+                    }
+                    if (!emails) {
+                        Swal.showValidationMessage('Please enter participant emails');
+                        return false;
+                    }
+
+                    return { title, date, time, description, emails };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const { title, date, time, description, emails } = result.value;
+                    
+                    // Combine date and time
+                    const dateTime = `${date} ${time}`;
+                    
+                    // Create email content
+                    const newLine = '%0D%0A';
+                    const emailSubject = `Meeting Invitation: ${title}`;
+                    const emailBody = `You're invited to: ${title}${newLine}${newLine}` +
+                        `Date: ${date}${newLine}` +
+                        `Time: ${time}${newLine}${newLine}` +
+                        (description ? `Description: ${description}${newLine}${newLine}` : '') +
+                        `Join the meeting at the scheduled time.${newLine}`;
+                    
+                    // Open default email client
+                    window.location.href = `mailto:${emails}?subject=${emailSubject}&body=${emailBody}`;
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: '<span style="color: #fff;">Success!</span>',
+                        text: 'Your email client has been opened with the meeting invitation.',
+                        background: '#000',
+                        confirmButtonColor: '#007bff',
+                    });
+                }
+            });
+        });
+    }
+});
