@@ -247,7 +247,6 @@ const recordingBtn = getId('recordingBtn');
 const headerRecDot = getId('headerRecDot');
 const fullScreenBtn = getId('fullScreenBtn');
 const qrCodeBtn = getId('qrCodeBtn');
-const qrCodeBtn = getId('qrCodeBtn');
 const chatRoomBtn = getId('chatRoomBtn');
 const captionBtn = getId('captionBtn');
 const roomEmojiPickerBtn = getId('roomEmojiPickerBtn');
