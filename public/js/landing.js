@@ -463,16 +463,40 @@ document.addEventListener('DOMContentLoaded', function() {
                         (description ? `Description: ${description}${newLine}${newLine}` : '') +
                         `Join the meeting at the scheduled time.${newLine}`;
                     
-                    // Open default email client
-                    window.location.href = `mailto:${emails}?subject=${emailSubject}&body=${emailBody}`;
                     
-                    Swal.fire({
-                        icon: 'success',
-                        title: '<span style="color: #fff;">Success!</span>',
-                        text: 'Your email client has been opened with the meeting invitation.',
-                        background: '#000',
-                        confirmButtonColor: '#007bff',
+                    // Call backend API to send email with ICS attachment
+                    
+                    fetch("http://localhost:4000/send-meeting", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            title,
+                            dateTime,
+                            description,
+                            emails
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(() => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '<span style="color: #fff;">Success!</span>',
+                            text: 'Meeting invitation sent successfully.',
+                            background: '#000',
+                            confirmButtonColor: '#007bff',
+                        });
+                    })
+                    .catch(() => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to send meeting invitation.',
+                            background: '#000'
+                        });
                     });
+
                 }
             });
         });
