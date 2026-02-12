@@ -18,7 +18,7 @@ app.use(cors({
 }));
 
 /* ==============================
-   RATE LIMITING (ANTI-SPAM)
+   RATE LIMITING FOR EMAIL ENDPOINT
 ============================== */
 const emailLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -27,14 +27,13 @@ const emailLimiter = rateLimit({
 
 /* ==============================
    SMTP TRANSPORTER
-   (AUTH PLAIN corporate SMTP)
 ============================== */
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_SERVER,
-  port: 587, // keep this
+  port: 587, 
 
-  secure: false,      // IMPORTANT for 587
-  requireTLS: true,   // REQUIRED for corporate SMTP
+  secure: false,     
+  requireTLS: true,   
 
   auth: {
     user: process.env.SMTP_USERNAME,
@@ -86,12 +85,42 @@ END:VCALENDAR
 `.trim();
 }
 
+/**
+ * Create a Date object from date/time in a specific timezone
+ * @param {number} year 
+ * @param {number} month (1-12)
+ * @param {number} day 
+ * @param {number} hour 
+ * @param {number} minute 
+ * @param {string} timeZone - IANA timezone string
+ * @returns {Date}
+ */
+function createDateInTimezone(year, month, day, hour, minute, timeZone) {
+  // Create a date string in ISO format
+  const dateString = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}T${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}:00`;
+  
+  // Parse it as a local date first
+  const date = new Date(dateString);
+  
+  // Format this date in both UTC and the target timezone
+  const utcString = date.toLocaleString('en-US', { timeZone: 'UTC', hour12: false });
+  const tzString = date.toLocaleString('en-US', { timeZone: timeZone, hour12: false });
+  
+  // Calculate the difference
+  const utcTime = new Date(utcString).getTime();
+  const tzTime = new Date(tzString).getTime();
+  const offset = utcTime - tzTime;
+  
+  // Adjust the original date by the offset
+  return new Date(date.getTime() + offset);
+}
+
 /* ==============================
    EMAIL ENDPOINT
 ============================== */
 app.post("/send-meeting", emailLimiter, async (req, res) => {
   try {
-    const { title, dateTime, description, emails } = req.body;
+    const { title, dateTime, description, emails, password, timeZone } = req.body;
 
     if (!title || !dateTime || !emails) {
       return res.status(400).json({ error: "Missing fields" });
@@ -107,8 +136,16 @@ app.post("/send-meeting", emailLimiter, async (req, res) => {
       return res.status(400).json({ error: "Invalid emails" });
     }
 
-    // Create meeting times
-    const start = new Date(dateTime);
+    // Use provided timezone or fallback to server timezone
+    const selectedTimeZone = timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    // Parse the dateTime string (format: "YYYY-MM-DD HH:mm")
+    const [datePart, timePart] = dateTime.split(' ');
+    const [year, month, day] = datePart.split('-').map(Number);
+    const [hour, minute] = timePart.split(':').map(Number);
+    
+    // Create the start date in the selected timezone
+    const start = createDateInTimezone(year, month, day, hour, minute, selectedTimeZone);
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
     // Generate ICS content
@@ -118,13 +155,24 @@ app.post("/send-meeting", emailLimiter, async (req, res) => {
       end,
       description
     });
-
+    
     // Send email
     await transporter.sendMail({
       from: `"Flash Neo" <${process.env.SMTP_USERNAME}>`,
       to: emailList,
-      subject: `Meeting Invitation: ${title}`,
-      text: "You have received a meeting invitation.",
+      subject: "You have a new meeting invitation",
+      text: `You have received a meeting invitation.
+
+Meeting Details:
+
+Room ID: ${title}${password ? `\nPassword: ${password} 🔒` : ''}
+Date: ${start.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: selectedTimeZone })}
+Time: ${start.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: selectedTimeZone })} - ${end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: selectedTimeZone })}
+Timezone: ${selectedTimeZone.split('/').pop().replace(/_/g, ' ')} (${selectedTimeZone})
+Description: ${description}
+
+You may join the meeting following the link: https://flashneo.com/meeting`,
+
       attachments: [
         {
           filename: "meeting.ics",

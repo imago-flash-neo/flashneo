@@ -333,7 +333,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             font-weight: 500;
                         }
                         .schedule-form-group input,
-                        .schedule-form-group textarea {
+                        .schedule-form-group textarea,
+                        .schedule-form-group select {
                             width: 100%;
                             padding: 10px;
                             border: 1px solid #444;
@@ -341,7 +342,39 @@ document.addEventListener('DOMContentLoaded', function() {
                             background: #fff;
                             color: #000;
                             font-size: 14px;
+                            font-family: 'Roboto', sans-serif;
                             box-sizing: border-box;
+                        }
+                        .timezone-dropdown-container {
+                            position: relative;
+                        }
+                        .timezone-dropdown {
+                            position: absolute;
+                            top: 100%;
+                            left: 0;
+                            right: 0;
+                            max-height: 200px;
+                            overflow-y: auto;
+                            background: #fff;
+                            border: 1px solid #444;
+                            border-top: none;
+                            border-radius: 0 0 6px 6px;
+                            z-index: 1000;
+                            display: none;
+                            font-family: 'Roboto', sans-serif;
+                        }
+                        .timezone-dropdown.show {
+                            display: block;
+                        }
+                        .timezone-option {
+                            padding: 10px;
+                            cursor: pointer;
+                            color: #000;
+                            font-size: 14px;
+                            font-family: 'Roboto', sans-serif;
+                        }
+                        .timezone-option:hover {
+                            background: #f0f0f0;
                         }
                         .schedule-form-group textarea {
                             min-height: 80px;
@@ -390,8 +423,19 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                         </div>
                         <div class="schedule-form-group">
+                            <label for="timeZoneInput">Timezone</label>
+                            <div class="timezone-dropdown-container">
+                                <input type="text" id="timeZoneInput" placeholder="Start typing to search..." autocomplete="off" />
+                                <div id="timeZoneDropdown" class="timezone-dropdown"></div>
+                            </div>
+                        </div>
+                        <div class="schedule-form-group">
                             <label for="participantEmails">Participant Emails</label>
                             <input type="text" id="participantEmails" placeholder="email1@example.com, email2@example.com"/>
+                        </div>
+                        <div class="schedule-form-group">
+                            <label for="meetingPassword">Room Password (Optional)</label>
+                            <input type="password" id="meetingPassword" placeholder="Leave empty for no password" />
                         </div>
                         <div class="schedule-form-group">
                             <label for="meetingDescription">Description (Optional)</label>
@@ -420,13 +464,76 @@ document.addEventListener('DOMContentLoaded', function() {
                         dateFormat: 'H:i',
                         time_24hr: true,
                     });
+
+                    // Setup timezone dropdown
+                    const timeZones = Intl.supportedValuesOf('timeZone');
+                    const dropdown = document.getElementById('timeZoneDropdown');
+                    const input = document.getElementById('timeZoneInput');
+                    const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    
+                    // Create a map to store full timezone values and array for all options
+                    window.timezoneMap = {};
+                    window.timezoneOptions = [];
+                    
+                    timeZones.forEach(tz => {
+                        // Extract city/region name (remove continent prefix)
+                        const displayName = tz.split('/').pop().replace(/_/g, ' ');
+                        window.timezoneMap[displayName] = tz;
+                        window.timezoneOptions.push(displayName);
+                    });
+                    
+                    // Set default to user's timezone
+                    const userDisplayName = userTimeZone.split('/').pop().replace(/_/g, ' ');
+                    input.value = userDisplayName;
+                    
+                    // Function to render dropdown options
+                    function renderTimezoneOptions(filter = '') {
+                        const filtered = window.timezoneOptions.filter(tz => 
+                            tz.toLowerCase().includes(filter.toLowerCase())
+                        );
+                        
+                        dropdown.innerHTML = '';
+                        filtered.forEach(tz => {
+                            const option = document.createElement('div');
+                            option.className = 'timezone-option';
+                            option.textContent = tz;
+                            option.onclick = () => {
+                                input.value = tz;
+                                dropdown.classList.remove('show');
+                            };
+                            dropdown.appendChild(option);
+                        });
+                    }
+                    
+                    // Show dropdown on focus
+                    input.addEventListener('focus', () => {
+                        renderTimezoneOptions(input.value);
+                        dropdown.classList.add('show');
+                    });
+                    
+                    // Filter on input
+                    input.addEventListener('input', () => {
+                        renderTimezoneOptions(input.value);
+                        dropdown.classList.add('show');
+                    });
+                    
+                    // Hide dropdown when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
                 },
+
                 preConfirm: () => {
                     const title = document.getElementById('meetingTitle').value;
                     const date = document.getElementById('datePicker').value;
                     const time = document.getElementById('timePicker').value;
                     const description = document.getElementById('meetingDescription').value;
                     const emails = document.getElementById('participantEmails').value;
+                    const password = document.getElementById('meetingPassword').value;
+                    const timeZoneDisplay = document.getElementById('timeZoneInput').value;
+                    const timeZone = window.timezoneMap[timeZoneDisplay] || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
                     if (!title) {
                         Swal.showValidationMessage('Please enter a Room Name or ID');
@@ -445,11 +552,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         return false;
                     }
 
-                    return { title, date, time, description, emails };
+                    return { title, date, time, description, emails, password, timeZone };
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const { title, date, time, description, emails } = result.value;
+                    const { title, date, time, description, emails, password, timeZone } = result.value;
                     
                     // Combine date and time
                     const dateTime = `${date} ${time}`;
@@ -475,7 +582,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             title,
                             dateTime,
                             description,
-                            emails
+                            emails,
+                            password: password || null,
+                            timeZone
                         })
                     })
                     .then(res => res.json())
