@@ -841,8 +841,8 @@ strong {
     .container,
     .container-sm,
     .container-xs {
-        padding-left: 24px;
-        padding-right: 24px;
+        padding-left: 0;
+        padding-right: 0;
     }
 }
 
@@ -910,6 +910,7 @@ strong {
     align-items: center;
     gap: 8px;
     white-space: nowrap;
+    margin-right: 10px; 
 }
 
 .header-button:hover{
@@ -1442,11 +1443,11 @@ textarea.form-input {
     color: #292b32;
 }
 
-.invert-color .form-checkbox input:checked,
+/* .invert-color .form-checkbox input:checked,
 .invert-color .form-radio input:checked {
-    /*background-color: !important;*/
-    /*border-color: !important*/
-}
+    background-color: !important;
+    border-color: !important;
+} */
 
 .form-group {
     display: flex;
@@ -2105,7 +2106,7 @@ textarea.form-input {
         flex-shrink: 0;
         width: 396px;
         margin-bottom: 0;
-        margin-right: 64px;
+        /* margin-right: 64px; */
     }
 
     .split-wrap .split-item .split-item-image {
@@ -2595,6 +2596,7 @@ textarea.form-input {
 .flashlogo {
     height: 40px;
     width: auto;
+    padding-left: 30px;
 }
 
 /* Button container on the right */
@@ -3012,7 +3014,7 @@ textarea.form-input {
 
 .hero-content {
     max-width: 1500px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 .hero-figure img {
