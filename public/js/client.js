@@ -255,6 +255,7 @@ const handRaisedNotification = getId('handRaisedNotification');
 const whiteboardBtn = getId('whiteboardBtn');
 const fileShareBtn = getId('fileShareBtn');
 const documentPiPBtn = getId('documentPiPBtn');
+const gridLayoutBtn = getId('gridLayoutBtn');
 const mySettingsBtn = getId('mySettingsBtn');
 const aboutBtn = getId('aboutBtn');
 const leaveRoomBtn = getId('leaveRoomBtn');
@@ -4342,6 +4343,7 @@ function manageLeftButtons() {
     setMyWhiteboardBtn();
     setMyFileShareBtn();
     setDocumentPiPBtn();
+    setGridLayoutBtn();
     setMySettingsBtn();
     setAboutBtn();
     setLeaveRoomBtn();
@@ -5126,6 +5128,32 @@ async function documentPictureInPictureOpen() {
 }
 
 /**
+ * Grid Layout button click event
+ */
+function setGridLayoutBtn() {
+    // Initialize with saved layout preference or default to auto (0)
+    let currentLayout = lsSettings.grid_layout !== undefined ? lsSettings.grid_layout : 0;
+    const layoutNames = ['Auto', '4:3', '16:9', '1:1', '1:2'];
+    
+    gridLayoutBtn.addEventListener('click', (e) => {
+        // Cycle through layouts: 0 -> 1 -> 2 -> 3 -> 4 -> 0
+        currentLayout = (currentLayout + 1) % ratios.length;
+        
+        // Apply the new aspect ratio
+        setAspectRatio(currentLayout);
+        
+        // Show notification to user
+        userLog('info', `Grid layout changed to: ${layoutNames[currentLayout]}`, 2000);
+        
+        // Save preference to localStorage
+        lsSettings.grid_layout = currentLayout;
+        localStorage.setItem('mirotalk_p2p_settings', JSON.stringify(lsSettings));
+        
+        console.log('Grid layout changed to:', layoutNames[currentLayout], 'aspect:', currentLayout);
+    });
+}
+
+/**
  * My settings button click event
  */
 function setMySettingsBtn() {
@@ -5520,6 +5548,11 @@ function loadSettingsFromLocalStorage() {
     setButtonsBarPosition(btnsBarSelect.value);
     toggleVideoPin(pinVideoPositionSelect.value);
     resizeMainButtons();
+    
+    // Restore grid layout preference
+    if (lsSettings.grid_layout !== undefined) {
+        setAspectRatio(lsSettings.grid_layout);
+    }
 }
 
 /**

@@ -165,7 +165,7 @@ app.post("/send-meeting", emailLimiter, async (req, res) => {
 
 Meeting Details:
 
-Room ID: ${title}${password ? `\nPassword: ${password} 🔒` : ''}
+Room ID: ${title}${password ? `\nPassword 🔒: ${password} ` : ''}
 Date: ${start.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: selectedTimeZone })}
 Time: ${start.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: selectedTimeZone })} - ${end.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: selectedTimeZone })}
 Timezone: ${selectedTimeZone.split('/').pop().replace(/_/g, ' ')} (${selectedTimeZone})

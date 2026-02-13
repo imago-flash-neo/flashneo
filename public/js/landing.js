@@ -419,7 +419,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
                             <div class="schedule-form-group">
                                 <label for="timePicker">Time</label>
-                                <input type="text" id="timePicker" placeholder="Select time" />
+                                <select id="timePicker"></select>
                             </div>
                         </div>
                         <div class="schedule-form-group">
@@ -457,12 +457,34 @@ document.addEventListener('DOMContentLoaded', function() {
                         minDate: 'today',
                     });
                     
-                    // Initialize flatpickr time picker
-                    flatpickr('#timePicker', {
-                        enableTime: true,
-                        noCalendar: true,
-                        dateFormat: 'H:i',
-                        time_24hr: true,
+                        // Populate time dropdown with 15-minute intervals
+                    const timePicker = document.getElementById('timePicker');
+                    const times = [];
+                    
+                    // Generate time options from 00:00 to 23:45 in 15-minute intervals
+                    for (let hour = 0; hour < 24; hour++) {
+                        for (let minute = 0; minute < 60; minute += 15) {
+                            const hourStr = hour.toString().padStart(2, '0');
+                            const minuteStr = minute.toString().padStart(2, '0');
+                            const timeValue = `${hourStr}:${minuteStr}`;
+                            times.push(timeValue);
+                        }
+                    }
+                    
+                    // Add default option
+                    const defaultOption = document.createElement('option');
+                    defaultOption.value = '';
+                    defaultOption.textContent = 'Select time';
+                    defaultOption.disabled = true;
+                    defaultOption.selected = true;
+                    timePicker.appendChild(defaultOption);
+                    
+                    // Add time options to dropdown
+                    times.forEach(time => {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        timePicker.appendChild(option);
                     });
 
                     // Setup timezone dropdown
